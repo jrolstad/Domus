@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using System.Web.Routing;
+using Rolstad.MVC.Errors;
+using log4net.Config;
 
 namespace Domus.Web.UI
 {
@@ -15,6 +13,7 @@ namespace Domus.Web.UI
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
             filters.Add(new HandleErrorAttribute());
+            filters.Add(new HandleErrorAndLogAttribute());
         }
 
         public static void RegisterRoutes(RouteCollection routes)
@@ -31,6 +30,8 @@ namespace Domus.Web.UI
 
         protected void Application_Start()
         {
+            XmlConfigurator.Configure();
+
             AreaRegistration.RegisterAllAreas();
 
             RegisterGlobalFilters(GlobalFilters.Filters);

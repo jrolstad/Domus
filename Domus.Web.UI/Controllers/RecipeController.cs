@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using Domus.Adapters;
 using Domus.Entities;
 using Domus.Providers;
-using Domus.Web.UI.Models;
+using Domus.Web.UI.Models.Recipes;
+using Rolstad.Extensions;
 
 namespace Domus.Web.UI.Controllers
 {
@@ -28,9 +28,24 @@ namespace Domus.Web.UI.Controllers
             _recipeViewModelAdapter = recipeViewModelAdapter;
         }
 
-        public ViewResult Index()
+        public ViewResult Index(string searchTerms)
         {
-            return View();
+            var categories = _categoryDataProvider
+                .GetAll()
+                .Select(c => c.Description);
+
+            var recipes = searchTerms.IsEmpty() ?
+                                new RecipeViewModel[0]
+                              : this.ExecuteSearch(searchTerms)
+                                    .Select(_recipeAdapter.Convert);
+
+            var viewModel = new RecipeIndexViewModel
+                                {
+                                    Categories = categories,
+                                    SearchText = searchTerms,
+                                    SearchResults = recipes
+                                };
+            return View(viewModel);
         }
 
         public ViewResult Category(string category)
@@ -38,15 +53,15 @@ namespace Domus.Web.UI.Controllers
             var recipes = _recipeDataProvider.Search(r => r.Category == category);
             var viewModels = _recipeAdapter.Convert(recipes);
 
-            return PartialView(viewModels);
+            return View(viewModels);
         }
 
         public ViewResult Search(string searchTerms)
         {
-            var recipes = _recipeDataProvider.Search(r => r.Category == searchTerms);
+            var recipes = this.ExecuteSearch(searchTerms);
             var viewModels = _recipeAdapter.Convert(recipes);
 
-            return PartialView(viewModels);
+            return View(viewModels);
         }
 
         public ViewResult Details(string recipeId)
@@ -80,8 +95,11 @@ namespace Domus.Web.UI.Controllers
                 var recipe = _recipeViewModelAdapter.Convert(recipeViewModel);
                 _recipeDataProvider.Save(recipe,recipe.RecipeId);
 
-                RedirectToAction("Details", recipe.RecipeId);
+                return RedirectToAction("Details", recipe.RecipeId);
             }
+
+            return View("Edit", recipeViewModel);
+            
         }
 
         public RedirectToRouteResult Delete(string recipeId)
@@ -89,6 +107,17 @@ namespace Domus.Web.UI.Controllers
             _recipeDataProvider.Delete(recipeId);
             
             return RedirectToAction("Index");
+        }
+
+        internal IEnumerable<Recipe> ExecuteSearch(string searchTerms)
+        {
+            var nullSafeCriteria = searchTerms.SafeToLower();
+
+            return _recipeDataProvider.Search(recipe => recipe.Category.SafeToLower().SafeContains(nullSafeCriteria)
+                || recipe.Name.SafeToLower().SafeContains(nullSafeCriteria)
+                || recipe.Ingredients.SafeToLower().SafeContains(nullSafeCriteria)
+                || recipe.Directions.SafeToLower().SafeContains(nullSafeCriteria)
+                || recipe.Source.SafeToLower().SafeContains(nullSafeCriteria));
         }
 
     }

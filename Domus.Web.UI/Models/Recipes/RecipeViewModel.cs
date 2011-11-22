@@ -1,5 +1,7 @@
 ﻿
-namespace Domus.Web.UI.Models
+using System.Collections.Generic;
+
+namespace Domus.Web.UI.Models.Recipes
 {
     public class RecipeViewModel
     {
@@ -42,5 +44,10 @@ namespace Domus.Web.UI.Models
         /// Where this recipe came from
         /// </summary>
         public virtual string Source { get; set; }
+
+        /// <summary>
+        /// Categories to pick from
+        /// </summary>
+        public IEnumerable<string> Categories { get; set; }
     }
 }
