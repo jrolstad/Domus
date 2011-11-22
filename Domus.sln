@@ -1,7 +1,25 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domus", "Domus\Domus.csproj", "{155D3E29-9884-4947-BCCC-F75E1AB15270}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domus.Web.UI", "Domus.Web.UI\Domus.Web.UI.csproj", "{391C4194-BCA4-4D69-87B1-7C7511866547}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{155D3E29-9884-4947-BCCC-F75E1AB15270}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{155D3E29-9884-4947-BCCC-F75E1AB15270}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{155D3E29-9884-4947-BCCC-F75E1AB15270}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{155D3E29-9884-4947-BCCC-F75E1AB15270}.Release|Any CPU.Build.0 = Release|Any CPU
+		{391C4194-BCA4-4D69-87B1-7C7511866547}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{391C4194-BCA4-4D69-87B1-7C7511866547}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{391C4194-BCA4-4D69-87B1-7C7511866547}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{391C4194-BCA4-4D69-87B1-7C7511866547}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
