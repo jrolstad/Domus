@@ -1,0 +1,33 @@
+﻿@model IEnumerable<Domus.Web.UI.Models.Recipes.RecipeViewModel>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table>
+    <tr>
+        <th>
+            Name
+        </th>
+        <th>
+            Rating
+        </th>
+        <th>
+            Category
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.ActionLink(item.Name,"Details",new{recipeId = item.RecipeId})
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Rating)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Category)
+        </td>
+    </tr>
+}
+
+</table>

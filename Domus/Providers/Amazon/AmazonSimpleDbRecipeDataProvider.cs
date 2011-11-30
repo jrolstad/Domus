@@ -37,7 +37,11 @@ namespace Domus.Providers.Amazon
         /// <returns></returns>
         public Recipe Get( string identifier )
         {
-            throw new NotImplementedException();
+            var matchingRecipe = GetRecipesFromSimpleDb()
+                .Select(this.Convert)
+                .FirstOrDefault(r => string.Equals(r.RecipeId, identifier, StringComparison.InvariantCultureIgnoreCase));
+
+            return matchingRecipe;
         }
 
         /// <summary>
@@ -46,7 +50,10 @@ namespace Domus.Providers.Amazon
         /// <returns></returns>
         public IEnumerable<Recipe> GetAll()
         {
-            throw new NotImplementedException();
+            var allRecipes = GetRecipesFromSimpleDb()
+                .Select(this.Convert);
+
+            return allRecipes;
         }
 
         /// <summary>
@@ -56,7 +63,11 @@ namespace Domus.Providers.Amazon
         /// <returns></returns>
         public IEnumerable<Recipe> Search( Func<Recipe, bool> filterCriteria )
         {
-            throw new NotImplementedException();
+            var matchingRecipes = GetRecipesFromSimpleDb()
+                .Select(this.Convert)
+                .Where(filterCriteria);
+
+            return matchingRecipes;
         }
 
         /// <summary>
@@ -66,7 +77,23 @@ namespace Domus.Providers.Amazon
         /// <param name="identifier"></param>
         public void Save( Recipe item, string identifier )
         {
-            throw new NotImplementedException();
+          
+            // Delete the existing entries
+            var deleteRequest = new DeleteAttributesRequest()
+                .WithDomainName(RecipeDomainName)
+                .WithItemName(identifier);
+            _simpleDBClient.DeleteAttributes(deleteRequest);
+
+            // Convert the recipe into SimpleDB attributes
+            var recipeAttributes = Convert(item);
+
+            // Save the recipe as a new set of attributes
+            var saveRequest = new PutAttributesRequest()
+                .WithDomainName(RecipeDomainName)
+                .WithItemName(identifier)
+                .WithAttribute(recipeAttributes);
+            _simpleDBClient.PutAttributes(saveRequest);
+
         }
 
         /// <summary>
@@ -166,7 +193,7 @@ namespace Domus.Providers.Amazon
         /// </summary>
         /// <param name="recipe">Recipe to convert</param>
         /// <returns></returns>
-        public virtual ReplaceableAttribute[] Convert(Recipe recipe)
+        internal virtual ReplaceableAttribute[] Convert(Recipe recipe)
         {
             var replaceableAttributes = new List<ReplaceableAttribute>();
 

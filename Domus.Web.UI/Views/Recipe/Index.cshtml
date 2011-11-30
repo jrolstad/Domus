@@ -1,0 +1,27 @@
+﻿@model Domus.Web.UI.Models.Recipes.RecipeIndexViewModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>RecipeIndexViewModel</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.SearchText)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.SearchText)
+            @Html.ValidationMessageFor(model => model.SearchText)
+        </div>
+
+        <p>
+            <input type="submit" value="Save" />
+        </p>
+    </fieldset>
+}
+
+@Html.Partial("SearchResults",@Model.SearchResults)
