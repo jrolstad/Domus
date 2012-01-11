@@ -5,23 +5,18 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@using (Html.BeginForm()) {
-    @Html.ValidationSummary(true)
-    <fieldset>
-        <legend>RecipeIndexViewModel</legend>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.SearchText)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.SearchText)
-            @Html.ValidationMessageFor(model => model.SearchText)
-        </div>
-
-        <p>
-            <input type="submit" value="Save" />
-        </p>
-    </fieldset>
+<div id="recipeSearch">
+@using (@Html.BeginForm("Index", "Recipe"))
+{
+    @Html.TextBoxFor(m=>m.SearchText)
+    <input type="submit" value="Search"/>
 }
+</div>
 
-@Html.Partial("SearchResults",@Model.SearchResults)
+<div id="recipeCategories">
+    @Html.Partial("Categories",Model.Categories)
+</div>
+
+<div id="recipeSearchResults">
+   
+</div>

@@ -1,0 +1,8 @@
+﻿@model IEnumerable<Domus.Web.UI.Models.Recipes.CategoryViewModel>
+           
+
+@foreach (var category in Model)
+{
+    Html.ActionLink(category.Description, "Index", new { SearchText = "Category=" + category.Description });
+    <br />
+}

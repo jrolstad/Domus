@@ -7,7 +7,7 @@ namespace Domus.Web.UI.Models.Recipes
         /// <summary>
         /// Categories to pick from
         /// </summary>
-        public IEnumerable<string> Categories { get; set; }
+        public IEnumerable<CategoryViewModel> Categories { get; set; }
 
         /// <summary>
         /// Results of the search

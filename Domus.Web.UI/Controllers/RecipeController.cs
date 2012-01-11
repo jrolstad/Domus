@@ -28,92 +28,21 @@ namespace Domus.Web.UI.Controllers
             _recipeViewModelAdapter = recipeViewModelAdapter;
         }
 
-        public ViewResult Index(string searchTerms)
+        public ViewResult Index(string SearchText)
         {
-            var categories = _categoryDataProvider
-                .GetAll()
-                .Select(c => c.Description);
-
-            var recipes = searchTerms.IsEmpty() ?
-                                new RecipeViewModel[0]
-                              : this.ExecuteSearch(searchTerms)
-                                    .Select(_recipeAdapter.Convert);
-
-            var viewModel = new RecipeIndexViewModel
-                                {
-                                    Categories = categories,
-                                    SearchText = searchTerms,
-                                    SearchResults = recipes
-                                };
-            return View(viewModel);
-        }
-
-        public ViewResult Category(string category)
-        {
-            var recipes = _recipeDataProvider.Search(r => r.Category == category);
-            var viewModels = _recipeAdapter.Convert(recipes);
-
-            return View(viewModels);
-        }
-
-        public ViewResult Search(string searchTerms)
-        {
-            var recipes = this.ExecuteSearch(searchTerms);
-            var viewModels = _recipeAdapter.Convert(recipes);
-
-            return View(viewModels);
-        }
-
-        public ViewResult Details(string recipeId)
-        {
-            var recipe = _recipeDataProvider.Get(recipeId);
-            var viewModel = _recipeAdapter.Convert(recipe);
-
-            return View(viewModel);
-        }
-
-        public RedirectToRouteResult Create()
-        {
-            var newRecipe = new RecipeViewModel {RecipeId = Guid.NewGuid().ToString()};
-
-            return RedirectToAction("Edit",string.Empty);
-        } 
-
-        public ViewResult Edit(string recipeId)
-        {
-            var recipe = _recipeDataProvider.Get(recipeId);
-            var viewModel = _recipeAdapter.Convert(recipe);
-
-            return View(viewModel);
-        }
-
-        [HttpPost]
-        public ActionResult Save(RecipeViewModel recipeViewModel)
-        {
-            if(this.ModelState.IsValid)
-            {
-                var recipe = _recipeViewModelAdapter.Convert(recipeViewModel);
-                _recipeDataProvider.Save(recipe,recipe.RecipeId);
-
-                return RedirectToAction("Details", recipe.RecipeId);
-            }
-
-            return View("Edit", recipeViewModel);
-            
-        }
-
-        public RedirectToRouteResult Delete(string recipeId)
-        {
-            _recipeDataProvider.Delete(recipeId);
-            
-            return RedirectToAction("Index");
+            var model = new RecipeIndexViewModel {Categories = new[]
+                                                                   {
+                                                                       new CategoryViewModel {Description = "one"}
+                                                                   }};
+            return View(model);
         }
 
         internal IEnumerable<Recipe> ExecuteSearch(string searchTerms)
         {
             var nullSafeCriteria = searchTerms.SafeToLower();
 
-            return _recipeDataProvider.Search(recipe => recipe.Category.SafeToLower().SafeContains(nullSafeCriteria)
+            return _recipeDataProvider.Search(recipe => 
+                   recipe.Category.SafeToLower().SafeContains(nullSafeCriteria)
                 || recipe.Name.SafeToLower().SafeContains(nullSafeCriteria)
                 || recipe.Ingredients.SafeToLower().SafeContains(nullSafeCriteria)
                 || recipe.Directions.SafeToLower().SafeContains(nullSafeCriteria)
