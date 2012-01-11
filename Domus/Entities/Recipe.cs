@@ -1,4 +1,6 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
+using Directus.SimpleDb.Attributes;
 
 namespace Domus.Entities
 {
@@ -6,11 +8,13 @@ namespace Domus.Entities
     /// Domain model for a Recipe
     /// </summary>
     [Serializable]
+    [DomainName("Domus_Recipe")]
     public class Recipe
     {
         /// <summary>
         /// Unique identifier
         /// </summary>
+        [Key]
         public virtual string RecipeId { get; set; }
 
         /// <summary>
