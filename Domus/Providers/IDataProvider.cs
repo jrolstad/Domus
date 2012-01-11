@@ -3,12 +3,12 @@ using System.Collections.Generic;
 
 namespace Domus.Providers
 {
-       /// <summary>
+    /// <summary>
     /// Interface for data providers
     /// </summary>
     /// <typeparam name="T">Type of item being provisioned</typeparam>
     /// <typeparam name="I">Identifier for the item</typeparam>
-    public interface IDataProvider<T,I>
+    public interface IDataProvider<T, I>
     {
         /// <summary>
         /// Obtains a single item
@@ -21,7 +21,7 @@ namespace Domus.Providers
         /// Obtains all of the items
         /// </summary>
         /// <returns></returns>
-        IEnumerable<T> GetAll();
+        IEnumerable<T> Get();
 
         /// <summary>
         /// Search for a particular item
@@ -30,12 +30,11 @@ namespace Domus.Providers
         /// <returns></returns>
         IEnumerable<T> Search(Func<T, bool> filterCriteria);
 
-           /// <summary>
-           /// Saves a particular item
-           /// </summary>
-           /// <param name="item"></param>
-           /// <param name="identifier"></param>
-           void Save(T item, I identifier);
+        /// <summary>
+        /// Saves a particular item
+        /// </summary>
+        /// <param name="item"></param>
+        void Save(T item);
 
         /// <summary>
         /// Deletes a given item

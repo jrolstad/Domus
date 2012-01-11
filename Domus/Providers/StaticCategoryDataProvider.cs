@@ -31,7 +31,7 @@ namespace Domus.Providers
                     "Salads",
                     "Sauces",
                     "Dog Treats",
-                    "Turkey",
+                    "Turkey"
                 };
         /// <summary>
         /// Obtains a single item
@@ -40,16 +40,23 @@ namespace Domus.Providers
         /// <returns></returns>
         public Category Get( string identifier )
         {
-            return _availableCategories.Where(c => c == identifier).Select(c => new Category {Description = c}).FirstOrDefault();
+            return _availableCategories
+                .AsParallel()
+                .Where(c => c == identifier)
+                .Select(c => new Category {Description = c})
+                .FirstOrDefault();
         }
 
         /// <summary>
         /// Obtains all of the items
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<Category> GetAll()
+        public IEnumerable<Category> Get()
         {
-            return _availableCategories.Select(c => new Category {Description = c}).OrderBy(c=>c.Description);
+            return _availableCategories
+                .AsParallel()
+                .Select(c => new Category {Description = c})
+                .OrderBy(c=>c.Description);
         }
 
         /// <summary>
@@ -59,15 +66,17 @@ namespace Domus.Providers
         /// <returns></returns>
         public IEnumerable<Category> Search( Func<Category, bool> filterCriteria )
         {
-            return _availableCategories.Select(c => new Category {Description = c}).Where(filterCriteria);
+            return _availableCategories
+                .AsParallel()
+                .Select(c => new Category {Description = c})
+                .Where(filterCriteria);
         }
 
         /// <summary>
         /// Saves a particular item
         /// </summary>
         /// <param name="item"></param>
-        /// <param name="identifier"></param>
-        public void Save( Category item, string identifier )
+        public void Save(Category item)
         {
             throw new NotImplementedException();
         }

@@ -6,12 +6,12 @@ namespace Domus.Adapters
     /// <summary>
     /// Converts items using the automapper
     /// </summary>
-    /// <typeparam name="TFrom">What to convert from</typeparam>
-    /// <typeparam name="TTo">What to convert to</typeparam>
-    public class AutoMapperAdapter<TFrom,TTo>:IAdapter<TFrom,TTo>
+    /// <typeparam name="F">What to convert from</typeparam>
+    /// <typeparam name="T">What to convert to</typeparam>
+    public class AutoMapperAdapter<F,T>:IAdapter<F,T>
     {
-        private static object lockObject = new object();
-        private static bool _isConfigured;
+        private static readonly object lockObject = new object();
+        private static readonly bool _isConfigured;
 
         /// <summary>
         /// Static constructor; creates a map
@@ -22,8 +22,8 @@ namespace Domus.Adapters
             {
                 if (!_isConfigured)
                 {
-                    AutoMapper.Mapper.CreateMap<TFrom, TTo>();
-                    AutoMapper.Mapper.CreateMap<TTo, TFrom>();
+                    AutoMapper.Mapper.CreateMap<F, T>();
+                    AutoMapper.Mapper.CreateMap<T, F>();
 
                     _isConfigured = true;
                 }
@@ -35,9 +35,11 @@ namespace Domus.Adapters
         /// </summary>
         /// <param name="from"></param>
         /// <returns></returns>
-        public virtual IEnumerable<TTo> Convert(IEnumerable<TFrom> from)
+        public virtual IEnumerable<T> Convert(IEnumerable<F> from)
         {
-            return from.Select(Convert);
+            return from
+                .AsParallel()
+                .Select(Convert);
         }
 
         /// <summary>
@@ -45,9 +47,9 @@ namespace Domus.Adapters
         /// </summary>
         /// <param name="from"></param>
         /// <returns></returns>
-        public virtual TTo Convert(TFrom from)
+        public virtual T Convert(F from)
         {
-            return AutoMapper.Mapper.Map<TFrom, TTo>(from);
+            return AutoMapper.Mapper.Map<F, T>(from);
         }
 
 

@@ -2,6 +2,9 @@
 
 namespace Domus.Entities
 {
+    /// <summary>
+    /// Domain model for a Recipe
+    /// </summary>
     [Serializable]
     public class Recipe
     {
