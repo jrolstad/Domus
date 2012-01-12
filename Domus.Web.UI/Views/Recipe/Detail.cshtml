@@ -1,54 +1,52 @@
 ﻿@model Domus.Web.UI.Models.Recipes.SelectedRecipeViewModel
 
 @{
-    ViewBag.Title = "Detail";
+    ViewBag.Title = Model.Recipe.Name;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Detail</h2>
+<div id="recipeSearch">
+@using (@Html.BeginForm("Index", "Recipe"))
+{
+    @Html.TextBoxFor(m=>m.SearchText)
+    <input type="submit" value="Search"/>
+}
+</div>
 
-<fieldset>
-    <legend>RecipeViewModel</legend>
+<div id="recipeCategories">
+    @Html.Partial("Categories",Model.Categories)
+</div>
 
-    <div class="display-label">RecipeId</div>
-    <div class="display-field">
-        @Html.HiddenFor(model => model.Recipe.RecipeId)
-    </div>
+<div id="recipeDetails">
 
-    <div class="display-label">Name</div>
-    <div class="display-field">
+    @Html.HiddenFor(model => model.Recipe.RecipeId)
+
+    <div class="display-title">
         @Html.DisplayFor(model => model.Recipe.Name)
+        &nbsp;&nbsp;@Html.Partial("RatingWidget",Model.Recipe.Rating.GetValueOrDefault())
+        &nbsp;&nbsp;@Html.ActionLink("(Edit)", "Edit", new { recipeId = Model.Recipe.RecipeId })
     </div>
 
-    <div class="display-label">Servings</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Recipe.Servings)
-    </div>
-
-    <div class="display-label">Rating</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Recipe.Rating)
-    </div>
-
-    <div class="display-label">Category</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Recipe.Category)
-    </div>
+    <div class="display-label">Servings:&nbsp;@Html.DisplayFor(model => model.Recipe.Servings)</div>
 
     <div class="display-label">Ingredients</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Recipe.Ingredients)
-    </div>
+    <div class="display-field">@Html.Display(Model.Recipe.Ingredients.Replace(Environment.NewLine, "<br/>"))</div>
 
     <div class="display-label">Directions</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Recipe.Directions)
-    </div>
+    <div class="display-field">@Html.Display(Model.Recipe.Directions.Replace(Environment.NewLine, "<br/>"))</div>
 
-    <div class="display-label">Source</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Recipe.Source)
-    </div>
-</fieldset>
+    <div class="display-label">Source:&nbsp;
+        @if (Model.Recipe.Source != null && 
+            Model.Recipe.Source.StartsWith("http"))
+        {
+            <a href="@Model.Recipe.Source" target="new">@Model.Recipe.Source</a>
+        }
+        else
+        {
+            @Html.DisplayFor(model => model.Recipe.Source)
+        }
+     
+     </div>
+</div>
 
-@Html.ActionLink("Edit","Edit",new{recipeId = Model.Recipe.RecipeId})
+

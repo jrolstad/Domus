@@ -1,18 +1,10 @@
 ﻿@model IEnumerable<Domus.Web.UI.Models.Recipes.RecipeViewModel>
 
-<table>
-
-
 @foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.ActionLink(item.Name,"Detail",new{recipeId = item.RecipeId})
-            &nbsp;
-             @Html.Partial("RatingWidget",item.Rating.GetValueOrDefault())
-             <br/>
-             &nbsp;&nbsp;&nbsp;Categories: @item.Category
-        </td>
-    </tr>
-}
 
-</table>
+    @Html.ActionLink(item.Name,"Detail",new{recipeId = item.RecipeId})                     
+    @Html.Partial("RatingWidget",item.Rating.GetValueOrDefault())
+    <br/>
+    <br/>
+
+}
