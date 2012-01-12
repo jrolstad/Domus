@@ -40,8 +40,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\AWSSDK.1.3.19.0\lib\AWSSDK.dll</HintPath>
     </Reference>
-    <Reference Include="Directus.SimpleDb, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Directus.SimpleDb.1.0.1\lib\net40\Directus.SimpleDb.dll</HintPath>
+    <Reference Include="Directus.SimpleDb, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Directus.SimpleDb.1.0.2\lib\net40\Directus.SimpleDb.dll</HintPath>
     </Reference>
     <Reference Include="Rolstad.Extensions">
       <HintPath>..\packages\Rolstad.Extensions.1.0.1\lib\net40\Rolstad.Extensions.dll</HintPath>

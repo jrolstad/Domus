@@ -62,7 +62,8 @@ namespace Domus.Web.UI.Controllers
             var model = new RecipeIndexViewModel
                             {
                                 Categories = categoryViewModels,
-                                SearchResults = recipeViewModel
+                                SearchResults = recipeViewModel,
+                                SearchText = SearchText
                             };
 
             return View(model);
@@ -91,7 +92,7 @@ namespace Domus.Web.UI.Controllers
         public ViewResult Edit(string recipeId, bool isNew=false)
         {
             // Obtain either a new recipe or get the existing one
-            var recipeModel = isNew ? this.GetNewRecipeViewModel() : GetSelectedRecipeViewModel(recipeId);
+            var recipeModel = isNew ? this.GetNewRecipeViewModel(recipeId) : GetSelectedRecipeViewModel(recipeId);
 
             return View(recipeModel);
 
@@ -135,14 +136,14 @@ namespace Domus.Web.UI.Controllers
         /// Creates the view model for a new recipe
         /// </summary>
         /// <returns></returns>
-        internal SelectedRecipeViewModel GetNewRecipeViewModel()
+        internal SelectedRecipeViewModel GetNewRecipeViewModel(string recipeId)
         {
             // Categories
             var categories = _categoryDataProvider.Get();
             var categoryViewModels = _categoryAdapter.Convert(categories).OrderBy(c => c.Description).ToArray();
 
             // Create a new recipe
-            var recipeModel = new RecipeViewModel {RecipeId = Guid.NewGuid().ToString()};
+            var recipeModel = new RecipeViewModel { RecipeId = recipeId };
 
             return new SelectedRecipeViewModel
             {
