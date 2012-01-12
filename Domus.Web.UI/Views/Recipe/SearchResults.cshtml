@@ -6,9 +6,9 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.ActionLink(item.Name,"Details",new{recipeId = item.RecipeId})
+            @Html.ActionLink(item.Name,"Detail",new{recipeId = item.RecipeId})
             &nbsp;
-             @Html.Partial("RatingWidget",item.Rating)
+             @Html.Partial("RatingWidget",item.Rating.GetValueOrDefault())
              <br/>
              &nbsp;&nbsp;&nbsp;Categories: @item.Category
         </td>

@@ -1,15 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using Directus.SimpleDb.Providers;
 using Domus.Entities;
 
 namespace Domus.Providers
 {
+    /// <summary>
+    /// Recipe data provider that uses the Amazon SimpleDb
+    /// </summary>
     public class AmazonSimpleDbRecipeProvider:IDataProvider<Recipe,string>
     {
+        private SimpleDBProvider<Recipe, string> _provider;
+
+        /// <summary>
+        /// Constructor security credentials
+        /// </summary>
+        /// <param name="accessKey">Access key</param>
+        /// <param name="secretKey">Secret Key</param>
         public AmazonSimpleDbRecipeProvider(string accessKey, string secretKey)
         {
-            
+            _provider = new SimpleDBProvider<Recipe, string>(accessKey, secretKey);
         }
+
         /// <summary>
         /// Obtains a single item
         /// </summary>
@@ -17,7 +30,7 @@ namespace Domus.Providers
         /// <returns></returns>
         public Recipe Get( string identifier )
         {
-            throw new NotImplementedException();
+            return _provider.Get(identifier);
         }
 
         /// <summary>
@@ -26,7 +39,7 @@ namespace Domus.Providers
         /// <returns></returns>
         public IEnumerable<Recipe> Get()
         {
-            throw new NotImplementedException();
+            return _provider.Get();
         }
 
         /// <summary>
@@ -36,7 +49,7 @@ namespace Domus.Providers
         /// <returns></returns>
         public IEnumerable<Recipe> Search( Func<Recipe, bool> filterCriteria )
         {
-            throw new NotImplementedException();
+            return _provider.Get().Where(filterCriteria);
         }
 
         /// <summary>
@@ -45,7 +58,7 @@ namespace Domus.Providers
         /// <param name="item"></param>
         public void Save( Recipe item )
         {
-            throw new NotImplementedException();
+            _provider.Save(new[]{item});
         }
 
         /// <summary>
@@ -54,7 +67,7 @@ namespace Domus.Providers
         /// <param name="identifier"></param>
         public void Delete( string identifier )
         {
-            throw new NotImplementedException();
+            _provider.Delete(new[]{identifier});
         }
     }
 }

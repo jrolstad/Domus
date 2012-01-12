@@ -12,6 +12,8 @@ namespace Domus.Web.UI.Infrastructure.DependencyInjection.Registrations
         {
             kernel.Bind<IAdapter<Recipe, RecipeViewModel>>().To<AutoMapperAdapter<Recipe, RecipeViewModel>>();
             kernel.Bind<IAdapter<RecipeViewModel, Recipe>>().To<AutoMapperAdapter<RecipeViewModel, Recipe>>();
+
+            kernel.Bind<IAdapter<Category, CategoryViewModel>>().To<AutoMapperAdapter<Category, CategoryViewModel>>();
         }
     }
 }

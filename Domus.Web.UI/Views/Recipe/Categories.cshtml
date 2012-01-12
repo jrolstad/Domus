@@ -3,6 +3,6 @@
 
 @foreach (var category in Model)
 {
-    Html.ActionLink(category.Description, "Index", new { SearchText = "Category=" + category.Description });
+    @Html.ActionLink(category.Description, "Index", new { SearchText = "Category=" + category.Description });
     <br />
 }
