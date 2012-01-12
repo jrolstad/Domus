@@ -11,7 +11,7 @@ namespace Domus.Web.UI.Controllers
         /// Main home page
         /// </summary>
         /// <returns></returns>
-        public ActionResult Index()
+        public ViewResult Index()
         {
             return View();
         }

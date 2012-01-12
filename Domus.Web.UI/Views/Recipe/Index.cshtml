@@ -17,6 +17,10 @@
     @Html.Partial("Categories",Model.Categories)
 </div>
 
+<div id="recipeCommands">
+    @Html.ActionLink("Add Recipe","Create")
+</div>
+
 <div id="recipeSearchResults">
    @Html.Partial("SearchResults",Model.SearchResults)
 </div>

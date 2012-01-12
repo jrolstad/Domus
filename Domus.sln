@@ -13,6 +13,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{4E476E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domus.Test", "Domus.Test\Domus.Test.csproj", "{973966C3-3FAF-4058-983A-860B406AB542}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domus.WebUI.Test", "Domus.WebUI.Test\Domus.WebUI.Test.csproj", "{38E04309-B64A-4CE1-B3E1-95959BD141A8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,10 @@ Global
 		{973966C3-3FAF-4058-983A-860B406AB542}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{973966C3-3FAF-4058-983A-860B406AB542}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{973966C3-3FAF-4058-983A-860B406AB542}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38E04309-B64A-4CE1-B3E1-95959BD141A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38E04309-B64A-4CE1-B3E1-95959BD141A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38E04309-B64A-4CE1-B3E1-95959BD141A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38E04309-B64A-4CE1-B3E1-95959BD141A8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

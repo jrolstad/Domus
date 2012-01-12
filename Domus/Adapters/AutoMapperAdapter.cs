@@ -23,8 +23,6 @@ namespace Domus.Adapters
                 if (!_isConfigured)
                 {
                     AutoMapper.Mapper.CreateMap<F, T>();
-                    AutoMapper.Mapper.CreateMap<T, F>();
-
                     _isConfigured = true;
                 }
             }

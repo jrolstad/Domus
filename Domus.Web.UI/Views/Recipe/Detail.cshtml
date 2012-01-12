@@ -1,0 +1,54 @@
+﻿@model Domus.Web.UI.Models.Recipes.SelectedRecipeViewModel
+
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Detail</h2>
+
+<fieldset>
+    <legend>RecipeViewModel</legend>
+
+    <div class="display-label">RecipeId</div>
+    <div class="display-field">
+        @Html.HiddenFor(model => model.Recipe.RecipeId)
+    </div>
+
+    <div class="display-label">Name</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Recipe.Name)
+    </div>
+
+    <div class="display-label">Servings</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Recipe.Servings)
+    </div>
+
+    <div class="display-label">Rating</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Recipe.Rating)
+    </div>
+
+    <div class="display-label">Category</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Recipe.Category)
+    </div>
+
+    <div class="display-label">Ingredients</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Recipe.Ingredients)
+    </div>
+
+    <div class="display-label">Directions</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Recipe.Directions)
+    </div>
+
+    <div class="display-label">Source</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Recipe.Source)
+    </div>
+</fieldset>
+
+@Html.ActionLink("Edit","Edit",new{recipeId = Model.Recipe.RecipeId})

@@ -1,5 +1,6 @@
 ﻿
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Domus.Web.UI.Models.Recipes
 {
@@ -13,6 +14,7 @@ namespace Domus.Web.UI.Models.Recipes
         /// <summary>
         /// Name the recipe is commonly referred to as
         /// </summary>
+        [Required(AllowEmptyStrings = false)]
         public virtual string Name { get; set; }
 
         /// <summary>
@@ -23,11 +25,13 @@ namespace Domus.Web.UI.Models.Recipes
         /// <summary>
         /// Current rating for the recipe
         /// </summary>
+        [DataType("Integer", ErrorMessage = "Rating must be a whole number")]
         public virtual int? Rating { get; set; }
 
         /// <summary>
         /// Category this recipe falls into
         /// </summary>
+        [Required(AllowEmptyStrings = false)]
         public virtual string Category { get; set; }
 
         /// <summary>
@@ -44,10 +48,5 @@ namespace Domus.Web.UI.Models.Recipes
         /// Where this recipe came from
         /// </summary>
         public virtual string Source { get; set; }
-
-        /// <summary>
-        /// Categories to pick from
-        /// </summary>
-        public IEnumerable<string> Categories { get; set; }
     }
 }

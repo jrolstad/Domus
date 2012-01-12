@@ -11,7 +11,16 @@ namespace Domus.Providers
     /// </summary>
     public class AmazonSimpleDbRecipeProvider:IDataProvider<Recipe,string>
     {
-        private SimpleDBProvider<Recipe, string> _provider;
+        internal SimpleDBProvider<Recipe, string> _provider;
+
+        /// <summary>
+        /// Constructor that consumes the underlying simpledb provider
+        /// </summary>
+        /// <param name="simpleDbProvider"></param>
+        internal AmazonSimpleDbRecipeProvider(SimpleDBProvider<Recipe, string> simpleDbProvider)
+        {
+            _provider = simpleDbProvider;
+        }
 
         /// <summary>
         /// Constructor security credentials
@@ -19,8 +28,9 @@ namespace Domus.Providers
         /// <param name="accessKey">Access key</param>
         /// <param name="secretKey">Secret Key</param>
         public AmazonSimpleDbRecipeProvider(string accessKey, string secretKey)
+            : this(new SimpleDBProvider<Recipe, string>(accessKey, secretKey))
         {
-            _provider = new SimpleDBProvider<Recipe, string>(accessKey, secretKey);
+           
         }
 
         /// <summary>
