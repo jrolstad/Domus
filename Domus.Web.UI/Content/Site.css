@@ -47,11 +47,18 @@ textarea
 .display-label 
 {
     margin: 1em 0 0 0;
+    font-weight: bold;
 }
 
 .display-field 
 {
     margin:0.5em 0 0 0;
+}
+
+.display-title h2 
+{
+    position: inline;
+    text-wrap: none;
 }
 
 
@@ -82,4 +89,39 @@ textarea
 .validation-summary-valid
 {
     display: none;
+}
+
+#recipeSearch {
+    background-color: gray;
+    color: whitesmoke;
+    width: 100%;
+    padding: 5px;
+}
+
+#recipeSearch input {
+    font-family: Verdana, Arial, sans-serif;
+    font-size: 1.1em;
+}
+
+#recipeCategories {
+    font-family: Verdana, Arial, sans-serif;
+    font-size: 1.1em;
+    background-color: whitesmoke;
+    border-color: #dddddd;
+    float: left;
+    height: 100%;
+    margin: 5px;
+}
+#recipeCategories a {
+    padding: 5px;
+}
+
+#recipeEditor {
+    float: right;
+    position: relative;
+    display: inline;
+}
+
+#container {
+    white-space:nowrap;
 }
