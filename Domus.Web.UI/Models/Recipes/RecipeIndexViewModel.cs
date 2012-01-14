@@ -18,5 +18,10 @@ namespace Domus.Web.UI.Models.Recipes
         /// Text to search by
         /// </summary>
         public string SearchText { get; set; }
+
+        /// <summary>
+        /// Message to show
+        /// </summary>
+        public string SearchResultMessage { get; set; }
     }
 }

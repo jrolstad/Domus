@@ -36,7 +36,9 @@ textarea
 
 .editor-label 
 {
+    font-family: Verdana, Arial, sans-serif;
     margin: 1em 0 0 0;
+    font-weight: bold;
 }
 
 .editor-field 
@@ -46,6 +48,7 @@ textarea
 
 .display-label 
 {
+    font-family: Verdana, Arial, sans-serif;
     margin: 1em 0 0 0;
     font-weight: bold;
 }
@@ -55,10 +58,10 @@ textarea
     margin:0.5em 0 0 0;
 }
 
-.display-title h2 
+.display-title p 
 {
-    position: inline;
-    text-wrap: none;
+   font-size: 1.8em;
+    color: gray;
 }
 
 
@@ -91,6 +94,11 @@ textarea
     display: none;
 }
 
+#searchSummary {
+    font-size: 1.8em;
+    color: gainsboro;
+}
+
 #recipeSearch {
     background-color: gray;
     color: whitesmoke;
@@ -103,25 +111,78 @@ textarea
     font-size: 1.1em;
 }
 
-#recipeCategories {
+#recipeSearchResults {
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
+#recipeSearchResults a {
     font-family: Verdana, Arial, sans-serif;
     font-size: 1.1em;
+}
+
+#recipeCategories {
+    font-family: Verdana, Arial, sans-serif;
+    font-size: 1.2em;
     background-color: whitesmoke;
     border-color: #dddddd;
     float: left;
     height: 100%;
     margin: 5px;
+    width: 200px;
 }
+#recipeCategories a {
+    text-decoration: none;
+}
+#categoryColumn {
+    width: 200px;
+}
+
 #recipeCategories a {
     padding: 5px;
 }
 
-#recipeEditor {
-    float: right;
-    position: relative;
-    display: inline;
+#recipeDetails {
+    width: 100%;
+    text-align: left; 
+    margin-left: 10px;
+    margin-top: 10px;   
+}
+
+#recipeDetails td {
+    vertical-align: bottom;
 }
 
 #container {
-    white-space:nowrap;
+    width: 100%;
+}
+
+#container td {
+    text-align: left;
+    vertical-align: top;
+}
+
+#recipeEditor {
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
+#recipeEditor input {
+    font-family: Verdana, Arial, sans-serif;
+    font-size: 1.1em;
+}
+
+.editor-field input {
+    width: 70%;
+} 
+
+#recipeEditor textarea {
+    width: 70%;
+    height: 250px;
+     font-family: Verdana, Arial, sans-serif;
+    font-size: 1.1em;
+}
+#recipeEditor select {
+         font-family: Verdana, Arial, sans-serif;
+    font-size: 1.1em;
 }

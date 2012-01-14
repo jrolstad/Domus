@@ -12,21 +12,24 @@
     <input id="searchButton" type="submit" value="Search"/>
 }
 </div>
-
-<div id="recipeCategories">
-    @Html.Partial("Categories",Model.Categories)
-    <br/>
-    <br/>
-    @Html.ActionLink("Add Recipe","Create",new{},new{id="createButton"})
-</div>
-
-<div id="recipeCommands">
-    
-</div>
-
-<div id="recipeSearchResults">
-   @Html.Partial("SearchResults",Model.SearchResults)
-</div>
-
+<table id="container">
+    <tr>
+        <td id="categoryColumn">
+            <div id="recipeCategories">
+                @Html.Partial("Categories", Model.Categories)
+                <br/>
+                <br/>
+                @Html.ActionLink("Add Recipe","Create",new{},new{id="createButton"})
+            </div>
+        </td>
+        <td>
+        <div id="recipeSearchResults">
+            <p id="searchSummary">@Html.DisplayFor(model => model.SearchResultMessage)</p>
+            <hr/>
+           @Html.Partial("SearchResults",Model.SearchResults)
+        </div>
+        </td>
+    </tr>
+</table>
 
 <script src="@Url.Content("~/Scripts/RecipeIndex.js")" type="text/javascript"></script>

@@ -58,11 +58,15 @@ namespace Domus.Web.UI.Controllers
             var recipes = SearchText == null ? new Recipe[0] : ExecuteSearch(SearchText);
             var recipeViewModel = _recipeAdapter.Convert(recipes).ToArray();
 
+            // Message
+            var message = SearchText == null ? "Welcome" : "{0} recipes found".StringFormat(recipeViewModel.Length);
+
             // Create the view model
             var model = new RecipeIndexViewModel
                             {
                                 Categories = categoryViewModels,
                                 SearchResults = recipeViewModel,
+                                SearchResultMessage = message,
                                 SearchText = SearchText
                             };
 
@@ -198,7 +202,8 @@ namespace Domus.Web.UI.Controllers
                 || recipe.Name.SafeToLower().SafeContains(nullSafeCriteria)
                 || recipe.Ingredients.SafeToLower().SafeContains(nullSafeCriteria)
                 || recipe.Directions.SafeToLower().SafeContains(nullSafeCriteria)
-                || recipe.Source.SafeToLower().SafeContains(nullSafeCriteria));
+                || recipe.Source.SafeToLower().SafeContains(nullSafeCriteria))
+                .OrderBy(r=>r.Name);
         }
 
     }
