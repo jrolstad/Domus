@@ -115,17 +115,5 @@ namespace Domus.Test.Providers
             // Assert
             simpleDB.AssertWasCalled(db => db.Delete(new[] { recipeId }));
         }
-
-        [Test]
-        public void CahcheingTest()
-        {
-            var client = new Enyim.Caching.MemcachedClient();
-            
-            client.Store(StoreMode.Set, "testValue", 5);
-
-            var value = client.Get<int>("testValue");
-
-            Assert.That(value,Is.EqualTo(5));
-        }
     }
 }
