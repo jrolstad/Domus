@@ -12,6 +12,8 @@ namespace Domus.Web.UI
     {
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
+          
+
             filters.Add(new HandleErrorAttribute());
             filters.Add(new HandleErrorAndLogAttribute());
         }
@@ -23,7 +25,7 @@ namespace Domus.Web.UI
             routes.MapRoute(
                 "Default", // Route name
                 "{controller}/{action}/{id}", // URL with parameters
-                new { controller = "Home", action = "Index", id = UrlParameter.Optional } // Parameter defaults
+                new { controller = "Recipe", action = "Index", id = UrlParameter.Optional } // Parameter defaults
             );
 
 

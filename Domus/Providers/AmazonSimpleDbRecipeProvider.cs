@@ -97,5 +97,13 @@ namespace Domus.Providers
             _provider.Delete(new[]{identifier});
             _cache.Remove(recipeCachKey);
         }
+
+        /// <summary>
+        /// Removes items from the cache
+        /// </summary>
+        public void Refresh()
+        {
+            _cache.Remove(recipeCachKey);
+        }
     }
 }

@@ -7,6 +7,7 @@ using Domus.Entities;
 using Domus.Providers;
 using Domus.Web.UI.Models.Recipes;
 using Rolstad.Extensions;
+using log4net;
 
 namespace Domus.Web.UI.Controllers
 {
@@ -15,6 +16,11 @@ namespace Domus.Web.UI.Controllers
     /// </summary>
     public class RecipeController : Controller
     {
+        /// <summary>
+        /// Used for logging messages
+        /// </summary>
+        private static readonly ILog Logger = LogManager.GetLogger(typeof (RecipeController));
+
         private readonly IDataProvider<Recipe, string> _recipeDataProvider;
         private readonly IDataProvider<Category, string> _categoryDataProvider;
         private readonly IAdapter<Recipe, RecipeViewModel> _recipeAdapter;
@@ -50,6 +56,8 @@ namespace Domus.Web.UI.Controllers
         /// <returns></returns>
         public ViewResult Index(string SearchText)
         {
+            if(Logger.IsInfoEnabled) Logger.InfoFormat("Executing search for '{0}'",SearchText ?? "null");
+
             // Categories
             var categories = _categoryDataProvider.Get();
             var categoryViewModels = _categoryAdapter.Convert(categories).OrderBy(c=>c.Description).ToArray();
@@ -60,6 +68,7 @@ namespace Domus.Web.UI.Controllers
 
             // Message
             var message = SearchText == null ? "Welcome" : "{0} recipes found".StringFormat(recipeViewModel.Length);
+            if (Logger.IsInfoEnabled) Logger.InfoFormat("Message shown: '{0}'", message);
 
             // Create the view model
             var model = new RecipeIndexViewModel
@@ -80,6 +89,8 @@ namespace Domus.Web.UI.Controllers
         /// <returns></returns>
         public ViewResult Detail(string recipeId)
         {
+            if(Logger.IsInfoEnabled) Logger.InfoFormat("Viewing details for recipe '{0}'",recipeId);
+
             // Get the recipe to show
             var recipeModel = GetSelectedRecipeViewModel(recipeId);
 
@@ -95,6 +106,8 @@ namespace Domus.Web.UI.Controllers
         /// <returns></returns>
         public ViewResult Edit(string recipeId, bool isNew=false)
         {
+            if (Logger.IsInfoEnabled) Logger.InfoFormat("Editing details for recipe '{0}'", recipeId);
+
             // Obtain either a new recipe or get the existing one
             var recipeModel = isNew ? this.GetNewRecipeViewModel(recipeId) : GetSelectedRecipeViewModel(recipeId);
 
@@ -121,6 +134,8 @@ namespace Domus.Web.UI.Controllers
                 return View("Edit", selectedRecipe);
             }
 
+            if(Logger.IsInfoEnabled) Logger.InfoFormat("Saving changes to recipe '{0}'",selectedRecipe.Recipe.RecipeId);
+
             var recipe = _recipeViewModelAdapter.Convert(selectedRecipe.Recipe);
             _recipeDataProvider.Save(recipe);
 
@@ -133,7 +148,21 @@ namespace Domus.Web.UI.Controllers
         /// <returns></returns>
         public RedirectToRouteResult Create()
         {
+            if (Logger.IsInfoEnabled) Logger.Info("Creating a new recipe");
+
             return RedirectToAction("Edit", new { recipeId = Guid.NewGuid().ToString(), isNew = true});
+        }
+
+        /// <summary>
+        /// Forces a refresh of cached data
+        /// </summary>
+        /// <returns></returns>
+        public RedirectToRouteResult Refresh()
+        {
+            if (Logger.IsInfoEnabled) Logger.Info("Refreshing recipes");
+
+            _recipeDataProvider.Refresh();
+            return RedirectToAction("Index");
         }
 
         /// <summary>

@@ -89,5 +89,10 @@ namespace Domus.Providers
         {
             throw new NotImplementedException();
         }
+
+        public void Refresh()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

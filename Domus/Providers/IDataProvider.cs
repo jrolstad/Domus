@@ -41,6 +41,11 @@ namespace Domus.Providers
         /// </summary>
         /// <param name="identifier"></param>
         void Delete(I identifier);
+
+        /// <summary>
+        /// Refreshes the data
+        /// </summary>
+        void Refresh();
     }
 }
 
