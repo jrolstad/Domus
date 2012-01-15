@@ -64,7 +64,7 @@ namespace Domus.Web.UI.Controllers
 
             // Recipes
             var recipes = SearchText == null ? new Recipe[0] : ExecuteSearch(SearchText);
-            var recipeViewModel = _recipeAdapter.Convert(recipes).ToArray();
+            var recipeViewModel = _recipeAdapter.Convert(recipes).OrderBy(r=>r.Name).ToArray();
 
             // Message
             var message = SearchText == null ? "Welcome" : "{0} recipes found".StringFormat(recipeViewModel.Length);

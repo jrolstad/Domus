@@ -145,11 +145,14 @@ textarea
     padding: 5px;
 }
 
-#recipeDetails {
+#recipeDetails 
+{
+     font-family: Verdana, Arial, sans-serif;
     width: 100%;
     text-align: left; 
     margin-left: 10px;
-    margin-top: 10px;   
+    margin-top: 10px;  
+    font-size: 1.1em; 
 }
 
 #recipeDetails td {
