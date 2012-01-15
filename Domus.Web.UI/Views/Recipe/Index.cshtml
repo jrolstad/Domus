@@ -8,8 +8,21 @@
 <div id="recipeSearch">
 @using (@Html.BeginForm("Index", "Recipe"))
 {
-    @Html.TextBoxFor(m=>m.SearchText)
-    <input id="searchButton" type="submit" value="Search"/>
+    <table width="99%">
+        <tr>
+            <td>
+                @Html.TextBoxFor(m=>m.SearchText)
+                <input id="searchButton" type="submit" value="Search"/>
+            </td>
+            
+            <td style="text-align: right;">
+                <a href="@Url.Action("Index")">
+               <img src="@Url.Content("~/Content/home_button.png")" alt="Home"/>
+               </a>
+              
+            </td>
+    </tr>
+    </table>
 }
 </div>
 <table id="container">
@@ -19,14 +32,14 @@
                 @Html.Partial("Categories", Model.Categories)
                 <br/>
                 <br/>
-                @Html.ActionLink("Add Recipe","Create",new{},new{id="createButton"})
+                @Html.ActionLink("Add Recipe", "Create", new { }, new { id = "createButton" })
             </div>
         </td>
         <td>
         <div id="recipeSearchResults">
             <p id="searchSummary">@Html.DisplayFor(model => model.SearchResultMessage)</p>
             <hr/>
-           @Html.Partial("SearchResults",Model.SearchResults)
+           @Html.Partial("SearchResults", Model.SearchResults)
         </div>
         </td>
     </tr>

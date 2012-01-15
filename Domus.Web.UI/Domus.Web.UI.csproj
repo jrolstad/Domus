@@ -120,6 +120,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\home_button.png" />
     <Content Include="Content\rating_star.png" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
