@@ -118,12 +118,10 @@ textarea
 
 #recipeSearchResults a {
     font-family: Verdana, Arial, sans-serif;
-    font-size: 1.1em;
+    font-size: 1.6em;
 }
 
 #recipeCategories {
-    font-family: Verdana, Arial, sans-serif;
-    font-size: 1.2em;
     background-color: whitesmoke;
     border-color: #dddddd;
     float: left;
@@ -131,9 +129,14 @@ textarea
     margin: 5px;
     width: 200px;
 }
-#recipeCategories a {
+#categoryNames a 
+{
+    font-family: Verdana, Arial, sans-serif;
+    font-size: 1.4em;
     text-decoration: none;
+    color: gray;  
 }
+
 #categoryColumn {
     width: 200px;
 }
