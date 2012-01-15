@@ -46,7 +46,7 @@
 
                         <div class="editor-label"> @Html.LabelFor(model => model.Recipe.Rating)</div>
                         <div class="editor-field">
-                           @Html.DropDownListFor(model => model.Recipe.Rating, new SelectList(new List<int>{1,2,3,4,5}))
+                            @Html.DropDownListFor(model => model.Recipe.Rating, new SelectList(new List<int>{1,2,3,4,5}))
                              @Html.ValidationMessageFor(model => model.Recipe.Rating)
                         </div>
 

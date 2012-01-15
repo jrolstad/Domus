@@ -40,11 +40,17 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Directus.SimpleDb.1.0.2\lib\net40\Directus.SimpleDb.dll</HintPath>
     </Reference>
+    <Reference Include="Enyim.Caching, Version=2.11.0.0, Culture=neutral, PublicKeyToken=cec98615db04012e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Membase.2.14\lib\net35\Enyim.Caching.dll</HintPath>
+    </Reference>
     <Reference Include="FizzWare.NBuilder">
       <HintPath>..\packages\NBuilder.3.0.1.1\lib\FizzWare.NBuilder.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
       <HintPath>..\packages\log4net.1.2.10\lib\2.0\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Membase">
+      <HintPath>..\packages\Membase.2.14\lib\net35\Membase.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.5.10.11092\lib\nunit.framework.dll</HintPath>
@@ -77,6 +83,7 @@
     <Compile Include="Providers\StaticCategoryDataProviderTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
