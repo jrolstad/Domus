@@ -57,10 +57,17 @@
                 </div>
                 
                 <div class="display-field">Servings:&nbsp;@Html.DisplayFor(model => model.Recipe.Servings)</div>
-
-                <div class="display-label">Ingredients</div>
-                <div class="display-field">@Html.Raw((Model.Recipe.Ingredients ?? "").Replace(Environment.NewLine, "<br/>"))</div>
-
+                <table width="100%">
+                    <tr>
+                        <td style="vertical-align: top;">
+                            <div class="display-label">Ingredients</div>
+                            <div class="display-field">@Html.Raw((Model.Recipe.Ingredients ?? "").Replace(Environment.NewLine, "<br/>"))</div>
+                        </td>
+                        <td style="vertical-align: top; text-align: center;">
+                           @Html.Partial("ImageDisplay", Model.Recipe.Image);
+                        </td>
+                    </tr>
+                </table>
                 <div class="display-label">Directions</div>
     
                 <div class="display-field">@Html.Raw((Model.Recipe.Directions ?? "").Replace(Environment.NewLine, "<br/>"))</div>

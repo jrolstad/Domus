@@ -1,6 +1,7 @@
 ﻿
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 
 namespace Domus.Web.UI.Models.Recipes
 {
@@ -48,5 +49,11 @@ namespace Domus.Web.UI.Models.Recipes
         /// Where this recipe came from
         /// </summary>
         public virtual string Source { get; set; }
+
+        /// <summary>
+        /// Image for the recipe
+        /// </summary>
+        public ImageViewModel Image { get; set; }
+
     }
 }

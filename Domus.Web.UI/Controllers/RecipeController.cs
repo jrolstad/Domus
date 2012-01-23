@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Web.Helpers;
 using System.Web.Mvc;
+using Amazon.S3.Model;
 using Domus.Adapters;
 using Domus.Entities;
 using Domus.Providers;
@@ -176,7 +179,7 @@ namespace Domus.Web.UI.Controllers
             var categoryViewModels = _categoryAdapter.Convert(categories).OrderBy(c => c.Description).ToArray();
 
             // Create a new recipe
-            var recipeModel = new RecipeViewModel { RecipeId = recipeId };
+            var recipeModel = new RecipeViewModel { RecipeId = recipeId, Image = new ImageViewModel{ImageUrl = "",RecipeId = recipeId}};
 
             return new SelectedRecipeViewModel
             {
@@ -199,6 +202,7 @@ namespace Domus.Web.UI.Controllers
             // Obtain the given recipe
             var recipe = _recipeDataProvider.Get(recipeId);
             var recipeModel = recipe != null ?_recipeAdapter.Convert(recipe) : new RecipeViewModel {RecipeId = recipeId};
+            recipeModel.Image = new ImageViewModel {ImageUrl = "", RecipeId = recipeId};
 
             return new SelectedRecipeViewModel
                        {
@@ -235,5 +239,32 @@ namespace Domus.Web.UI.Controllers
                 .OrderBy(r=>r.Name);
         }
 
+        [HttpPost]
+        public ActionResult AddImage(ImageViewModel imageViewModel)
+        {
+            var image = WebImage.GetImageFromRequest();
+
+            if (image == null)
+                RedirectToAction("Detail", new {recipeId = imageViewModel.RecipeId});
+
+            
+            string filePath = Path.GetFullPath(Path.Combine("..", image.FileName));
+            image.Save(filePath:filePath);
+
+            var s3 = new Amazon.S3.AmazonS3Client(Properties.Settings.Default.AmazonAccessKey,
+                                                  Properties.Settings.Default.AmazonSecretKey);
+            var request = new PutObjectRequest().WithAutoCloseStream(true)
+                .WithBucketName("DomusRecipeImages")
+                .WithCannedACL(S3CannedACL.PublicRead)
+                .WithFilePath(filePath);
+               
+            var response = s3.PutObject(request);
+            return RedirectToAction("Detail", new { recipeId = imageViewModel.RecipeId });
+        }
+
+        public ActionResult ImageEdit(ImageViewModel imageViewModel)
+        {
+            return View(imageViewModel);
+        }
     }
 }

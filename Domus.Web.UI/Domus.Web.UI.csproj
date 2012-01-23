@@ -52,6 +52,9 @@
     <Reference Include="Membase">
       <HintPath>..\packages\Membase.2.14\lib\net35\Membase.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Web.Helpers">
+      <HintPath>..\packages\microsoft-web-helpers.1.15\lib\Microsoft.Web.Helpers.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
@@ -109,6 +112,7 @@
     <Compile Include="Infrastructure\DependencyInjection\Registrations\AdapterRegistration.cs" />
     <Compile Include="Infrastructure\DependencyInjection\Registrations\DataProviderRegistration.cs" />
     <Compile Include="Models\Recipes\CategoryViewModel.cs" />
+    <Compile Include="Models\Recipes\ImageViewModel.cs" />
     <Compile Include="Models\Recipes\RecipeIndexViewModel.cs" />
     <Compile Include="Models\Recipes\RecipeViewModel.cs" />
     <Compile Include="Models\Recipes\SelectedRecipeViewModel.cs" />
@@ -121,9 +125,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\home_button.png" />
+    <Content Include="Content\Jcrop.gif" />
+    <Content Include="Content\jquery.Jcrop.css" />
     <Content Include="Content\rating_star.png" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Release Notes - Microsoft.Web.Helpers.txt" />
+    <Content Include="Scripts\jquery.Jcrop.min.js" />
     <Content Include="Scripts\RecipeIndex.js" />
     <Content Include="Scripts\RecipeDetails.js" />
     <Content Include="Scripts\RecipeEdit.js" />
@@ -163,6 +171,8 @@
     <Content Include="Views\Recipe\Categories.cshtml" />
     <Content Include="Views\Recipe\Detail.cshtml" />
     <Content Include="Views\Recipe\Edit.cshtml" />
+    <Content Include="Views\Recipe\ImageDisplay.cshtml" />
+    <Content Include="Views\Recipe\ImageEdit.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
