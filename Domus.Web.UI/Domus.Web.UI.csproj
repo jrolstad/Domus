@@ -112,7 +112,7 @@
     <Compile Include="Infrastructure\DependencyInjection\Registrations\AdapterRegistration.cs" />
     <Compile Include="Infrastructure\DependencyInjection\Registrations\DataProviderRegistration.cs" />
     <Compile Include="Models\Recipes\CategoryViewModel.cs" />
-    <Compile Include="Models\Recipes\ImageViewModel.cs" />
+    <Compile Include="Models\Recipes\RecipeImageViewModel.cs" />
     <Compile Include="Models\Recipes\RecipeIndexViewModel.cs" />
     <Compile Include="Models\Recipes\RecipeViewModel.cs" />
     <Compile Include="Models\Recipes\SelectedRecipeViewModel.cs" />

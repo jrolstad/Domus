@@ -56,5 +56,10 @@ namespace Domus.Entities
         /// If this recipe is deleted or not
         /// </summary>
         public virtual bool IsDeleted { get; set; }
+
+        /// <summary>
+        /// Url where the recipe's image is at
+        /// </summary>
+        public string ImageUrl { get; set; }
     }
 }

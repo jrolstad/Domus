@@ -51,9 +51,8 @@ namespace Domus.Web.UI.Models.Recipes
         public virtual string Source { get; set; }
 
         /// <summary>
-        /// Image for the recipe
+        /// Url for this recipe's image
         /// </summary>
-        public ImageViewModel Image { get; set; }
-
+        public string ImageUrl { get; set; }
     }
 }

@@ -179,7 +179,7 @@ namespace Domus.Web.UI.Controllers
             var categoryViewModels = _categoryAdapter.Convert(categories).OrderBy(c => c.Description).ToArray();
 
             // Create a new recipe
-            var recipeModel = new RecipeViewModel { RecipeId = recipeId, Image = new ImageViewModel{ImageUrl = "",RecipeId = recipeId}};
+            var recipeModel = new RecipeViewModel { RecipeId = recipeId};
 
             return new SelectedRecipeViewModel
             {
@@ -202,7 +202,6 @@ namespace Domus.Web.UI.Controllers
             // Obtain the given recipe
             var recipe = _recipeDataProvider.Get(recipeId);
             var recipeModel = recipe != null ?_recipeAdapter.Convert(recipe) : new RecipeViewModel {RecipeId = recipeId};
-            recipeModel.Image = new ImageViewModel {ImageUrl = "", RecipeId = recipeId};
 
             return new SelectedRecipeViewModel
                        {
@@ -240,16 +239,18 @@ namespace Domus.Web.UI.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddImage(ImageViewModel imageViewModel)
+        public ActionResult AddImage(RecipeImageViewModel recipeViewModel)
         {
             var image = WebImage.GetImageFromRequest();
 
             if (image == null)
-                RedirectToAction("Detail", new {recipeId = imageViewModel.RecipeId});
+                RedirectToAction("Detail", new {recipeId = recipeViewModel.RecipeId});
 
-            
+            if (image.Width > 250)
+                image.Resize(250, 250);
+
             string filePath = Path.GetFullPath(Path.Combine("..", image.FileName));
-            image.Save(filePath:filePath);
+            image.Save(filePath);
 
             var s3 = new Amazon.S3.AmazonS3Client(Properties.Settings.Default.AmazonAccessKey,
                                                   Properties.Settings.Default.AmazonSecretKey);
@@ -258,13 +259,18 @@ namespace Domus.Web.UI.Controllers
                 .WithCannedACL(S3CannedACL.PublicRead)
                 .WithFilePath(filePath);
                
-            var response = s3.PutObject(request);
-            return RedirectToAction("Detail", new { recipeId = imageViewModel.RecipeId });
+            s3.PutObject(request);
+
+            var recipe = _recipeDataProvider.Get(recipeViewModel.RecipeId);
+            recipe.ImageUrl = "http://s3.amazonaws.com/DomusRecipeImages/{0}".StringFormat(image.FileName);
+            _recipeDataProvider.Save(recipe);
+
+            return RedirectToAction("Detail", new { recipeId = recipeViewModel.RecipeId });
         }
 
-        public ActionResult ImageEdit(ImageViewModel imageViewModel)
+        public ActionResult ImageEdit(string recipeId)
         {
-            return View(imageViewModel);
+            return View(new RecipeImageViewModel{RecipeId = recipeId});
         }
     }
 }
