@@ -64,7 +64,7 @@
                             <div class="display-field">@Html.Raw((Model.Recipe.Ingredients ?? "").Replace(Environment.NewLine, "<br/>"))</div>
                         </td>
                         <td style="vertical-align: top; text-align: center;">
-                           @Html.Partial("ImageDisplay", Model.Recipe);
+                           @Html.Partial("ImageDisplay", Model.Recipe)
                         </td>
                     </tr>
                 </table>

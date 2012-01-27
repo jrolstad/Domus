@@ -246,31 +246,69 @@ namespace Domus.Web.UI.Controllers
             if (image == null)
                 RedirectToAction("Detail", new {recipeId = recipeViewModel.RecipeId});
 
-            if (image.Width > 250)
-                image.Resize(250, 250);
+            //if (image.Width > 250)
+            //    image.Resize(250, 250);
 
-            string filePath = Path.GetFullPath(Path.Combine("..", image.FileName));
-            image.Save(filePath);
+            var filename = Path.GetFileName(image.FileName);
+            image.Save(Path.Combine("../Temp", filename));
+            filename = Path.Combine("~/Temp", filename);
 
-            var s3 = new Amazon.S3.AmazonS3Client(Properties.Settings.Default.AmazonAccessKey,
-                                                  Properties.Settings.Default.AmazonSecretKey);
-            var request = new PutObjectRequest().WithAutoCloseStream(true)
-                .WithBucketName("DomusRecipeImages")
-                .WithCannedACL(S3CannedACL.PublicRead)
-                .WithFilePath(filePath);
+            //var s3 = new Amazon.S3.AmazonS3Client(Properties.Settings.Default.AmazonAccessKey,
+            //                                      Properties.Settings.Default.AmazonSecretKey);
+            //var request = new PutObjectRequest().WithAutoCloseStream(true)
+            //    .WithBucketName("DomusRecipeImages")
+            //    .WithCannedACL(S3CannedACL.PublicRead)
+            //    .WithFilePath(filePath);
                
-            s3.PutObject(request);
+            //s3.PutObject(request);
 
-            var recipe = _recipeDataProvider.Get(recipeViewModel.RecipeId);
-            recipe.ImageUrl = "http://s3.amazonaws.com/DomusRecipeImages/{0}".StringFormat(image.FileName);
-            _recipeDataProvider.Save(recipe);
+            //var recipe = _recipeDataProvider.Get(recipeViewModel.RecipeId);
+            //recipe.ImageUrl = "http://s3.amazonaws.com/DomusRecipeImages/{0}".StringFormat(image.FileName);
+            //_recipeDataProvider.Save(recipe);
+            
 
-            return RedirectToAction("Detail", new { recipeId = recipeViewModel.RecipeId });
+            recipeViewModel.Width = image.Width;
+            recipeViewModel.Height = image.Height;
+            recipeViewModel.Top = image.Height*0.1;
+            recipeViewModel.Left = image.Width*0.9;
+            recipeViewModel.Right = image.Width*0.9;
+            recipeViewModel.Bottom = image.Height*0.9;
+
+            recipeViewModel.ImageUrl = Url.Content(filename);
+            return View("ImageCrop", recipeViewModel);
         }
 
         public ActionResult ImageEdit(string recipeId)
         {
-            return View(new RecipeImageViewModel{RecipeId = recipeId});
+            var recipeImageViewModel = new RecipeImageViewModel
+                                           {
+                                               RecipeId = recipeId,
+                                               
+                                           };
+            return View(recipeImageViewModel);
+        }
+
+        public ActionResult SaveCrop(RecipeImageViewModel editor)
+        {
+            var image = new WebImage("~" + editor.ImageUrl);
+
+            var height = image.Height;
+            var width = image.Width;
+ 
+ 
+            image.Crop((int)editor.Top, (int)editor.Left, (int)(height - editor.Bottom), (int)(width - editor.Right));
+
+            var originalFile = editor.ImageUrl;
+            editor.ImageUrl = Url.Content("~/Temp/" + Path.GetFileName(image.FileName));
+            image.Resize(100, 100, true, false);
+            image.Save("../" + Path.GetFileName(image.FileName));
+            System.IO.File.Delete(Server.MapPath(originalFile));
+
+            var recipe = _recipeDataProvider.Get(editor.RecipeId);
+            recipe.ImageUrl = Url.Content("~/{0}".StringFormat(Path.GetFileName(image.FileName)));
+            _recipeDataProvider.Save(recipe);
+
+            return RedirectToAction("Detail", new {recipeId = editor.RecipeId});
         }
     }
 }
