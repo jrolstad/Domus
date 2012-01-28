@@ -10,6 +10,7 @@ using Domus.Entities;
 using Domus.Providers;
 using Domus.Web.UI.Models.Recipes;
 using Rolstad.Extensions;
+using Rolstad.MVC.Errors;
 using log4net;
 
 namespace Domus.Web.UI.Controllers
@@ -17,6 +18,7 @@ namespace Domus.Web.UI.Controllers
     /// <summary>
     /// Controller for recipe data management
     /// </summary>
+    [HandleErrorAndLog]
     public class RecipeController : Controller
     {
         /// <summary>
@@ -259,7 +261,8 @@ namespace Domus.Web.UI.Controllers
 
             // Save a tempory version
             var filename = Path.GetFileName(image.FileName);
-            image.Save(Path.Combine("../Temp", filename));
+            
+            image.Save(Server.MapPath("~/Temp/{0}".StringFormat(filename)));
             var tempImageUrl = Path.Combine("~/Temp", filename);
 
             // Update the view model for cropping
