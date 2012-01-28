@@ -238,35 +238,31 @@ namespace Domus.Web.UI.Controllers
                 .OrderBy(r=>r.Name);
         }
 
+        /// <summary>
+        /// Given a recipe, allows an image to be uploaded for it and then cropped
+        /// </summary>
+        /// <param name="recipeViewModel"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult AddImage(RecipeImageViewModel recipeViewModel)
         {
+            // Get the image
             var image = WebImage.GetImageFromRequest();
 
+            // If there isn't one, re-show the details
             if (image == null)
                 RedirectToAction("Detail", new {recipeId = recipeViewModel.RecipeId});
 
-            //if (image.Width > 250)
-            //    image.Resize(250, 250);
+            // Resize the image to a manageable size
+            if (image.Width > 450)
+                image.Resize(450, 450);
 
+            // Save a tempory version
             var filename = Path.GetFileName(image.FileName);
             image.Save(Path.Combine("../Temp", filename));
-            filename = Path.Combine("~/Temp", filename);
+            var tempImageUrl = Path.Combine("~/Temp", filename);
 
-            //var s3 = new Amazon.S3.AmazonS3Client(Properties.Settings.Default.AmazonAccessKey,
-            //                                      Properties.Settings.Default.AmazonSecretKey);
-            //var request = new PutObjectRequest().WithAutoCloseStream(true)
-            //    .WithBucketName("DomusRecipeImages")
-            //    .WithCannedACL(S3CannedACL.PublicRead)
-            //    .WithFilePath(filePath);
-               
-            //s3.PutObject(request);
-
-            //var recipe = _recipeDataProvider.Get(recipeViewModel.RecipeId);
-            //recipe.ImageUrl = "http://s3.amazonaws.com/DomusRecipeImages/{0}".StringFormat(image.FileName);
-            //_recipeDataProvider.Save(recipe);
-            
-
+            // Update the view model for cropping
             recipeViewModel.Width = image.Width;
             recipeViewModel.Height = image.Height;
             recipeViewModel.Top = image.Height*0.1;
@@ -274,15 +270,23 @@ namespace Domus.Web.UI.Controllers
             recipeViewModel.Right = image.Width*0.9;
             recipeViewModel.Bottom = image.Height*0.9;
 
-            recipeViewModel.ImageUrl = Url.Content(filename);
+            recipeViewModel.ImageUrl = Url.Content(tempImageUrl);
+
+            // Once saved, send so we can crop the image
             return View("ImageCrop", recipeViewModel);
         }
 
-        public ActionResult ImageEdit(string recipeId)
+        /// <summary>
+        /// Given a recipe, facilitate editing the related image
+        /// </summary>
+        /// <param name="recipeId"></param>
+        /// <returns></returns>
+        public ActionResult ImageEdit(string recipeId, string name)
         {
             var recipeImageViewModel = new RecipeImageViewModel
                                            {
                                                RecipeId = recipeId,
+                                               Name = name
                                                
                                            };
             return View(recipeImageViewModel);
@@ -290,24 +294,38 @@ namespace Domus.Web.UI.Controllers
 
         public ActionResult SaveCrop(RecipeImageViewModel editor)
         {
-            var image = new WebImage("~" + editor.ImageUrl);
+            // Get the temp image
+            var image = new WebImage("~/{0}".StringFormat(editor.ImageUrl));
+            var fullFilePath = Server.MapPath("~/Temp/" + Path.GetFileName(image.FileName));
 
+            // Crop the image with the specified dimensions
             var height = image.Height;
             var width = image.Width;
- 
- 
-            image.Crop((int)editor.Top, (int)editor.Left, (int)(height - editor.Bottom), (int)(width - editor.Right));
 
-            var originalFile = editor.ImageUrl;
-            editor.ImageUrl = Url.Content("~/Temp/" + Path.GetFileName(image.FileName));
-            image.Resize(100, 100, true, false);
-            image.Save("../" + Path.GetFileName(image.FileName));
-            System.IO.File.Delete(Server.MapPath(originalFile));
+            image.Crop((int)editor.Top, (int)editor.Left, (int)(height - editor.Bottom), (int)(width - editor.Right));
+            image.Save();
+
+            if (image.Width > 250)
+                image.Resize(250, 250);
+
+            // Save the image
+            image.Save();
+            var s3 = new Amazon.S3.AmazonS3Client(Properties.Settings.Default.AmazonAccessKey,
+                                                  Properties.Settings.Default.AmazonSecretKey);
+            var request = new PutObjectRequest().WithAutoCloseStream(true)
+                .WithBucketName("DomusRecipeImages")
+                .WithCannedACL(S3CannedACL.PublicRead)
+                .WithFilePath(fullFilePath);
+
+            s3.PutObject(request);
+
 
             var recipe = _recipeDataProvider.Get(editor.RecipeId);
-            recipe.ImageUrl = Url.Content("~/{0}".StringFormat(Path.GetFileName(image.FileName)));
+            recipe.ImageUrl = "http://s3.amazonaws.com/DomusRecipeImages/{0}".StringFormat(Path.GetFileName(image.FileName));
             _recipeDataProvider.Save(recipe);
 
+
+            System.IO.File.Delete(fullFilePath);
             return RedirectToAction("Detail", new {recipeId = editor.RecipeId});
         }
     }
