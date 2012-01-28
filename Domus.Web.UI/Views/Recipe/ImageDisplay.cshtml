@@ -1,0 +1,13 @@
+﻿@model Domus.Web.UI.Models.Recipes.RecipeViewModel
+
+
+@if(!string.IsNullOrWhiteSpace(Model.ImageUrl))
+{
+    <img src="@Model.ImageUrl" alt="Image"/>
+    <br/>
+    @Html.ActionLink("Change Picture", "ImageEdit", new { recipeId = Model.RecipeId, name=Model.Name })
+}
+else
+{
+    @Html.ActionLink("Add Picture", "ImageEdit", new { recipeId = Model.RecipeId, name = Model.Name })
+}
