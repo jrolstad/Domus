@@ -251,7 +251,7 @@ namespace Domus.Web.UI.Controllers
 
             // If there isn't one, re-show the details
             if (image == null)
-                RedirectToAction("Detail", new {recipeId = recipeViewModel.RecipeId});
+                return RedirectToAction("Detail", new {recipeId = recipeViewModel.RecipeId});
 
             // Resize the image to a manageable size
             if (image.Width > 450)
@@ -309,23 +309,27 @@ namespace Domus.Web.UI.Controllers
                 image.Resize(250, 250);
 
             // Save the image
-            image.Save();
+            var recipeImageFilePath = Path.Combine(Path.GetDirectoryName(fullFilePath),
+                                                   "{0}.{1}".StringFormat(editor.RecipeId,
+                                                                          Path.GetExtension(fullFilePath)));
+            image.Save(recipeImageFilePath);
             var s3 = new Amazon.S3.AmazonS3Client(Properties.Settings.Default.AmazonAccessKey,
                                                   Properties.Settings.Default.AmazonSecretKey);
             var request = new PutObjectRequest().WithAutoCloseStream(true)
                 .WithBucketName("DomusRecipeImages")
                 .WithCannedACL(S3CannedACL.PublicRead)
-                .WithFilePath(fullFilePath);
+                .WithFilePath(recipeImageFilePath);
 
             s3.PutObject(request);
 
 
             var recipe = _recipeDataProvider.Get(editor.RecipeId);
-            recipe.ImageUrl = "http://s3.amazonaws.com/DomusRecipeImages/{0}".StringFormat(Path.GetFileName(image.FileName));
+            recipe.ImageUrl = "http://s3.amazonaws.com/DomusRecipeImages/{0}".StringFormat(Path.GetFileName(recipeImageFilePath));
             _recipeDataProvider.Save(recipe);
 
 
             System.IO.File.Delete(fullFilePath);
+            System.IO.File.Delete(recipeImageFilePath);
             return RedirectToAction("Detail", new {recipeId = editor.RecipeId});
         }
     }

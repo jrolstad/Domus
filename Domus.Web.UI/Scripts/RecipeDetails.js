@@ -3,4 +3,8 @@
 
     $("#searchButton").button();
     $("#createButton").button();
+
+    $("#uploadButton").button();
+    $("#fileLoad").button();
+    $("#cancelButton").button();
 });
