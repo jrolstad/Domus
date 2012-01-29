@@ -262,7 +262,7 @@ namespace Domus.Web.UI.Controllers
 
             // Save a tempory version
             var filename = Path.GetFileName(image.FileName);
-            var tempDirectory = Server.MapPath("~/Temp");
+            var tempDirectory = Server.MapPath("~/");
             if (!Directory.Exists(tempDirectory))
                 Directory.CreateDirectory(tempDirectory);
 
@@ -271,7 +271,7 @@ namespace Domus.Web.UI.Controllers
             Directory.SetAccessControl(tempDirectory,security);
 
             image.Save(Path.Combine(tempDirectory,filename));
-            var tempImageUrl = Path.Combine("~/Temp", filename);
+            var tempImageUrl = Path.Combine("~/", filename);
 
             // Update the view model for cropping
             recipeViewModel.Width = image.Width;
@@ -307,7 +307,7 @@ namespace Domus.Web.UI.Controllers
         {
             // Get the temp image
             var image = new WebImage("~/{0}".StringFormat(editor.ImageUrl));
-            var fullFilePath = Server.MapPath("~/Temp/" + Path.GetFileName(image.FileName));
+            var fullFilePath = Server.MapPath("~/" + Path.GetFileName(image.FileName));
 
             // Crop the image with the specified dimensions
             var height = image.Height;
