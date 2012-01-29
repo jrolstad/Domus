@@ -24,24 +24,32 @@ namespace Domus.Web.UI.Controllers
 
         public ContentResult Logs()
         {
-            var logs = LogManager
-                .GetRepository()
-                .GetAppenders()
-                .Where(a => a is FileAppender)
-                .Cast<FileAppender>()
-                .Select(a => a.File);
+            try
+            {
+                var logs = LogManager
+                    .GetRepository()
+                    .GetAppenders()
+                    .Where(a => a is FileAppender)
+                    .Cast<FileAppender>()
+                    .Select(a => a.File);
 
-            var logbuilder = new StringBuilder();
-            logs.Each(l=>
-                          {
-                              var newFilename = Guid.NewGuid().ToString();
-                              System.IO.File.Copy(l, newFilename);
+                var logbuilder = new StringBuilder();
+                logs.Each(l =>
+                              {
+                                  var newFilename = Guid.NewGuid().ToString();
+                                  System.IO.File.Copy(l, newFilename);
+                                  
+                                  var file = System.IO.File.ReadAllLines(newFilename);
+                                  file.Each(f => logbuilder.AppendLine(f));
+                              });
 
-                              var file = System.IO.File.ReadAllLines(newFilename);
-                              file.Each(f => logbuilder.AppendLine(f));
-                          });
-
-            return Content(logbuilder.ToString());
+                return Content(logbuilder.ToString());
+            }
+            catch(Exception ex)
+            {
+                var message = "{0}\r\n{1}".StringFormat(ex.Message, ex.StackTrace);
+                return Content(message);
+            }
         }
 
     }
