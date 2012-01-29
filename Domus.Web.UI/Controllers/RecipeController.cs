@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.AccessControl;
 using System.Web.Helpers;
 using System.Web.Mvc;
 using Amazon.S3.Model;
@@ -264,6 +265,10 @@ namespace Domus.Web.UI.Controllers
             var tempDirectory = Server.MapPath("~/Temp");
             if (!Directory.Exists(tempDirectory))
                 Directory.CreateDirectory(tempDirectory);
+
+            var security = new DirectorySecurity(tempDirectory, AccessControlSections.All);
+            security.AddAccessRule(new FileSystemAccessRule("machine\\Users", FileSystemRights.FullControl, AccessControlType.Allow));
+            Directory.SetAccessControl(tempDirectory,security);
 
             image.Save(Path.Combine(tempDirectory,filename));
             var tempImageUrl = Path.Combine("~/Temp", filename);
