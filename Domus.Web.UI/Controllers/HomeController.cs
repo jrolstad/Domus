@@ -37,7 +37,8 @@ namespace Domus.Web.UI.Controllers
                 logs.Each(l =>
                               {
                                   var newFilename = Guid.NewGuid().ToString();
-                                  System.IO.File.Copy(l, newFilename);
+                                  var newFilePath = System.Web.Hosting.HostingEnvironment.MapPath(newFilename);
+                                  System.IO.File.Copy(l, newFilePath);
                                   
                                   var file = System.IO.File.ReadAllLines(newFilename);
                                   file.Each(f => logbuilder.AppendLine(f));

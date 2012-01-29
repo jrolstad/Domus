@@ -262,7 +262,7 @@ namespace Domus.Web.UI.Controllers
 
             // Save a tempory version
             var filename = Path.GetFileName(image.FileName);
-            var tempDirectory = Server.MapPath("~/");
+            var tempDirectory = System.Web.Hosting.HostingEnvironment.MapPath("~/");
 
             image.Save(Path.Combine(tempDirectory,filename));
             var tempImageUrl = Path.Combine("~/", filename);
@@ -301,7 +301,7 @@ namespace Domus.Web.UI.Controllers
         {
             // Get the temp image
             var image = new WebImage("~/{0}".StringFormat(editor.ImageUrl));
-            var fullFilePath = Server.MapPath("~/" + Path.GetFileName(image.FileName));
+            var fullFilePath = System.Web.Hosting.HostingEnvironment.MapPath("~/" + Path.GetFileName(image.FileName));
 
             // Crop the image with the specified dimensions
             var height = image.Height;
