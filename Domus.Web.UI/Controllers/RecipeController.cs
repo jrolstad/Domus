@@ -259,13 +259,13 @@ namespace Domus.Web.UI.Controllers
             // Resize the image to a manageable size
             if (image.Width > 450)
                 image.Resize(450, 450);
-            throw new Exception(image.FileName);
+
             // Save a tempory version
             var filename = Path.GetFileName(image.FileName);
-            var tempDirectory = System.Web.Hosting.HostingEnvironment.MapPath("~/");
+            var tempDirectory = Path.GetTempPath();
 
             image.Save(Path.Combine(tempDirectory,filename));
-            var tempImageUrl = Path.Combine("~/", filename);
+            var tempImageUrl = Url.Content(Path.Combine(tempDirectory, filename));
 
             // Update the view model for cropping
             recipeViewModel.Width = image.Width;
