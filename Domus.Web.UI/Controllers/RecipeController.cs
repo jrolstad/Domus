@@ -261,8 +261,11 @@ namespace Domus.Web.UI.Controllers
 
             // Save a tempory version
             var filename = Path.GetFileName(image.FileName);
-            
-            image.Save(Server.MapPath("~/Temp/{0}".StringFormat(filename)));
+            var tempDirectory = Server.MapPath("~/Temp");
+            if (!Directory.Exists(tempDirectory))
+                Directory.CreateDirectory(tempDirectory);
+
+            image.Save(Path.Combine(tempDirectory,filename));
             var tempImageUrl = Path.Combine("~/Temp", filename);
 
             // Update the view model for cropping
