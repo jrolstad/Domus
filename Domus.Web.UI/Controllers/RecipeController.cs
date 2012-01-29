@@ -263,12 +263,6 @@ namespace Domus.Web.UI.Controllers
             // Save a tempory version
             var filename = Path.GetFileName(image.FileName);
             var tempDirectory = Server.MapPath("~/");
-            if (!Directory.Exists(tempDirectory))
-                Directory.CreateDirectory(tempDirectory);
-
-            var security = new DirectorySecurity(tempDirectory, AccessControlSections.All);
-            security.AddAccessRule(new FileSystemAccessRule("machine\\Users", FileSystemRights.FullControl, AccessControlType.Allow));
-            Directory.SetAccessControl(tempDirectory,security);
 
             image.Save(Path.Combine(tempDirectory,filename));
             var tempImageUrl = Path.Combine("~/", filename);
