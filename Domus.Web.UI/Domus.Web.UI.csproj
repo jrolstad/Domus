@@ -124,6 +124,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\fail_whale.png" />
     <Content Include="Content\home_button.png" />
     <Content Include="Content\Jcrop.gif" />
     <Content Include="Content\jquery.Jcrop.css" />
