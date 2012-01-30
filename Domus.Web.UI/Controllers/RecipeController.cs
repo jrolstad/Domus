@@ -307,6 +307,11 @@ namespace Domus.Web.UI.Controllers
             return View(recipeImageViewModel);
         }
 
+        /// <summary>
+        /// Saves a cropped image to the given recipe
+        /// </summary>
+        /// <param name="viewModel">View model</param>
+        /// <returns></returns>
         [Authorize]
         public ActionResult SaveCrop(RecipeImageViewModel viewModel)
         {
@@ -335,8 +340,15 @@ namespace Domus.Web.UI.Controllers
             return RedirectToAction("Detail", new {recipeId = viewModel.RecipeId});
         }
 
+        /// <summary>
+        /// Given an image, crops it to the section defined in the view and then resizes if needed
+        /// </summary>
+        /// <param name="viewModel">ViewModel with crop selection</param>
+        /// <param name="image">Image to crop and resize</param>
+        /// <param name="imageSize">Size of the image</param>
         private static void CropImage(RecipeImageViewModel viewModel, WebImage image, int imageSize)
         {
+            // Crop the image
             var height = image.Height;
             var width = image.Width;
 
@@ -344,6 +356,7 @@ namespace Domus.Web.UI.Controllers
                        (int) (width - viewModel.Right));
             image.Save();
 
+            // Resize it
             if (image.Width > imageSize)
                 image.Resize(imageSize, imageSize);
         }

@@ -69,6 +69,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web.Helpers, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -79,8 +80,11 @@
     <Compile Include="Adapters\When_converting_a_set_of_items.cs" />
     <Compile Include="Adapters\When_converting_from_one_type_to_another_with_the_same_names.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Providers\AmazonS3FileProviderTests.cs" />
     <Compile Include="Providers\AmazonSimpleDbRecipeProviderTests.cs" />
+    <Compile Include="Providers\AmazonSimpleDbUserProviderTests.cs" />
     <Compile Include="Providers\StaticCategoryDataProviderTests.cs" />
+    <Compile Include="Providers\TempImageProviderTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
