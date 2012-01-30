@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Security.AccessControl;
 using System.Web.Helpers;
 using System.Web.Mvc;
-using Amazon.S3.Model;
 using Domus.Adapters;
 using Domus.Entities;
 using Domus.Providers;
@@ -32,6 +30,8 @@ namespace Domus.Web.UI.Controllers
         private readonly IAdapter<Recipe, RecipeViewModel> _recipeAdapter;
         private readonly IAdapter<RecipeViewModel, Recipe> _recipeViewModelAdapter;
         private readonly IAdapter<Category, CategoryViewModel> _categoryAdapter;
+        private readonly TempImageProvider _tempImageProvider;
+        private readonly AmazonS3FileProvider _amazonS3FileProvider;
 
         /// <summary>
         /// Constructor with all dependencies
@@ -41,11 +41,15 @@ namespace Domus.Web.UI.Controllers
         /// <param name="recipeAdapter">Adapter for converting from the recipe domain model to view model</param>
         /// <param name="recipeViewModelAdapter">Adapter for converting from the recipe view model to domain model</param>
         /// <param name="categoryAdapter">Adapter for converting from the category domain model to view model</param>
+        /// <param name="tempImageProvider">Provider for persisting temporary images to disk</param>
+        /// <param name="amazonS3FileProvider">Provider for persisting files to Amazon S3 </param>
         public RecipeController(IDataProvider<Recipe,string> recipeDataProvider,
                                 IDataProvider<Category,string> categoryDataProvider,
                                 IAdapter<Recipe,RecipeViewModel> recipeAdapter,
                                 IAdapter<RecipeViewModel,Recipe> recipeViewModelAdapter,
-                                IAdapter<Category,CategoryViewModel> categoryAdapter
+                                IAdapter<Category,CategoryViewModel> categoryAdapter,
+                                TempImageProvider tempImageProvider,
+                                AmazonS3FileProvider amazonS3FileProvider
             )
         {
             _recipeDataProvider = recipeDataProvider;
@@ -53,6 +57,8 @@ namespace Domus.Web.UI.Controllers
             _recipeAdapter = recipeAdapter;
             _recipeViewModelAdapter = recipeViewModelAdapter;
             _categoryAdapter = categoryAdapter;
+            _tempImageProvider = tempImageProvider;
+            _amazonS3FileProvider = amazonS3FileProvider;
         }
 
         /// <summary>
@@ -110,12 +116,13 @@ namespace Domus.Web.UI.Controllers
         /// <param name="recipeId">Recipe to show</param>
         /// <param name="isNew">If this is a new recipe or not</param>
         /// <returns></returns>
+        [Authorize]
         public ViewResult Edit(string recipeId, bool isNew=false)
         {
             if (Logger.IsInfoEnabled) Logger.InfoFormat("Editing details for recipe '{0}'", recipeId);
 
             // Obtain either a new recipe or get the existing one
-            var recipeModel = isNew ? this.GetNewRecipeViewModel(recipeId) : GetSelectedRecipeViewModel(recipeId);
+            var recipeModel = isNew ? GetNewRecipeViewModel(recipeId) : GetSelectedRecipeViewModel(recipeId);
 
             return View(recipeModel);
 
@@ -152,6 +159,7 @@ namespace Domus.Web.UI.Controllers
         /// Creates a new recipe and forwards for user input
         /// </summary>
         /// <returns></returns>
+        [Authorize]
         public RedirectToRouteResult Create()
         {
             if (Logger.IsInfoEnabled) Logger.Info("Creating a new recipe");
@@ -247,6 +255,7 @@ namespace Domus.Web.UI.Controllers
         /// <param name="recipeViewModel"></param>
         /// <returns></returns>
         [HttpPost]
+        [Authorize]
         public ActionResult AddImage(RecipeImageViewModel recipeViewModel)
         {
             // Get the image
@@ -257,30 +266,16 @@ namespace Domus.Web.UI.Controllers
                 return RedirectToAction("Detail", new {recipeId = recipeViewModel.RecipeId});
 
             // Resize the image to a manageable size
-            if (image.Width > 450)
-                image.Resize(450, 450);
+            if (image.Width > 750)
+                image.Resize(750, 750);
 
             // Save a tempory version
             var filename = Path.GetFileName(image.FileName);
-            var tempFilePath = Path.GetTempPath();
+            var tempFileName = "{0}_temp{1}".StringFormat(recipeViewModel.RecipeId, Path.GetExtension(filename));
+            var tempFilePath = _tempImageProvider.Save(image, tempFileName);
 
-            var tempFileName = Path.Combine(tempFilePath,
-                                                   "{0}_temp{1}".StringFormat(recipeViewModel.RecipeId,
-                                                                          Path.GetExtension(filename)));
-
-            image.Save(tempFileName);
-
-            var s3 = new Amazon.S3.AmazonS3Client(Properties.Settings.Default.AmazonAccessKey,
-                                                  Properties.Settings.Default.AmazonSecretKey);
-            var request = new PutObjectRequest().WithAutoCloseStream(true)
-                .WithBucketName("DomusRecipeImages")
-                .WithCannedACL(S3CannedACL.PublicRead)
-                .WithFilePath(tempFileName);
-
-            s3.PutObject(request);
-
-            recipeViewModel.ImageUrl = "http://s3.amazonaws.com/DomusRecipeImages/{0}".StringFormat(Path.GetFileName(tempFileName));
-
+            // Persit to S3
+            recipeViewModel.ImageUrl = _amazonS3FileProvider.Save(tempFilePath, "DomusRecipeImages");
 
             // Update the view model for cropping
             recipeViewModel.Width = image.Width;
@@ -298,7 +293,9 @@ namespace Domus.Web.UI.Controllers
         /// Given a recipe, facilitate editing the related image
         /// </summary>
         /// <param name="recipeId"></param>
+        /// <param name="name"> </param>
         /// <returns></returns>
+        [Authorize]
         public ActionResult ImageEdit(string recipeId, string name)
         {
             var recipeImageViewModel = new RecipeImageViewModel
@@ -310,50 +307,45 @@ namespace Domus.Web.UI.Controllers
             return View(recipeImageViewModel);
         }
 
-        public ActionResult SaveCrop(RecipeImageViewModel editor)
+        [Authorize]
+        public ActionResult SaveCrop(RecipeImageViewModel viewModel)
         {
             // Get the temp image
-            var filename = Path.GetFileName(editor.ImageUrl);
-            var tempFilePath = Path.GetTempPath();
-            var tempFileName = Path.Combine(tempFilePath,
-                                                   "{0}_temp{1}".StringFormat(editor.RecipeId,
-                                                                          Path.GetExtension(filename)));
-
-            var image = new WebImage(tempFileName);
+            var tempFileName = Path.GetFileName(viewModel.ImageUrl);
+            var tempFilePath = _tempImageProvider.GetFilePath(tempFileName);
+            var image = new WebImage(tempFilePath);
 
             // Crop the image with the specified dimensions
+            CropImage(viewModel, image, 300);
+
+            // Save the image
+            var recipeImageFileName = "{0}{1}".StringFormat(viewModel.RecipeId, Path.GetExtension(tempFilePath));
+            var recipeImageFilePath = _tempImageProvider.Save(image, recipeImageFileName);
+            var recipeImageUrl = _amazonS3FileProvider.Save(recipeImageFilePath, "DomusRecipeImages");
+
+            // Place the image onto the recipe
+            var recipe = _recipeDataProvider.Get(viewModel.RecipeId);
+            recipe.ImageUrl = recipeImageUrl;
+            _recipeDataProvider.Save(recipe);
+
+            // Delete temporary files
+            _tempImageProvider.Delete(recipeImageFileName);
+            _tempImageProvider.Delete(tempFileName);
+
+            return RedirectToAction("Detail", new {recipeId = viewModel.RecipeId});
+        }
+
+        private static void CropImage(RecipeImageViewModel viewModel, WebImage image, int imageSize)
+        {
             var height = image.Height;
             var width = image.Width;
 
-            image.Crop((int)editor.Top, (int)editor.Left, (int)(height - editor.Bottom), (int)(width - editor.Right));
+            image.Crop((int) viewModel.Top, (int) viewModel.Left, (int) (height - viewModel.Bottom),
+                       (int) (width - viewModel.Right));
             image.Save();
-            
-            if (image.Width > 250)
-                image.Resize(250, 250);
 
-            // Save the image
-            var recipeImageFilePath = Path.Combine(tempFilePath,
-                                                   "{0}{1}".StringFormat(editor.RecipeId,
-                                                                          Path.GetExtension(tempFileName)));
-            image.Save(recipeImageFilePath);
-            var s3 = new Amazon.S3.AmazonS3Client(Properties.Settings.Default.AmazonAccessKey,
-                                                  Properties.Settings.Default.AmazonSecretKey);
-            var request = new PutObjectRequest().WithAutoCloseStream(true)
-                .WithBucketName("DomusRecipeImages")
-                .WithCannedACL(S3CannedACL.PublicRead)
-                .WithFilePath(recipeImageFilePath);
-
-            s3.PutObject(request);
-
-
-            var recipe = _recipeDataProvider.Get(editor.RecipeId);
-            recipe.ImageUrl = "http://s3.amazonaws.com/DomusRecipeImages/{0}".StringFormat(Path.GetFileName(recipeImageFilePath));
-            _recipeDataProvider.Save(recipe);
-
-
-            System.IO.File.Delete(tempFileName);
-            System.IO.File.Delete(recipeImageFilePath);
-            return RedirectToAction("Detail", new {recipeId = editor.RecipeId});
+            if (image.Width > imageSize)
+                image.Resize(imageSize, imageSize);
         }
     }
 }

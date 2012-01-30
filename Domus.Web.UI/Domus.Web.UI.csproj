@@ -111,6 +111,7 @@
     <Compile Include="Infrastructure\DependencyInjection\Bootstrapper.cs" />
     <Compile Include="Infrastructure\DependencyInjection\Registrations\AdapterRegistration.cs" />
     <Compile Include="Infrastructure\DependencyInjection\Registrations\DataProviderRegistration.cs" />
+    <Compile Include="Models\Home\LogOnViewModel.cs" />
     <Compile Include="Models\Recipes\CategoryViewModel.cs" />
     <Compile Include="Models\Recipes\RecipeImageViewModel.cs" />
     <Compile Include="Models\Recipes\RecipeIndexViewModel.cs" />
@@ -124,6 +125,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\chef_hat.jpg" />
     <Content Include="Content\fail_whale.png" />
     <Content Include="Content\home_button.png" />
     <Content Include="Content\Jcrop.gif" />
@@ -177,6 +179,7 @@
     <Content Include="Views\Recipe\ImageDisplay.cshtml" />
     <Content Include="Views\Recipe\ImageEdit.cshtml" />
     <Content Include="Views\Recipe\ImageCrop.cshtml" />
+    <Content Include="Views\Home\LogOn.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

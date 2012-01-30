@@ -24,8 +24,17 @@ namespace Domus.Web.UI.Infrastructure.DependencyInjection.Registrations
                 .InSingletonScope()
                 .WithConstructorArgument("accessKey", Properties.Settings.Default.AmazonAccessKey)
                 .WithConstructorArgument("secretKey", Properties.Settings.Default.AmazonSecretKey);
+
+            kernel.Bind<IDataProvider<User, string>>().To<AmazonSimpleDbUserProvider>()
+                .InSingletonScope()
+                .WithConstructorArgument("accessKey", Properties.Settings.Default.AmazonAccessKey)
+                .WithConstructorArgument("secretKey", Properties.Settings.Default.AmazonSecretKey);
                 
             kernel.Bind<IDataProvider<Category, string>>().To<StaticCategoryDataProvider>();
+
+            kernel.Bind<AmazonS3FileProvider>()
+                .ToMethod(p => new AmazonS3FileProvider(Properties.Settings.Default.AmazonAccessKey, Properties.Settings.Default.AmazonSecretKey))
+              .InSingletonScope();
         }
     }
 }

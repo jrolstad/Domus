@@ -38,7 +38,9 @@ namespace Domus.WebUI.Test.Recipes
                                                   categoryProvider,
                                                   new AutoMapperAdapter<Recipe, RecipeViewModel>(),
                                                   new AutoMapperAdapter<RecipeViewModel, Recipe>(),
-                                                  new AutoMapperAdapter<Category, CategoryViewModel>()
+                                                  new AutoMapperAdapter<Category, CategoryViewModel>(),
+                                                  MockRepository.GenerateStub<TempImageProvider>(),
+                                                  MockRepository.GenerateStub<AmazonS3FileProvider>()
                 );
 
             this._viewResult = controller.Index(string.Empty);

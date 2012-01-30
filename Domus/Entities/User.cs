@@ -1,10 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Directus.SimpleDb.Attributes;
 
 namespace Domus.Entities
 {
     /// <summary>
     /// Person who uses the application
     /// </summary>
+    [DomainName("Domus_User")]
     public class User
     {
         /// <summary>
@@ -17,15 +19,5 @@ namespace Domus.Entities
         /// Password for the user
         /// </summary>
         public string Password { get; set; }
-
-        /// <summary>
-        /// The person's first name
-        /// </summary>
-        public string FirstName { get; set; }
-
-        /// <summary>
-        /// The person's last name
-        /// </summary>
-        public string LastName { get; set; }
     }
 }

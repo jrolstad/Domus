@@ -1,0 +1,36 @@
+﻿@model Domus.Web.UI.Models.Home.LogOnViewModel
+
+@{
+    ViewBag.Title = "Sign In";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="recipeSearch">
+    @using (Html.BeginForm("Authenticate","Home")) {
+        <table width="99%">
+            <tr>
+                <td>
+                    @Html.ValidationSummary(true)
+
+                    @Html.LabelFor(model=>model.EmailAddress)
+                    @Html.EditorFor(model => model.EmailAddress)
+            
+                    @Html.LabelFor(model => model.Password)
+                    @Html.PasswordFor(model => model.Password) 
+            
+                    <input id="signInButton" type="submit" value="Sign In" />
+                </td>
+            </tr>
+        </table>
+    }
+</div>
+<div style="width: 100%; text-align: center;">
+    <img src="@Url.Content("~/Content/chef_hat.jpg")"/>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $("#signInButton").button();
+
+    });
+
+</script>
