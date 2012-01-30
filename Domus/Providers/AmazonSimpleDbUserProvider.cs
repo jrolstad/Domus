@@ -6,6 +6,9 @@ using Domus.Entities;
 
 namespace Domus.Providers
 {
+    /// <summary>
+    /// Persistence provider for users
+    /// </summary>
     public class AmazonSimpleDbUserProvider:IDataProvider<User,string>
     {
         private readonly SimpleDBProvider<User, string> _provider;
