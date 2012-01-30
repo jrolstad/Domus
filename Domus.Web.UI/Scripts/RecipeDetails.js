@@ -7,4 +7,5 @@
     $("#uploadButton").button();
     $("#fileLoad").button();
     $("#cancelButton").button();
+    $("#addImageButton").button();
 });

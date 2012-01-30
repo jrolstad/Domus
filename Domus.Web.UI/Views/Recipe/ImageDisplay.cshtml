@@ -5,9 +5,9 @@
 {
     <img src="@Model.ImageUrl" alt="Image"/>
     <br/>
-    @Html.ActionLink("Change Picture", "ImageEdit", new { recipeId = Model.RecipeId, name=Model.Name })
+    @Html.ActionLink("Change Picture", "ImageEdit", new { recipeId = Model.RecipeId, name=Model.Name },new{@id="addImageButton"})
 }
 else
 {
-    @Html.ActionLink("Add Picture", "ImageEdit", new { recipeId = Model.RecipeId, name = Model.Name })
+    @Html.ActionLink("Add Picture", "ImageEdit", new { recipeId = Model.RecipeId, name = Model.Name }, new { @id = "addImageButton" })
 }
