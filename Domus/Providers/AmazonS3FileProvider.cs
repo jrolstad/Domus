@@ -10,6 +10,14 @@ namespace Domus.Providers
         private readonly string _amazonAccessKey;
         private readonly string _amazonSecretkey;
 
+        /// <summary>
+        /// Default constructor for mocking
+        /// </summary>
+        protected AmazonS3FileProvider()
+        {
+            
+        }
+
         public AmazonS3FileProvider(string amazonAccessKey, string amazonSecretkey)
         {
             _amazonAccessKey = amazonAccessKey;
