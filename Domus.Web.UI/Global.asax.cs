@@ -1,5 +1,6 @@
 ﻿using System.Web.Mvc;
 using System.Web.Routing;
+using Rolstad.DependencyInjection;
 using Rolstad.MVC.Errors;
 using log4net.Config;
 
@@ -39,6 +40,8 @@ namespace Domus.Web.UI
 
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
+
+            var handlers = IoC.Get<KeepAliveHandler>();
         }
     }
 }

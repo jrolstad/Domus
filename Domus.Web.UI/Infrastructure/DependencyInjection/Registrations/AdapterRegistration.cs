@@ -10,10 +10,22 @@ namespace Domus.Web.UI.Infrastructure.DependencyInjection.Registrations
     {
         public void Register( IKernel kernel )
         {
-            kernel.Bind<IAdapter<Recipe, RecipeViewModel>>().To<AutoMapperAdapter<Recipe, RecipeViewModel>>().InSingletonScope();
-            kernel.Bind<IAdapter<RecipeViewModel, Recipe>>().To<AutoMapperAdapter<RecipeViewModel, Recipe>>().InSingletonScope();
+            kernel.Bind<KeepAliveHandler>()
+                .To<KeepAliveHandler>()
+                .InSingletonScope()
+                .OnDeactivation(context => context.Dispose());
 
-            kernel.Bind<IAdapter<Category, CategoryViewModel>>().To<AutoMapperAdapter<Category, CategoryViewModel>>().InSingletonScope();
+            kernel.Bind<IAdapter<Recipe, RecipeViewModel>>()
+                .To<AutoMapperAdapter<Recipe, RecipeViewModel>>()
+                .InSingletonScope();
+
+            kernel.Bind<IAdapter<RecipeViewModel, Recipe>>()
+                .To<AutoMapperAdapter<RecipeViewModel, Recipe>>()
+                .InSingletonScope();
+
+            kernel.Bind<IAdapter<Category, CategoryViewModel>>()
+                .To<AutoMapperAdapter<Category, CategoryViewModel>>()
+                .InSingletonScope();
         }
     }
 }
