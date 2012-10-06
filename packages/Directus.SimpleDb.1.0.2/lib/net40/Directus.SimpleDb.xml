@@ -1,0 +1,338 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Directus.SimpleDb</name>
+    </assembly>
+    <members>
+        <member name="T:Directus.SimpleDb.Adapters.ReplaceableItemAdapter">
+            <summary>
+            Converts between POCOs and Amazon SimpleDB ReplaceableItem instances
+            </summary>
+        </member>
+        <member name="M:Directus.SimpleDb.Adapters.ReplaceableItemAdapter.#ctor(Directus.SimpleDb.Mappers.EntityMapper)">
+            <summary>
+            Constructor with dependencies
+            </summary>
+            <param name="entityMapper">Mapper for creating the AWS to POCO map</param>
+        </member>
+        <member name="M:Directus.SimpleDb.Adapters.ReplaceableItemAdapter.Convert``1(``0)">
+            <summary>
+            Given a POCO, converts it to an Amazon ReplaceableItem
+            </summary>
+            <typeparam name="T">Type converting from</typeparam>
+            <param name="item">Item to convert</param>
+            <returns></returns>
+        </member>
+        <member name="M:Directus.SimpleDb.Adapters.ReplaceableItemAdapter.GetReplaceableAttributes``1(``0,Directus.SimpleDb.Mappers.EntityMap)">
+            <summary>
+            Converts persistable properties on the instance to a set of Replaceable items
+            </summary>
+            <typeparam name="T">Type to read from</typeparam>
+            <param name="item">Instance to convert</param>
+            <param name="map">Entity map</param>
+            <returns></returns>
+        </member>
+        <member name="M:Directus.SimpleDb.Adapters.ReplaceableItemAdapter.Convert(System.String,System.String)">
+            <summary>
+            Converts a string into an enumeration of replaceable attributes
+            </summary>
+            <param name="value">Value to convert</param>
+            <param name="attributeName">name of the attribute</param>
+            <returns></returns>
+        </member>
+        <member name="M:Directus.SimpleDb.Adapters.ReplaceableItemAdapter.Chunk(System.String,System.Int32)">
+            <summary>
+            Chunks a string up into an enumeration of strings
+            </summary>
+            <param name="stringToChunk">String being chunked</param>
+            <param name="chunkSize">Size of the chunks</param>
+            <returns></returns>
+        </member>
+        <member name="M:Directus.SimpleDb.Adapters.ReplaceableItemAdapter.GetPropertyValue``1(``0,System.Reflection.PropertyInfo)">
+            <summary>
+            Gets a string representation of the value for the given property
+            </summary>
+            <typeparam name="T">Type to get the value from</typeparam>
+            <param name="item">Item to get the value from</param>
+            <param name="property">Property to get the value from</param>
+            <returns></returns>
+        </member>
+        <member name="T:Directus.SimpleDb.Factories.SelectRequestFactory">
+            <summary>
+            Factory for creating select requests
+            </summary>
+        </member>
+        <member name="M:Directus.SimpleDb.Factories.SelectRequestFactory.CreateRequest(System.String,System.String,System.String,System.Boolean)">
+            <summary>
+            Creates a Select Request for the given domain
+            </summary>
+            <param name="domainName">Domain to query</param>
+            <param name="nextToken">Next Token to use when querying over large sets</param>
+            <param name="identifier">Identifier to search for</param>
+            <param name="consistentRead">If reads should be consistent</param>
+            <returns></returns>
+        </member>
+        <member name="M:Directus.SimpleDb.Factories.SelectRequestFactory.CreateSelectExpression(System.String,System.String)">
+            <summary>
+            Given a domain name and identifier, creates a select expression
+            </summary>
+            <param name="domainName">Domain to create the expression for</param>
+            <param name="identifier">Identifier to create the expression for</param>
+            <returns></returns>
+        </member>
+        <member name="T:Directus.SimpleDb.Attributes.DoNotPersistAttribute">
+            <summary>
+            The DoNotPersist attribute blocks blocks this property from being saved (persisted) to SimpleDB
+            </summary>
+        </member>
+        <member name="T:Directus.SimpleDb.Adapters.ItemAdapter">
+            <summary>
+            Converts between POCOs and Amazon SimpleDB Item instances
+            </summary>
+        </member>
+        <member name="M:Directus.SimpleDb.Adapters.ItemAdapter.#ctor(Directus.SimpleDb.Mappers.EntityMapper)">
+            <summary>
+            Constructor with dependencies
+            </summary>
+            <param name="entityMapper">Mapper for creating the AWS to POCO map</param>
+        </member>
+        <member name="M:Directus.SimpleDb.Adapters.ItemAdapter.Convert``1(Amazon.SimpleDB.Model.Item)">
+            <summary>
+            Converts an an Amazon SimpleDB Item into an instance to type T
+            </summary>
+            <typeparam name="T">Type to convert to</typeparam>
+            <param name="item">SimpleDB Item to read from</param>
+            <returns></returns>
+        </member>
+        <member name="M:Directus.SimpleDb.Adapters.ItemAdapter.GetFullValue(System.Collections.Generic.IEnumerable{Amazon.SimpleDB.Model.Attribute})">
+            <summary>
+            For a given attribute name, gets the full value
+            </summary>
+            <param name="attributes"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Directus.SimpleDb.Adapters.ItemAdapter.SetProperty``1(System.String,``0,System.Reflection.PropertyInfo)">
+            <summary>
+            Given a property and instance, sets the value on it
+            </summary>
+            <typeparam name="T">Type of the instance where the property resides</typeparam>
+            <param name="value">Value to set on the property</param>
+            <param name="instance">Instance to set the value on</param>
+            <param name="property">Property to set</param>
+        </member>
+        <member name="M:Directus.SimpleDb.Adapters.ItemAdapter.To(System.String,System.Type)">
+            <summary>
+            Converts a string type to the defined type.  If <see langword="null"/> or empty, returns that type's default
+            </summary>
+            <param name="value">Value to convert</param>
+            <param name="type">Type to convert the value to</param>
+            <returns></returns>
+        </member>
+        <member name="T:Directus.SimpleDb.Adapters.DeleteableItemAdapter">
+            <summary>
+            Converts a set of identifiers to DeleteableItems
+            </summary>
+        </member>
+        <member name="M:Directus.SimpleDb.Adapters.DeleteableItemAdapter.Convert``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Converts the set of identifiers to a set of deleteable items
+            </summary>
+            <typeparam name="I">Identifier type</typeparam>
+            <param name="identifiers">Identifiers to convert</param>
+            <returns></returns>
+        </member>
+        <member name="T:Directus.SimpleDb.Mappers.EntityMapper">
+            <summary>
+            Creates a map of the given type
+            </summary>
+        </member>
+        <member name="M:Directus.SimpleDb.Mappers.EntityMapper.CreateMap``1">
+            <summary>
+            Given a type T, creates a map for it
+            </summary>
+            <typeparam name="T">Type to create the map for</typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:Directus.SimpleDb.Mappers.EntityMapper.GetPersistableProperties``1(System.Reflection.PropertyInfo[])">
+            <summary>
+            Obtains an array of all persistable properties
+            </summary>
+            <typeparam name="T">Type to get properties for</typeparam>
+            <param name="properties">Properties on the Type</param>
+            <returns></returns>
+        </member>
+        <member name="M:Directus.SimpleDb.Mappers.EntityMapper.GetKeyProperty``1(System.Reflection.PropertyInfo[])">
+            <summary>
+            Obtains the Key property for the type
+            </summary>
+            <typeparam name="T">Type to get the key for</typeparam>
+            <param name="properties">Properties on the type</param>
+            <returns></returns>
+        </member>
+        <member name="T:Directus.SimpleDb.Providers.SimpleDBProvider`2">
+            <summary>
+            Amazon SimpleDB Persistence provider for POCOs 
+            </summary>
+            <typeparam name="T">Type to persist</typeparam>
+            <typeparam name="I">Type of the key identifiers</typeparam>
+        </member>
+        <member name="M:Directus.SimpleDb.Providers.SimpleDBProvider`2.#ctor">
+            <summary>
+            Default constructor that determines the domain name
+            </summary>
+        </member>
+        <member name="M:Directus.SimpleDb.Providers.SimpleDBProvider`2.#ctor(System.String,System.String)">
+            <summary>
+            Constructor with only the Amazon credentials
+            </summary>
+            <param name="amazonAccessKey"></param>
+            <param name="amazonSecretKey"></param>
+        </member>
+        <member name="M:Directus.SimpleDb.Providers.SimpleDBProvider`2.#ctor(Directus.SimpleDb.Factories.BatchDeleteAttributeRequestFactory,Directus.SimpleDb.Factories.BatchPutAttributeRequestFactory,Directus.SimpleDb.Factories.SelectRequestFactory,Directus.SimpleDb.Adapters.ItemAdapter,Amazon.SimpleDB.AmazonSimpleDB,Directus.SimpleDb.Factories.DomainRequestFactory)">
+            <summary>
+            Constructor with all dependencies injected
+            </summary>
+            <param name="deleteFactory">Factory for creating delete requests</param>
+            <param name="putFactory">Factory for creating put requests</param>
+            <param name="selectRequestFactory">Factory for creating select requests</param>
+            <param name="itemAdapter">Factory for converting select response items to the given POCO of type T</param>
+            <param name="simpleDb">Amazon SimpleDB instance</param>
+            <param name="domainRequestFactory">Factory for domain requests</param>
+        </member>
+        <member name="M:Directus.SimpleDb.Providers.SimpleDBProvider`2.Get(`1)">
+            <summary>
+            Obtains a specific instance of the type
+            </summary>
+            <param name="identifier">Unique identifier to search for</param>
+            <returns></returns>
+        </member>
+        <member name="M:Directus.SimpleDb.Providers.SimpleDBProvider`2.Get">
+            <summary>
+            Obtains all instances of the given type
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Directus.SimpleDb.Providers.SimpleDBProvider`2.Save(System.Collections.Generic.ICollection{`0})">
+            <summary>
+            Saves all instances in the set
+            </summary>
+            <param name="itemsToSave">Instances of the given type to persist</param>
+        </member>
+        <member name="M:Directus.SimpleDb.Providers.SimpleDBProvider`2.Delete(System.Collections.Generic.ICollection{`1})">
+            <summary>
+            Deletes all instances for the given type
+            </summary>
+            <param name="itemsToDelete"></param>
+        </member>
+        <member name="M:Directus.SimpleDb.Providers.SimpleDBProvider`2.CreateDomain">
+            <summary>
+            Creates the domain for the given type
+            </summary>
+        </member>
+        <member name="M:Directus.SimpleDb.Providers.SimpleDBProvider`2.GetDomainNameForType">
+            <summary>
+            Obtains the Domain name for the given type
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Directus.SimpleDb.Providers.SimpleDBProvider`2.QueryDomain(System.String)">
+            <summary>
+            Queries the given domain
+            </summary>
+            <param name="identifier">Identifier to search for</param>
+            <returns></returns>
+        </member>
+        <member name="P:Directus.SimpleDb.Providers.SimpleDBProvider`2.DomainName">
+            <summary>
+            Name of the domain for this type
+            </summary>
+        </member>
+        <member name="T:Directus.SimpleDb.Factories.BatchDeleteAttributeRequestFactory">
+            <summary>
+            Factory for creating BatchDeleteAttributeRequest
+            </summary>
+        </member>
+        <member name="M:Directus.SimpleDb.Factories.BatchDeleteAttributeRequestFactory.#ctor(Directus.SimpleDb.Adapters.DeleteableItemAdapter)">
+            <summary>
+            Constructor with dependencies
+            </summary>
+            <param name="deleteableItemAdapter">dapter for converting identifiers to DeletableItems</param>
+        </member>
+        <member name="M:Directus.SimpleDb.Factories.BatchDeleteAttributeRequestFactory.CreateRequest(System.Collections.Generic.IEnumerable{System.String},System.String)">
+            <summary>
+            Given a set of identifiers and a domain name, creates a delete request
+            </summary>
+            <param name="identifiers">Identifiers to delete</param>
+            <param name="domainName">Domain the request is for</param>
+            <returns></returns>
+        </member>
+        <member name="T:Directus.SimpleDb.Attributes.DomainNameAttribute">
+            <summary>
+            Specifies the name of the underlying domain for a given POCO
+            </summary>
+        </member>
+        <member name="M:Directus.SimpleDb.Attributes.DomainNameAttribute.#ctor(System.String)">
+            <summary>
+            Constructor with domain name
+            </summary>
+            <param name="domainName">Name of the domain</param>
+        </member>
+        <member name="P:Directus.SimpleDb.Attributes.DomainNameAttribute.DomainName">
+            <summary>
+            Name of the specified domain
+            </summary>
+        </member>
+        <member name="T:Directus.SimpleDb.Factories.DomainRequestFactory">
+            <summary>
+            Factory for creating a domain request
+            </summary>
+        </member>
+        <member name="M:Directus.SimpleDb.Factories.DomainRequestFactory.Create(System.String)">
+            <summary>
+            Creates a request to create a domain
+            </summary>
+            <param name="domainName"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Directus.SimpleDb.Factories.BatchPutAttributeRequestFactory">
+            <summary>
+            Factory for creating BatchPutAttributeRequest
+            </summary>
+        </member>
+        <member name="M:Directus.SimpleDb.Factories.BatchPutAttributeRequestFactory.#ctor(Directus.SimpleDb.Adapters.ReplaceableItemAdapter)">
+            <summary>
+            Constructor with dependencies
+            </summary>
+            <param name="replaceableItemAdapter">Adapter for converting POCOs to ReplaceableItems</param>
+        </member>
+        <member name="M:Directus.SimpleDb.Factories.BatchPutAttributeRequestFactory.CreateRequest``1(System.Collections.Generic.IEnumerable{``0},System.String)">
+            <summary>
+            Given a set of POCOs, creates a batch request of ReplaceableItems
+            </summary>
+            <typeparam name="T">Type of the POCO</typeparam>
+            <param name="itemsToPut">POCOs to place in the request</param>
+            <param name="domainName">Domain the request is for</param>
+            <returns></returns>
+        </member>
+        <member name="T:Directus.SimpleDb.Mappers.EntityMap">
+            <summary>
+            Map of a given entity
+            </summary>
+        </member>
+        <member name="P:Directus.SimpleDb.Mappers.EntityMap.MappedType">
+            <summary>
+            Type that is mapped
+            </summary>
+        </member>
+        <member name="P:Directus.SimpleDb.Mappers.EntityMap.KeyProperty">
+            <summary>
+            Property that is the unique identifier
+            </summary>
+        </member>
+        <member name="P:Directus.SimpleDb.Mappers.EntityMap.PersistableProperties">
+            <summary>
+            Properties that are meant to be persisted
+            </summary>
+        </member>
+    </members>
+</doc>
