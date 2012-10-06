@@ -11,7 +11,7 @@ namespace Domus.Web.UI
 
         public KeepAliveHandler()
         {
-            _url = HttpContext.Current.Request.Url.AbsoluteUri;
+            _url = "http://recipes.rolstadfamily.com";
         }
 
 
