@@ -40,7 +40,7 @@ namespace Domus.Web.UI
 
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
-
+			 
             var handlers = IoC.Get<KeepAliveHandler>();
         }
     }
