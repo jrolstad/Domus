@@ -25,6 +25,12 @@ namespace Domus.Web.UI.Commands
             var startTime = _keepAliveHandler.ApplicationStartTime;
             var applicationDuration = DateTime.Now.Subtract(startTime);
 
+            var serverName = Environment.MachineName;
+            var userName = Environment.UserName;
+            var userDomain = Environment.UserDomainName;
+            var fullUserName = string.Format(@"{0}\{1}", userDomain, userName);
+            var currentTime = DateTime.Now.ToString(CultureInfo.CurrentUICulture);
+
             return new ApplicationDetailsResponse
                        {
                            BaseUrl = url,
@@ -32,7 +38,10 @@ namespace Domus.Web.UI.Commands
                            AwsSecretKey = secretKey,
                            CacheDuration = cacheTimeout,
                            ApplicationStartTime = startTime.ToString(CultureInfo.CurrentUICulture),
-                           ApplicationUpTime = applicationDuration
+                           ApplicationUpTime = applicationDuration,
+                           ServerName = serverName,
+                           UserName = fullUserName,
+                           CurrentTIme = currentTime
                        };
         }
 
