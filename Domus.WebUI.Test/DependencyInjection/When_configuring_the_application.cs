@@ -20,8 +20,6 @@ namespace Domus.WebUI.Test.DependencyInjection
         [TestFixtureSetUp]
         public void BeforeAll()
         {
-            Web.UI.Properties.Settings.Default["AmazonAccessKey"] = "access";
-            Web.UI.Properties.Settings.Default["AmazonSecretKey"] = "secret";
             _kernel = new StandardKernel();
             Bootstrapper.Configure(_kernel);
         }
