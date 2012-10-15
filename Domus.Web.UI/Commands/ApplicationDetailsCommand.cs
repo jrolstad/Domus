@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Globalization;
 using System.Web;
 using Domus.Providers;
@@ -18,8 +19,9 @@ namespace Domus.Web.UI.Commands
         public ApplicationDetailsResponse Execute()
         {
             var url = GetBaseUrl();
-            var accessKey = Properties.Settings.Default.AmazonAccessKey;
-            var secretKey = Properties.Settings.Default.AmazonSecretKey;
+            var accessKey = ConfigurationManager.AppSettings["AWS_ACCESS_KEY"];
+            var secretKey = ConfigurationManager.AppSettings["AWS_SECRET_KEY"];
+
             var cacheTimeout = AmazonSimpleDbRecipeProvider.CacheDuration;
 
             var startTime = _keepAliveHandler.ApplicationStartTime;
