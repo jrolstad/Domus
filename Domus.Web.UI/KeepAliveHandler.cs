@@ -8,10 +8,13 @@ namespace Domus.Web.UI
     public class KeepAliveHandler:IDisposable
     {
         private readonly string _url;
+        public readonly DateTime ApplicationStartTime;
 
         public KeepAliveHandler()
         {
             _url = "http://recipes.rolstadfamily.com";
+
+            ApplicationStartTime = DateTime.Now;
         }
 
 

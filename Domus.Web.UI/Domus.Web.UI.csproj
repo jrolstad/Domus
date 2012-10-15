@@ -103,6 +103,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\NinjectMVC3.cs" />
+    <Compile Include="Commands\ApplicationDetailsCommand.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RecipeController.cs" />
     <Compile Include="Global.asax.cs">
@@ -112,6 +113,7 @@
     <Compile Include="Infrastructure\DependencyInjection\Registrations\AdapterRegistration.cs" />
     <Compile Include="Infrastructure\DependencyInjection\Registrations\DataProviderRegistration.cs" />
     <Compile Include="KeepAliveHandler.cs" />
+    <Compile Include="Models\Home\ApplicationDetailsResponse.cs" />
     <Compile Include="Models\Home\LogOnViewModel.cs" />
     <Compile Include="Models\Recipes\CategoryViewModel.cs" />
     <Compile Include="Models\Recipes\RecipeImageViewModel.cs" />

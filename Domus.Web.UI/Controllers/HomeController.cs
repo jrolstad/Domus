@@ -3,7 +3,9 @@ using System.Web.Mvc;
 using System.Web.Security;
 using Domus.Entities;
 using Domus.Providers;
+using Domus.Web.UI.Commands;
 using Domus.Web.UI.Models.Home;
+using Rolstad.MVC.Errors;
 
 namespace Domus.Web.UI.Controllers
 {
@@ -11,6 +13,7 @@ namespace Domus.Web.UI.Controllers
     /// Controller for the application main page
     /// </summary>
     [HandleError]
+    [HandleErrorAndLog]
     public class HomeController : Controller
     {
         /// <summary>
@@ -18,13 +21,17 @@ namespace Domus.Web.UI.Controllers
         /// </summary>
         private readonly IDataProvider<User, string> _userProvider;
 
+        private readonly ApplicationDetailsCommand _applicationDetailsCommand;
+
         /// <summary>
         /// Constructor with dependencies
         /// </summary>
         /// <param name="userProvider">Provider for obtaining users</param>
-        public HomeController(IDataProvider<User,string> userProvider)
+        /// <param name="applicationDetailsCommand">Details of the application</param>
+        public HomeController(IDataProvider<User,string> userProvider, ApplicationDetailsCommand applicationDetailsCommand)
         {
             _userProvider = userProvider;
+            _applicationDetailsCommand = applicationDetailsCommand;
         }
 
         /// <summary>
@@ -67,6 +74,13 @@ namespace Domus.Web.UI.Controllers
 
             // Otherwise return them to this save view
             return View("LogOn", viewModel);
+        }
+
+        [Authorize]
+        public ActionResult ApplicationDetails()
+        {
+            var result = _applicationDetailsCommand.Execute();
+            return this.Json(result,JsonRequestBehavior.AllowGet);
         }
     }
 }

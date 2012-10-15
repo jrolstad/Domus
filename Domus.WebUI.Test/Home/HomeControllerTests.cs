@@ -16,7 +16,7 @@ namespace Domus.WebUI.Test.Home
         public void When_showing_the_index_then_the_index_view_is_shown()
         {
             // Arrange
-            var controller = new HomeController(null);
+            var controller = new HomeController(null,null);
 
             // Act
             var result = controller.Index();

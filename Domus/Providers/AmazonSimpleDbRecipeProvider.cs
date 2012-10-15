@@ -13,6 +13,7 @@ namespace Domus.Providers
     {
         internal SimpleDBProvider<Recipe, string> _provider;
         private readonly ICacheProvider _cache;
+        public static readonly TimeSpan CacheDuration = new TimeSpan(0, 1, 0, 0);
 
         private const string recipeCachKey = "DomuRecipes";
 
@@ -63,7 +64,9 @@ namespace Domus.Providers
             var recipes = (recipesFromCache ?? _provider.Get()).ToArray();
 
             if(recipesFromCache == null)
-                    _cache.Put(recipes,recipeCachKey,new TimeSpan(0,1,0,0));
+            {
+                _cache.Put(recipes,recipeCachKey,CacheDuration);
+            }
 
             return recipes;
         }
