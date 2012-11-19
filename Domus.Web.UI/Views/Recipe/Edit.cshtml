@@ -67,6 +67,13 @@
                         <div class="editor-field">
                             @Html.DropDownListFor(model => model.Recipe.Category, new SelectList(Model.Categories, "Description", "Description", Model.Categories.First().Description))
                             @Html.ValidationMessageFor(model => model.Recipe.Category)
+
+                            @if(!Model.Recipe.PreviousCategory.IsEmpty())
+                            {
+                                @Html.Raw("(&nbsp;")
+                                @Html.DisplayFor(model => model.Recipe.PreviousCategory)
+                                @Html.Raw("&nbsp;)")
+                            }
                         </div>
 
                         <div class="editor-label">@Html.LabelFor(model => model.Recipe.Ingredients)</div>

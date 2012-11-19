@@ -151,6 +151,12 @@ namespace Domus.Web.UI.Controllers
 
             var recipeToSave = _recipeViewModelAdapter.Convert(selectedRecipe.Recipe);
 
+            var existingRecipe = _recipeDataProvider.Get(selectedRecipe.Recipe.RecipeId);
+            if(existingRecipe != null && existingRecipe.Category != recipeToSave.Category)
+            {
+                recipeToSave.PreviousCategory = existingRecipe.Category;
+            }
+
             _recipeDataProvider.Save(recipeToSave);
 
             return RedirectToAction("Detail",new{recipeId = recipeToSave.RecipeId});
