@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Domus.Adapters;
-using Domus.Entities;
-using Domus.Providers;
+﻿using Domus.Web.UI.Controllers;
 using Domus.Web.UI.Infrastructure.DependencyInjection;
-using Domus.Web.UI.Models.Recipes;
 using NUnit.Framework;
 using Ninject;
 
@@ -26,38 +20,17 @@ namespace Domus.WebUI.Test.DependencyInjection
 
 
         [Test]
-        public void Then_the_recipe_provider_is_configured()
+        public void Then_the_home_controller_can_be_resolved()
         {
             // Assert
-            Assert.That(_kernel.Get<IDataProvider<Recipe, string>>(),Is.Not.Null);
+            Assert.That(_kernel.Get<HomeController>(),Is.Not.Null);
         }
 
         [Test]
-        public void Then_the_category_provider_is_configured()
+        public void Then_the_recipe_controller_can_be_resolved()
         {
             // Assert
-            Assert.That(_kernel.Get<IDataProvider<Category, string>>(), Is.Not.Null);
-        }
-
-        [Test]
-        public void Then_the_category_adapter_is_configured()
-        {
-            // Assert
-            Assert.That(_kernel.Get<IAdapter<Category,CategoryViewModel>>(), Is.Not.Null);
-        }
-
-        [Test]
-        public void Then_the_recipe_adapter_is_configured()
-        {
-            // Assert
-            Assert.That(_kernel.Get<IAdapter<Recipe, RecipeViewModel>>(), Is.Not.Null);
-        }
-
-        [Test]
-        public void Then_the_recipe_view_model_adapter_is_configured()
-        {
-            // Assert
-            Assert.That(_kernel.Get<IAdapter<RecipeViewModel,Recipe>>(), Is.Not.Null);
+            Assert.That(_kernel.Get<RecipeController>(),Is.Not.Null);
         }
     }
 }

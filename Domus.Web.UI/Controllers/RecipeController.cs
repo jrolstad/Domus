@@ -173,9 +173,11 @@ namespace Domus.Web.UI.Controllers
         /// <returns></returns>
         public RedirectToRouteResult Refresh()
         {
-            if (Logger.IsInfoEnabled) Logger.Info("Refreshing recipes");
+            if (Logger.IsInfoEnabled) Logger.Info("Refreshing recipes and categories");
 
             _recipeDataProvider.Refresh();
+            _categoryDataProvider.Refresh();
+
             return RedirectToAction("Index");
         }
 
