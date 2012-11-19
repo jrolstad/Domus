@@ -33,7 +33,8 @@ namespace Domus.Providers
                     "Dog Treats",
                     "Turkey",
                     "Lamb",
-                    "Christmas Cookies"
+                    "Christmas Cookies",
+                    "Christmas Cookies Done"
                 };
         /// <summary>
         /// Obtains a single item
