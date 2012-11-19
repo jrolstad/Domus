@@ -36,6 +36,12 @@ namespace Domus.Web.UI.Models.Recipes
         public virtual string Category { get; set; }
 
         /// <summary>
+        /// Previous Category this recipe falls into
+        /// </summary>
+        [Required(AllowEmptyStrings = false)]
+        public virtual string PreviousCategory { get; set; }
+
+        /// <summary>
         /// Ingredients used to make the food item this recipe is for
         /// </summary>
         public virtual string Ingredients { get; set; }

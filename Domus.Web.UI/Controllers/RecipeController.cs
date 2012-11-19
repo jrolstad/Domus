@@ -149,10 +149,11 @@ namespace Domus.Web.UI.Controllers
 
             if(Logger.IsInfoEnabled) Logger.InfoFormat("Saving changes to recipe '{0}'",selectedRecipe.Recipe.RecipeId);
 
-            var recipe = _recipeViewModelAdapter.Convert(selectedRecipe.Recipe);
-            _recipeDataProvider.Save(recipe);
+            var recipeToSave = _recipeViewModelAdapter.Convert(selectedRecipe.Recipe);
 
-            return RedirectToAction("Detail",new{recipeId = recipe.RecipeId});
+            _recipeDataProvider.Save(recipeToSave);
+
+            return RedirectToAction("Detail",new{recipeId = recipeToSave.RecipeId});
         }
 
         /// <summary>

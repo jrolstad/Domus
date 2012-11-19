@@ -38,6 +38,11 @@ namespace Domus.Entities
         public virtual string Category { get; set; }
 
         /// <summary>
+        /// Category this recipe used to be in
+        /// </summary>
+        public virtual string PreviousCategory { get; set; }
+
+        /// <summary>
         /// Ingredients used to make the food item this recipe is for
         /// </summary>
         public virtual string Ingredients { get; set; }
