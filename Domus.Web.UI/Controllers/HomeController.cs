@@ -22,16 +22,21 @@ namespace Domus.Web.UI.Controllers
         private readonly IDataProvider<User, string> _userProvider;
 
         private readonly ApplicationDetailsCommand _applicationDetailsCommand;
+        private readonly IFeatureUsageNotifier _featureUsageNotifier;
 
         /// <summary>
         /// Constructor with dependencies
         /// </summary>
         /// <param name="userProvider">Provider for obtaining users</param>
         /// <param name="applicationDetailsCommand">Details of the application</param>
-        public HomeController(IDataProvider<User,string> userProvider, ApplicationDetailsCommand applicationDetailsCommand)
+        /// <param name="featureUsageNotifier"></param>
+        public HomeController(IDataProvider<User,string> userProvider, 
+            ApplicationDetailsCommand applicationDetailsCommand,
+            IFeatureUsageNotifier featureUsageNotifier)
         {
             _userProvider = userProvider;
             _applicationDetailsCommand = applicationDetailsCommand;
+            _featureUsageNotifier = featureUsageNotifier;
         }
 
         /// <summary>
@@ -40,6 +45,8 @@ namespace Domus.Web.UI.Controllers
         /// <returns></returns>
         public ViewResult Index()
         {
+            _featureUsageNotifier.Notify(Feature.HomeIndex);
+
             return View();
         }
 
@@ -49,6 +56,7 @@ namespace Domus.Web.UI.Controllers
         /// <returns></returns>
         public ViewResult LogOn()
         {
+            _featureUsageNotifier.Notify(Feature.HomeLogon);
             var viewModel = new LogOnViewModel();
 
             return View(viewModel);
@@ -61,6 +69,7 @@ namespace Domus.Web.UI.Controllers
         /// <returns></returns>
         public ActionResult Authenticate(LogOnViewModel viewModel)
         {
+            _featureUsageNotifier.Notify(Feature.HomeAuthenticate);
             // Try and get the related user
             var user = _userProvider.Get(viewModel.EmailAddress);
 
@@ -79,6 +88,8 @@ namespace Domus.Web.UI.Controllers
         [Authorize]
         public ActionResult ApplicationDetails()
         {
+            _featureUsageNotifier.Notify(Feature.HomeApplicationDetails);
+
             var result = _applicationDetailsCommand.Execute();
             return this.Json(result,JsonRequestBehavior.AllowGet);
         }

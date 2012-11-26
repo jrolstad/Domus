@@ -42,7 +42,8 @@ namespace Domus.WebUI.Test.Recipes
                                                   new AutoMapperAdapter<RecipeViewModel, Recipe>(),
                                                   new AutoMapperAdapter<Category, CategoryViewModel>(),
                                                   MockRepository.GenerateStub<TempImageProvider>(),
-                                                  MockRepository.GenerateStub<AmazonS3FileProvider>()
+                                                  MockRepository.GenerateStub<AmazonS3FileProvider>(),
+                                                  MockRepository.GenerateStub<IFeatureUsageNotifier>()
                 );
 
             this._viewResult = controller.Save(this._viewModelToSave) as RedirectToRouteResult;

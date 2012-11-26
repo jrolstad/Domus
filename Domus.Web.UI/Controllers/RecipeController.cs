@@ -32,6 +32,7 @@ namespace Domus.Web.UI.Controllers
         private readonly IAdapter<Category, CategoryViewModel> _categoryAdapter;
         private readonly TempImageProvider _tempImageProvider;
         private readonly AmazonS3FileProvider _amazonS3FileProvider;
+        private readonly IFeatureUsageNotifier _featureUsageNotifier;
 
         /// <summary>
         /// Constructor with all dependencies
@@ -43,13 +44,15 @@ namespace Domus.Web.UI.Controllers
         /// <param name="categoryAdapter">Adapter for converting from the category domain model to view model</param>
         /// <param name="tempImageProvider">Provider for persisting temporary images to disk</param>
         /// <param name="amazonS3FileProvider">Provider for persisting files to Amazon S3 </param>
+        /// <param name="featureUsageNotifier"></param>
         public RecipeController(IDataProvider<Recipe,string> recipeDataProvider,
                                 IDataProvider<Category,string> categoryDataProvider,
                                 IAdapter<Recipe,RecipeViewModel> recipeAdapter,
                                 IAdapter<RecipeViewModel,Recipe> recipeViewModelAdapter,
                                 IAdapter<Category,CategoryViewModel> categoryAdapter,
                                 TempImageProvider tempImageProvider,
-                                AmazonS3FileProvider amazonS3FileProvider
+                                AmazonS3FileProvider amazonS3FileProvider,
+                                IFeatureUsageNotifier featureUsageNotifier
             )
         {
             _recipeDataProvider = recipeDataProvider;
@@ -59,6 +62,7 @@ namespace Domus.Web.UI.Controllers
             _categoryAdapter = categoryAdapter;
             _tempImageProvider = tempImageProvider;
             _amazonS3FileProvider = amazonS3FileProvider;
+            _featureUsageNotifier = featureUsageNotifier;
         }
 
         /// <summary>
@@ -68,7 +72,7 @@ namespace Domus.Web.UI.Controllers
         /// <returns></returns>
         public ViewResult Index(string SearchText)
         {
-            if(Logger.IsInfoEnabled) Logger.InfoFormat("Executing search for '{0}'",SearchText ?? "null");
+            _featureUsageNotifier.Notify(Feature.RecipeIndex, notes:string.Format("SearchText|{0}",SearchText));
 
             // Categories
             var categories = _categoryDataProvider.Get();
@@ -101,7 +105,7 @@ namespace Domus.Web.UI.Controllers
         /// <returns></returns>
         public ViewResult Detail(string recipeId)
         {
-            if(Logger.IsInfoEnabled) Logger.InfoFormat("Viewing details for recipe '{0}'",recipeId);
+            _featureUsageNotifier.Notify(Feature.RecipeDetail, notes:string.Format("RecipeId|{0}",recipeId));
 
             // Get the recipe to show
             var recipeModel = GetSelectedRecipeViewModel(recipeId);
@@ -119,7 +123,7 @@ namespace Domus.Web.UI.Controllers
         [Authorize]
         public ViewResult Edit(string recipeId, bool isNew=false)
         {
-            if (Logger.IsInfoEnabled) Logger.InfoFormat("Editing details for recipe '{0}'", recipeId);
+            _featureUsageNotifier.Notify(Feature.RecipeEdit, notes: string.Format("RecipeId|{0}", recipeId));
 
             // Obtain either a new recipe or get the existing one
             var recipeModel = isNew ? GetNewRecipeViewModel(recipeId) : GetSelectedRecipeViewModel(recipeId);
@@ -147,7 +151,7 @@ namespace Domus.Web.UI.Controllers
                 return View("Edit", selectedRecipe);
             }
 
-            if(Logger.IsInfoEnabled) Logger.InfoFormat("Saving changes to recipe '{0}'",selectedRecipe.Recipe.RecipeId);
+            _featureUsageNotifier.Notify(Feature.RecipeSave, notes: string.Format("RecipeId|{0}", selectedRecipe.Recipe.RecipeId));
 
             var recipeToSave = _recipeViewModelAdapter.Convert(selectedRecipe.Recipe);
 
@@ -169,7 +173,7 @@ namespace Domus.Web.UI.Controllers
         [Authorize]
         public RedirectToRouteResult Create()
         {
-            if (Logger.IsInfoEnabled) Logger.Info("Creating a new recipe");
+            _featureUsageNotifier.Notify(Feature.RecipeCreate);
 
             return RedirectToAction("Edit", new { recipeId = Guid.NewGuid().ToString(), isNew = true});
         }
@@ -180,7 +184,7 @@ namespace Domus.Web.UI.Controllers
         /// <returns></returns>
         public RedirectToRouteResult Refresh()
         {
-            if (Logger.IsInfoEnabled) Logger.Info("Refreshing recipes and categories");
+            _featureUsageNotifier.Notify(Feature.RecipeRefresh);
 
             _recipeDataProvider.Refresh();
             _categoryDataProvider.Refresh();
@@ -267,6 +271,8 @@ namespace Domus.Web.UI.Controllers
         [Authorize]
         public ActionResult AddImage(RecipeImageViewModel recipeViewModel)
         {
+            _featureUsageNotifier.Notify(Feature.RecipeAddImage, notes: string.Format("RecipeId|{0}", recipeViewModel.RecipeId));
+
             // Get the image
             var image = WebImage.GetImageFromRequest();
 
