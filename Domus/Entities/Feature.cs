@@ -12,6 +12,7 @@
         RecipeSave,
         RecipeCreate,
         RecipeRefresh,
-        RecipeAddImage
+        RecipeAddImage,
+        HomeLogOff
     }
 }

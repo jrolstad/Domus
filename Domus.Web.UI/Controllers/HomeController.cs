@@ -64,6 +64,15 @@ namespace Domus.Web.UI.Controllers
             return View(viewModel);
         }
 
+        public ActionResult LogOff()
+        {
+            _featureUsageNotifier.Notify(Feature.HomeLogOff);
+
+            FormsAuthentication.SignOut();
+
+            return RedirectToAction("Index", "Recipe");
+        }
+
         /// <summary>
         /// Given user credentials, authenticates them (very simple implementation)
         /// </summary>
@@ -79,7 +88,6 @@ namespace Domus.Web.UI.Controllers
             if (user != null && string.Equals(user.Password,viewModel.Password,StringComparison.CurrentCultureIgnoreCase))
             {
                 FormsAuthentication.SetAuthCookie(viewModel.EmailAddress,true);
-
                 return RedirectToAction("Index", "Recipe");
             }
 
