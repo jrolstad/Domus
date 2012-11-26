@@ -108,10 +108,10 @@ namespace Domus.Web.UI.Controllers
         /// <returns></returns>
         public ViewResult Detail(string recipeId)
         {
-            _featureUsageNotifier.Notify(Feature.RecipeDetail, notes:string.Format("RecipeId|{0}",recipeId));
-
             // Get the recipe to show
             var recipeModel = GetSelectedRecipeViewModel(recipeId);
+
+            _featureUsageNotifier.Notify(Feature.RecipeDetail, notes: string.Format("{0}|{1}", recipeModel.Recipe.Name, recipeId));
 
             return View(recipeModel);
 
@@ -126,10 +126,12 @@ namespace Domus.Web.UI.Controllers
         [Authorize]
         public ViewResult Edit(string recipeId, bool isNew=false)
         {
-            _featureUsageNotifier.Notify(Feature.RecipeEdit, notes: string.Format("RecipeId|{0}", recipeId));
+            
 
             // Obtain either a new recipe or get the existing one
             var recipeModel = isNew ? GetNewRecipeViewModel(recipeId) : GetSelectedRecipeViewModel(recipeId);
+
+            _featureUsageNotifier.Notify(Feature.RecipeEdit, notes: string.Format("{0}|{1}", recipeModel.Recipe.Name, recipeId));
 
             return View(recipeModel);
 
@@ -154,7 +156,7 @@ namespace Domus.Web.UI.Controllers
                 return View("Edit", selectedRecipe);
             }
 
-            _featureUsageNotifier.Notify(Feature.RecipeSave, notes: string.Format("RecipeId|{0}", selectedRecipe.Recipe.RecipeId));
+            _featureUsageNotifier.Notify(Feature.RecipeSave, notes: string.Format("{0}|{1}", selectedRecipe.Recipe.Name, selectedRecipe.Recipe.RecipeId));
 
             var recipeToSave = _recipeViewModelAdapter.Convert(selectedRecipe.Recipe);
 
@@ -274,7 +276,7 @@ namespace Domus.Web.UI.Controllers
         [Authorize]
         public ActionResult AddImage(RecipeImageViewModel recipeViewModel)
         {
-            _featureUsageNotifier.Notify(Feature.RecipeAddImage, notes: string.Format("RecipeId|{0}", recipeViewModel.RecipeId));
+            _featureUsageNotifier.Notify(Feature.RecipeAddImage, notes: string.Format("{0}|{1}", recipeViewModel.Name, recipeViewModel.RecipeId));
 
             // Get the image
             var image = WebImage.GetImageFromRequest();
