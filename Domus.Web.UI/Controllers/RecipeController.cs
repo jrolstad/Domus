@@ -72,7 +72,10 @@ namespace Domus.Web.UI.Controllers
         /// <returns></returns>
         public ViewResult Index(string SearchText)
         {
-            _featureUsageNotifier.Notify(Feature.RecipeIndex, notes:string.Format("SearchText|{0}",SearchText));
+            if (!string.IsNullOrWhiteSpace(SearchText))
+            {
+                _featureUsageNotifier.Notify(Feature.RecipeIndex, notes: string.Format("SearchText|{0}", SearchText));
+            }
 
             // Categories
             var categories = _categoryDataProvider.Get();
