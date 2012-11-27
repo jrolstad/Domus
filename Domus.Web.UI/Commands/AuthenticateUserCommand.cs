@@ -28,7 +28,7 @@ namespace Domus.Web.UI.Commands
             {
                 FormsAuthentication.SetAuthCookie(userRequest.UserName, true);
 
-                return new AuthenticateUserResponse {IsAuthenticated = true};
+                return new AuthenticateUserResponse { IsAuthenticated = true };
             }
 
             // Otherwise they were not authenticated
