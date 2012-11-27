@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Configuration;
 using System.Globalization;
+using Domus.Commands;
 using Domus.Providers;
 using Domus.Web.UI;
 using Domus.Web.UI.Commands;
@@ -27,7 +28,7 @@ namespace Domus.WebUI.Test.Commands
 
             var command = new ApplicationDetailsCommand(keepAliveHandler);
 
-            _result = command.Execute();
+            _result = command.Execute(Request.Empty);
         }
 
         [TestFixtureTearDown]

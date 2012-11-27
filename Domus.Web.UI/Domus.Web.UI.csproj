@@ -119,6 +119,7 @@
     <Compile Include="Infrastructure\DependencyInjection\Bootstrapper.cs" />
     <Compile Include="Infrastructure\DependencyInjection\Registrations\AdapterRegistration.cs" />
     <Compile Include="Infrastructure\DependencyInjection\Registrations\AuthenticationRegistration.cs" />
+    <Compile Include="Infrastructure\DependencyInjection\Registrations\CommandRegistration.cs" />
     <Compile Include="Infrastructure\DependencyInjection\Registrations\DataProviderRegistration.cs" />
     <Compile Include="KeepAliveHandler.cs" />
     <Compile Include="Models\Home\ApplicationDetailsResponse.cs" />

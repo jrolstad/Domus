@@ -65,8 +65,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Adapters\AutoMapperAdapter.cs" />
-    <Compile Include="Adapters\IAdapter.cs" />
+    <Compile Include="Commands\ICommand.cs" />
+    <Compile Include="Commands\Request.cs" />
+    <Compile Include="Commands\Response.cs" />
+    <Compile Include="Mappers\AutoMapperMapper.cs" />
+    <Compile Include="Mappers\IMapper.cs" />
     <Compile Include="Clock.cs" />
     <Compile Include="Entities\Category.cs" />
     <Compile Include="Entities\Feature.cs" />

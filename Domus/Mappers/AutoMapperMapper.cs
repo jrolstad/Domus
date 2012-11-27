@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Domus.Adapters
+namespace Domus.Mappers
 {
     /// <summary>
     /// Converts items using the automapper
     /// </summary>
     /// <typeparam name="F">What to convert from</typeparam>
     /// <typeparam name="T">What to convert to</typeparam>
-    public class AutoMapperAdapter<F,T>:IAdapter<F,T>
+    public class AutoMapperMapper<F,T>:IMapper<F,T>
     {
         private static readonly object lockObject = new object();
         private static readonly bool _isConfigured;
@@ -16,7 +16,7 @@ namespace Domus.Adapters
         /// <summary>
         /// Static constructor; creates a map
         /// </summary>
-        static AutoMapperAdapter()
+        static AutoMapperMapper()
         {
             lock (lockObject)
             {
@@ -33,11 +33,11 @@ namespace Domus.Adapters
         /// </summary>
         /// <param name="from"></param>
         /// <returns></returns>
-        public virtual IEnumerable<T> Convert(IEnumerable<F> from)
+        public virtual IEnumerable<T> Map(IEnumerable<F> from)
         {
             return from
                 .AsParallel()
-                .Select(Convert);
+                .Select(Map);
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace Domus.Adapters
         /// </summary>
         /// <param name="from"></param>
         /// <returns></returns>
-        public virtual T Convert(F from)
+        public virtual T Map(F from)
         {
             return AutoMapper.Mapper.Map<F, T>(from);
         }

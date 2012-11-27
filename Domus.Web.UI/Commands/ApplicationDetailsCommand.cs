@@ -2,12 +2,13 @@
 using System.Configuration;
 using System.Globalization;
 using System.Web;
+using Domus.Commands;
 using Domus.Providers;
 using Domus.Web.UI.Models.Home;
 
 namespace Domus.Web.UI.Commands
 {
-    public class ApplicationDetailsCommand
+    public class ApplicationDetailsCommand:ICommand<Request,ApplicationDetailsResponse>
     {
         private readonly IKeepAliveHandler _keepAliveHandler;
 
@@ -16,7 +17,7 @@ namespace Domus.Web.UI.Commands
             _keepAliveHandler = keepAliveHandler;
         }
 
-        public ApplicationDetailsResponse Execute()
+        public ApplicationDetailsResponse Execute(Request request)
         {
             var url = GetBaseUrl();
             var accessKey = ConfigurationManager.AppSettings["AWS_ACCESS_KEY"];

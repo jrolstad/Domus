@@ -1,9 +1,9 @@
 ﻿using System;
-using Domus.Adapters;
+using Domus.Mappers;
 using FizzWare.NBuilder;
 using NUnit.Framework;
 
-namespace Domus.Test.Adapters
+namespace Domus.Test.Mappers
 {
     [TestFixture]
     public class When_converting_from_one_type_to_another_with_the_same_names
@@ -32,10 +32,10 @@ namespace Domus.Test.Adapters
         [TestFixtureSetUp]
         public void BeforeAll()
         {
-            var adapter = new AutoMapperAdapter<Source, Destination>();
+            var adapter = new AutoMapperMapper<Source, Destination>();
 
             _source = Builder<Source>.CreateNew().Build();
-            _result = adapter.Convert(_source);
+            _result = adapter.Map(_source);
         }
 
 

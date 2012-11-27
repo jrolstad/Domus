@@ -1,5 +1,5 @@
-﻿using Domus.Adapters;
-using Domus.Entities;
+﻿using Domus.Entities;
+using Domus.Mappers;
 using Domus.Web.UI.Models.Recipes;
 using Ninject.Modules;
 
@@ -14,16 +14,16 @@ namespace Domus.Web.UI.Infrastructure.DependencyInjection.Registrations
                 .InSingletonScope()
                 .OnDeactivation(context => context.Dispose());
 
-           Bind<IAdapter<Recipe, RecipeViewModel>>()
-                .To<AutoMapperAdapter<Recipe, RecipeViewModel>>()
+           Bind<IMapper<Recipe, RecipeViewModel>>()
+                .To<AutoMapperMapper<Recipe, RecipeViewModel>>()
                 .InSingletonScope();
 
-            Bind<IAdapter<RecipeViewModel, Recipe>>()
-                .To<AutoMapperAdapter<RecipeViewModel, Recipe>>()
+            Bind<IMapper<RecipeViewModel, Recipe>>()
+                .To<AutoMapperMapper<RecipeViewModel, Recipe>>()
                 .InSingletonScope();
 
-            Bind<IAdapter<Category, CategoryViewModel>>()
-                .To<AutoMapperAdapter<Category, CategoryViewModel>>()
+            Bind<IMapper<Category, CategoryViewModel>>()
+                .To<AutoMapperMapper<Category, CategoryViewModel>>()
                 .InSingletonScope();
         }
     }

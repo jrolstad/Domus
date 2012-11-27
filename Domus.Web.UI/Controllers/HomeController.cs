@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using System.Web.Security;
+using Domus.Commands;
 using Domus.Entities;
 using Domus.Providers;
 using Domus.Web.UI.Commands;
@@ -23,7 +24,7 @@ namespace Domus.Web.UI.Controllers
         /// </summary>
         private readonly IDataProvider<User, string> _userProvider;
 
-        private readonly ApplicationDetailsCommand _applicationDetailsCommand;
+        private readonly ICommand<Request, ApplicationDetailsResponse> _applicationDetailsCommand;
         private readonly IFeatureUsageNotifier _featureUsageNotifier;
 
         /// <summary>
@@ -32,8 +33,8 @@ namespace Domus.Web.UI.Controllers
         /// <param name="userProvider">Provider for obtaining users</param>
         /// <param name="applicationDetailsCommand">Details of the application</param>
         /// <param name="featureUsageNotifier"></param>
-        public HomeController(IDataProvider<User,string> userProvider, 
-            ApplicationDetailsCommand applicationDetailsCommand,
+        public HomeController(IDataProvider<User,string> userProvider,
+            ICommand<Request, ApplicationDetailsResponse> applicationDetailsCommand,
             IFeatureUsageNotifier featureUsageNotifier)
         {
             _userProvider = userProvider;
@@ -81,6 +82,7 @@ namespace Domus.Web.UI.Controllers
         public ActionResult Authenticate(LogOnViewModel viewModel)
         {
             _featureUsageNotifier.Notify(Feature.HomeAuthenticate);
+
             // Try and get the related user
             var user = _userProvider.Get(viewModel.EmailAddress);
 
@@ -90,7 +92,7 @@ namespace Domus.Web.UI.Controllers
                 FormsAuthentication.SetAuthCookie(viewModel.EmailAddress,true);
                 return RedirectToAction("Index", "Recipe");
             }
-
+            
             // Otherwise return them to this save view
             return View("LogOn", viewModel);
         }
@@ -100,7 +102,7 @@ namespace Domus.Web.UI.Controllers
         {
             _featureUsageNotifier.Notify(Feature.HomeApplicationDetails);
 
-            var result = _applicationDetailsCommand.Execute();
+            var result = _applicationDetailsCommand.Execute(Domus.Commands.Request.Empty);
             return this.Json(result,JsonRequestBehavior.AllowGet);
         }
     }

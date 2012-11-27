@@ -4,8 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Web.Helpers;
 using System.Web.Mvc;
-using Domus.Adapters;
 using Domus.Entities;
+using Domus.Mappers;
 using Domus.Providers;
 using Domus.Web.UI.Models.Recipes;
 using Rolstad.Extensions;
@@ -27,9 +27,9 @@ namespace Domus.Web.UI.Controllers
 
         private readonly IDataProvider<Recipe, string> _recipeDataProvider;
         private readonly IDataProvider<Category, string> _categoryDataProvider;
-        private readonly IAdapter<Recipe, RecipeViewModel> _recipeAdapter;
-        private readonly IAdapter<RecipeViewModel, Recipe> _recipeViewModelAdapter;
-        private readonly IAdapter<Category, CategoryViewModel> _categoryAdapter;
+        private readonly IMapper<Recipe, RecipeViewModel> _recipeMapper;
+        private readonly IMapper<RecipeViewModel, Recipe> _recipeViewModelMapper;
+        private readonly IMapper<Category, CategoryViewModel> _categoryMapper;
         private readonly TempImageProvider _tempImageProvider;
         private readonly AmazonS3FileProvider _amazonS3FileProvider;
         private readonly IFeatureUsageNotifier _featureUsageNotifier;
@@ -39,17 +39,17 @@ namespace Domus.Web.UI.Controllers
         /// </summary>
         /// <param name="recipeDataProvider">Provider for recipe data</param>
         /// <param name="categoryDataProvider">Provder for categories</param>
-        /// <param name="recipeAdapter">Adapter for converting from the recipe domain model to view model</param>
-        /// <param name="recipeViewModelAdapter">Adapter for converting from the recipe view model to domain model</param>
-        /// <param name="categoryAdapter">Adapter for converting from the category domain model to view model</param>
+        /// <param name="recipeMapper">Adapter for converting from the recipe domain model to view model</param>
+        /// <param name="recipeViewModelMapper">Adapter for converting from the recipe view model to domain model</param>
+        /// <param name="categoryMapper">Adapter for converting from the category domain model to view model</param>
         /// <param name="tempImageProvider">Provider for persisting temporary images to disk</param>
         /// <param name="amazonS3FileProvider">Provider for persisting files to Amazon S3 </param>
         /// <param name="featureUsageNotifier"></param>
         public RecipeController(IDataProvider<Recipe,string> recipeDataProvider,
                                 IDataProvider<Category,string> categoryDataProvider,
-                                IAdapter<Recipe,RecipeViewModel> recipeAdapter,
-                                IAdapter<RecipeViewModel,Recipe> recipeViewModelAdapter,
-                                IAdapter<Category,CategoryViewModel> categoryAdapter,
+                                IMapper<Recipe,RecipeViewModel> recipeMapper,
+                                IMapper<RecipeViewModel,Recipe> recipeViewModelMapper,
+                                IMapper<Category,CategoryViewModel> categoryMapper,
                                 TempImageProvider tempImageProvider,
                                 AmazonS3FileProvider amazonS3FileProvider,
                                 IFeatureUsageNotifier featureUsageNotifier
@@ -57,9 +57,9 @@ namespace Domus.Web.UI.Controllers
         {
             _recipeDataProvider = recipeDataProvider;
             _categoryDataProvider = categoryDataProvider;
-            _recipeAdapter = recipeAdapter;
-            _recipeViewModelAdapter = recipeViewModelAdapter;
-            _categoryAdapter = categoryAdapter;
+            _recipeMapper = recipeMapper;
+            _recipeViewModelMapper = recipeViewModelMapper;
+            _categoryMapper = categoryMapper;
             _tempImageProvider = tempImageProvider;
             _amazonS3FileProvider = amazonS3FileProvider;
             _featureUsageNotifier = featureUsageNotifier;
@@ -79,11 +79,11 @@ namespace Domus.Web.UI.Controllers
 
             // Categories
             var categories = _categoryDataProvider.Get();
-            var categoryViewModels = _categoryAdapter.Convert(categories).OrderBy(c=>c.Description).ToArray();
+            var categoryViewModels = _categoryMapper.Map(categories).OrderBy(c=>c.Description).ToArray();
 
             // Recipes
             var recipes = SearchText == null ? new Recipe[0] : ExecuteSearch(SearchText);
-            var recipeViewModel = _recipeAdapter.Convert(recipes).OrderBy(r=>r.Name).ToArray();
+            var recipeViewModel = _recipeMapper.Map(recipes).OrderBy(r=>r.Name).ToArray();
 
             // Message
             var message = SearchText == null ? "Welcome" : "{0} recipes found".StringFormat(recipeViewModel.Length);
@@ -149,7 +149,7 @@ namespace Domus.Web.UI.Controllers
             {
                 // Categories
                 var categories = _categoryDataProvider.Get();
-                var categoryViewModels = _categoryAdapter.Convert(categories).OrderBy(c => c.Description).ToArray();
+                var categoryViewModels = _categoryMapper.Map(categories).OrderBy(c => c.Description).ToArray();
 
                 selectedRecipe.Categories = categoryViewModels;
 
@@ -158,7 +158,7 @@ namespace Domus.Web.UI.Controllers
 
             _featureUsageNotifier.Notify(Feature.RecipeSave, notes: string.Format("{0}|{1}", selectedRecipe.Recipe.Name, selectedRecipe.Recipe.RecipeId));
 
-            var recipeToSave = _recipeViewModelAdapter.Convert(selectedRecipe.Recipe);
+            var recipeToSave = _recipeViewModelMapper.Map(selectedRecipe.Recipe);
 
             var existingRecipe = _recipeDataProvider.Get(selectedRecipe.Recipe.RecipeId);
             if(existingRecipe != null && existingRecipe.Category != recipeToSave.Category)
@@ -205,7 +205,7 @@ namespace Domus.Web.UI.Controllers
         {
             // Categories
             var categories = _categoryDataProvider.Get();
-            var categoryViewModels = _categoryAdapter.Convert(categories).OrderBy(c => c.Description).ToArray();
+            var categoryViewModels = _categoryMapper.Map(categories).OrderBy(c => c.Description).ToArray();
 
             // Create a new recipe
             var recipeModel = new RecipeViewModel { RecipeId = recipeId};
@@ -226,11 +226,11 @@ namespace Domus.Web.UI.Controllers
         {
             // Categories
             var categories = _categoryDataProvider.Get();
-            var categoryViewModels = _categoryAdapter.Convert(categories).OrderBy(c=>c.Description).ToArray();
+            var categoryViewModels = _categoryMapper.Map(categories).OrderBy(c=>c.Description).ToArray();
 
             // Obtain the given recipe
             var recipe = _recipeDataProvider.Get(recipeId);
-            var recipeModel = recipe != null ?_recipeAdapter.Convert(recipe) : new RecipeViewModel {RecipeId = recipeId};
+            var recipeModel = recipe != null ?_recipeMapper.Map(recipe) : new RecipeViewModel {RecipeId = recipeId};
 
             return new SelectedRecipeViewModel
                        {

@@ -14,6 +14,7 @@ namespace Domus.Web.UI.Infrastructure.DependencyInjection
                      new AdapterRegistration(),
                      new DataProviderRegistration(),
                      new AuthenticationRegistration(), 
+                     new CommandRegistration(), 
                  };
              kernel.Load(modulesToLoad);
 

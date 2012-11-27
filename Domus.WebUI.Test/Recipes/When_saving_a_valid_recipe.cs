@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using Domus.Adapters;
 using Domus.Entities;
+using Domus.Mappers;
 using Domus.Providers;
 using Domus.Web.UI.Controllers;
 using Domus.Web.UI.Models.Recipes;
@@ -38,9 +38,9 @@ namespace Domus.WebUI.Test.Recipes
             
             var controller = new RecipeController(_recipeProvider,
                                                   categoryProvider,
-                                                  new AutoMapperAdapter<Recipe, RecipeViewModel>(),
-                                                  new AutoMapperAdapter<RecipeViewModel, Recipe>(),
-                                                  new AutoMapperAdapter<Category, CategoryViewModel>(),
+                                                  new AutoMapperMapper<Recipe, RecipeViewModel>(),
+                                                  new AutoMapperMapper<RecipeViewModel, Recipe>(),
+                                                  new AutoMapperMapper<Category, CategoryViewModel>(),
                                                   MockRepository.GenerateStub<TempImageProvider>(),
                                                   MockRepository.GenerateStub<AmazonS3FileProvider>(),
                                                   MockRepository.GenerateStub<IFeatureUsageNotifier>()

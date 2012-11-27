@@ -1,11 +1,11 @@
 using System;
 using System.Linq;
-using Domus.Adapters;
+using Domus.Mappers;
 using FizzWare.NBuilder;
 using NUnit.Framework;
 using Rolstad.Extensions;
 
-namespace Domus.Test.Adapters
+namespace Domus.Test.Mappers
 {
     [TestFixture]
     public class When_converting_a_set_of_items
@@ -34,10 +34,10 @@ namespace Domus.Test.Adapters
         [TestFixtureSetUp]
         public void BeforeAll()
         {
-            var adapter = new AutoMapperAdapter<Source, Destination>();
+            var adapter = new AutoMapperMapper<Source, Destination>();
 
             this._source = Builder<Source>.CreateListOfSize(10).Build().ToArray();
-            this._result = adapter.Convert(this._source).ToArray();
+            this._result = adapter.Map(this._source).ToArray();
         }
 
 
