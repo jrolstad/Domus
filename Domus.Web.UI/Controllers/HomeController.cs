@@ -103,17 +103,5 @@ namespace Domus.Web.UI.Controllers
             var result = _applicationDetailsCommand.Execute();
             return this.Json(result,JsonRequestBehavior.AllowGet);
         }
-
-        [Authorize]
-        public ActionResult RequestSettings()
-        {
-            var values = Request
-                .ServerVariables
-                .AllKeys
-                .Select(key => new KeyValuePair<string, string>(key, Request.ServerVariables[key]))
-                .ToList();
-
-            return Json(values, JsonRequestBehavior.AllowGet);
-        }
     }
 }

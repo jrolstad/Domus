@@ -67,6 +67,7 @@
   <ItemGroup>
     <Compile Include="Adapters\AutoMapperAdapter.cs" />
     <Compile Include="Adapters\IAdapter.cs" />
+    <Compile Include="Clock.cs" />
     <Compile Include="Entities\Category.cs" />
     <Compile Include="Entities\Feature.cs" />
     <Compile Include="Entities\FeatureUsage.cs" />

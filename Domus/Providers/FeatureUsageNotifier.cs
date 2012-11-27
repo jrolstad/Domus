@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Security.Principal;
 using System.Threading.Tasks;
-using System.Web;
 using Directus.SimpleDb.Providers;
 using Domus.Entities;
 
@@ -9,14 +9,16 @@ namespace Domus.Providers
     public class FeatureUsageNotifier : IFeatureUsageNotifier
     {
         private readonly SimpleDBProvider<FeatureUsage, string> _simpleDbProvider;
+        private readonly IPrincipal _currentUser;
 
-        internal FeatureUsageNotifier(SimpleDBProvider<FeatureUsage, string> simpleDbProvider)
+        internal FeatureUsageNotifier(SimpleDBProvider<FeatureUsage, string> simpleDbProvider, IPrincipal currentUser)
         {
             _simpleDbProvider = simpleDbProvider;
+            _currentUser = currentUser;
         }
 
-        public FeatureUsageNotifier(string accessKey, string secretKey)
-            : this(new SimpleDBProvider<FeatureUsage, string>(accessKey, secretKey))
+        public FeatureUsageNotifier(string accessKey, string secretKey, IPrincipal currentUser)
+            : this(new SimpleDBProvider<FeatureUsage, string>(accessKey, secretKey),currentUser)
         {
            
         }
@@ -25,8 +27,8 @@ namespace Domus.Providers
         {
             try
             {
-                var resolvedUsedAt = usedAt.GetValueOrDefault(DateTime.Now).ToUniversalTime();
-                var resolvedUsedBy = ResolveUserName(usedBy);
+                var resolvedUsedAt = usedAt.GetValueOrDefault(Clock.Now).ToUniversalTime();
+                var resolvedUsedBy = usedBy ?? _currentUser.Identity.Name;
                 var resolvedNotes = notes ?? "";
 
                 var task = new Task(() => SaveFeatureUsage(feature, resolvedUsedAt, resolvedUsedBy, resolvedNotes));
@@ -50,23 +52,6 @@ namespace Domus.Providers
                 };
 
             _simpleDbProvider.Save(new[] {usage});
-        }
-
-        private static string ResolveUserName(string usedBy)
-        {
-            var resolvedUserName = usedBy ?? "";
-
-            if (string.IsNullOrWhiteSpace(usedBy))
-            {
-                if (HttpContext.Current != null
-                    && HttpContext.Current.User != null)
-                {
-                    resolvedUserName = HttpContext.Current.User.Identity.Name;
-                }
-
-            }
-
-            return resolvedUserName;
         }
     }
 }

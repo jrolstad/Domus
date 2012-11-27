@@ -20,6 +20,6 @@ namespace Domus.Web.UI.Models.Home
 
         public string UserName { get; set; }
 
-        public string CurrentTIme { get; set; }
+        public string CurrentTime { get; set; }
     }
 }

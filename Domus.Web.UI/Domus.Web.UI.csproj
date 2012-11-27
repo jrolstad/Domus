@@ -115,8 +115,10 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="IKeepAliveHandler.cs" />
     <Compile Include="Infrastructure\DependencyInjection\Bootstrapper.cs" />
     <Compile Include="Infrastructure\DependencyInjection\Registrations\AdapterRegistration.cs" />
+    <Compile Include="Infrastructure\DependencyInjection\Registrations\AuthenticationRegistration.cs" />
     <Compile Include="Infrastructure\DependencyInjection\Registrations\DataProviderRegistration.cs" />
     <Compile Include="KeepAliveHandler.cs" />
     <Compile Include="Models\Home\ApplicationDetailsResponse.cs" />

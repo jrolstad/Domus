@@ -9,9 +9,9 @@ namespace Domus.Web.UI.Commands
 {
     public class ApplicationDetailsCommand
     {
-        private readonly KeepAliveHandler _keepAliveHandler;
+        private readonly IKeepAliveHandler _keepAliveHandler;
 
-        public ApplicationDetailsCommand(KeepAliveHandler keepAliveHandler)
+        public ApplicationDetailsCommand(IKeepAliveHandler keepAliveHandler)
         {
             _keepAliveHandler = keepAliveHandler;
         }
@@ -25,13 +25,13 @@ namespace Domus.Web.UI.Commands
             var cacheTimeout = AmazonSimpleDbRecipeProvider.CacheDuration;
 
             var startTime = _keepAliveHandler.ApplicationStartTime;
-            var applicationDuration = DateTime.Now.Subtract(startTime);
+            var applicationDuration = Clock.Now.Subtract(startTime);
 
             var serverName = Environment.MachineName;
             var userName = Environment.UserName;
             var userDomain = Environment.UserDomainName;
             var fullUserName = string.Format(@"{0}\{1}", userDomain, userName);
-            var currentTime = DateTime.Now.ToString(CultureInfo.CurrentUICulture);
+            var currentTime = Clock.Now.ToString(CultureInfo.CurrentUICulture);
 
             return new ApplicationDetailsResponse
                        {
@@ -43,12 +43,15 @@ namespace Domus.Web.UI.Commands
                            ApplicationUpTime = applicationDuration,
                            ServerName = serverName,
                            UserName = fullUserName,
-                           CurrentTIme = currentTime
+                           CurrentTime = currentTime
                        };
         }
 
         private string GetBaseUrl()
         {
+            if (HttpContext.Current == null)
+                return null;
+
             var request = HttpContext.Current.Request;
             var baseUrl = request.Url.Scheme + "://" + request.Url.Authority + request.ApplicationPath.TrimEnd('/') + "/";
 

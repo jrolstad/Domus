@@ -84,6 +84,7 @@
     <Compile Include="Providers\AmazonSimpleDbCategoryProviderTests.cs" />
     <Compile Include="Providers\AmazonSimpleDbRecipeProviderTests.cs" />
     <Compile Include="Providers\AmazonSimpleDbUserProviderTests.cs" />
+    <Compile Include="Providers\FeatureUsageNotifierTests.cs" />
     <Compile Include="Providers\TempImageProviderTests.cs" />
   </ItemGroup>
   <ItemGroup>

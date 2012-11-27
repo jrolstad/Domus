@@ -3,18 +3,18 @@ using System.Net;
 
 namespace Domus.Web.UI
 {
-    public class KeepAliveHandler:IDisposable
+    public class KeepAliveHandler: IKeepAliveHandler
     {
         private readonly string _url;
-        public readonly DateTime ApplicationStartTime;
 
         public KeepAliveHandler()
         {
             _url = "http://recipes.rolstadfamily.com";
 
-            ApplicationStartTime = DateTime.Now;
+            ApplicationStartTime = Clock.Now;
         }
 
+        public DateTime ApplicationStartTime { get; set; }
 
         public void Dispose()
         {
