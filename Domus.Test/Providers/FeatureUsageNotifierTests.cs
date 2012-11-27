@@ -4,6 +4,7 @@ using System.Threading;
 using Directus.SimpleDb.Providers;
 using Domus.Entities;
 using Domus.Providers;
+using Notifiers;
 using NUnit.Framework;
 using Rhino.Mocks;
 
@@ -32,7 +33,7 @@ namespace Domus.Test.Providers
                 var currentUser = MockRepository.GenerateStub<IPrincipal>();
                 currentUser.Stub(c => c.Identity).Return(identity);
 
-                var notifier = new FeatureUsageNotifier(provider, currentUser);
+                var notifier = new AmazonSimpleDbFeatureUsageNotifier(provider, currentUser);
 
                 // Act
                 notifier.Notify(feature, notes: notes);

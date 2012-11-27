@@ -5,7 +5,7 @@ namespace Domus.Providers
     /// <summary>
     /// Provider for cacheing
     /// </summary>
-    public interface ICacheProvider
+    public interface ICache
     {
         /// <summary>
         /// Gets a given value from the cache

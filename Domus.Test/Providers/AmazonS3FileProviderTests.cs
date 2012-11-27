@@ -1,5 +1,6 @@
 ﻿using Amazon.S3.Model;
 using Domus.Providers;
+using Domus.Providers.FileProviders;
 using NUnit.Framework;
 using Rhino.Mocks;
 

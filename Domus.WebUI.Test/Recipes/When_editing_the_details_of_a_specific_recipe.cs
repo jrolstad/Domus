@@ -26,11 +26,11 @@ namespace Domus.WebUI.Test.Recipes
             
             // Set up dependencies for controller
             this._recipeFromProvider = Builder<Recipe>.CreateNew().Build();
-            var recipeProvider = MockRepository.GenerateStub<IDataProvider<Recipe,string>>();
+            var recipeProvider = MockRepository.GenerateStub<IRepository<Recipe,string>>();
             recipeProvider.Stub(p => p.Get(this._recipeFromProvider.RecipeId)).Return(this._recipeFromProvider);
 
             this._categoriesFromProvider = Builder<Category>.CreateListOfSize(20).Build();
-            var categoryProvider = MockRepository.GenerateStub<IDataProvider<Category,string>>();
+            var categoryProvider = MockRepository.GenerateStub<IRepository<Category,string>>();
             categoryProvider.Stub(p => p.Get()).Return(this._categoriesFromProvider);
 
             var controller = new RecipeController(recipeProvider,
@@ -38,8 +38,8 @@ namespace Domus.WebUI.Test.Recipes
                                                   new AutoMapperMapper<Recipe, RecipeViewModel>(),
                                                   new AutoMapperMapper<RecipeViewModel, Recipe>(),
                                                   new AutoMapperMapper<Category, CategoryViewModel>(),
-                                                  MockRepository.GenerateStub<TempImageProvider>(),
-                                                  MockRepository.GenerateStub<AmazonS3FileProvider>(),
+                                                  MockRepository.GenerateStub<IImageProvider>(),
+                                                  MockRepository.GenerateStub<IFileProvider>(),
                                                   MockRepository.GenerateStub<IFeatureUsageNotifier>()
                 );
 

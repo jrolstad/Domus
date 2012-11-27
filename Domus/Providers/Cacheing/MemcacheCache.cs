@@ -1,13 +1,13 @@
-﻿using System;
+using System;
 using Enyim.Caching;
 using Enyim.Caching.Memcached;
 
-namespace Domus.Providers
+namespace Domus.Providers.Cacheing
 {
     /// <summary>
     /// Cache provider for Membase
     /// </summary>
-    public class MemcacheCache:ICacheProvider
+    public class MemcacheCache:ICache
     {
         private readonly MemcachedClient _cache;
 

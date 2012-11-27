@@ -3,6 +3,7 @@ using System.Linq;
 using Directus.SimpleDb.Providers;
 using Domus.Entities;
 using Domus.Providers;
+using Domus.Providers.Repositories;
 using Enyim.Caching.Configuration;
 using Enyim.Caching.Memcached;
 using FizzWare.NBuilder;
@@ -20,7 +21,7 @@ namespace Domus.Test.Providers
             // Arrange
             
             // Act
-            var result = new AmazonSimpleDbRecipeProvider("access", "key", MockRepository.GenerateStub<ICacheProvider>());
+            var result = new AmazonSimpleDbRecipeProvider("access", "key", MockRepository.GenerateStub<ICache>());
 
             // Assert
             Assert.That(result._provider,Is.Not.Null);
@@ -36,7 +37,7 @@ namespace Domus.Test.Providers
             var simpleDB = MockRepository.GenerateStub<SimpleDBProvider<Recipe,string>>();
             simpleDB.Stub(sdb => sdb.Get(recipeId)).Return(recipeInDb);
 
-            var provider = new AmazonSimpleDbRecipeProvider(simpleDB, MockRepository.GenerateStub<ICacheProvider>());
+            var provider = new AmazonSimpleDbRecipeProvider(simpleDB, MockRepository.GenerateStub<ICache>());
 
             // Act
             var result = provider.Get(recipeId);
@@ -54,7 +55,7 @@ namespace Domus.Test.Providers
             var simpleDB = MockRepository.GenerateStub<SimpleDBProvider<Recipe, string>>();
             simpleDB.Stub(sdb => sdb.Get()).Return(recipesInDb);
 
-            var provider = new AmazonSimpleDbRecipeProvider(simpleDB, MockRepository.GenerateStub<ICacheProvider>());
+            var provider = new AmazonSimpleDbRecipeProvider(simpleDB, MockRepository.GenerateStub<ICache>());
 
             // Act
             var result = provider.Get();
@@ -74,10 +75,10 @@ namespace Domus.Test.Providers
             var simpleDB = MockRepository.GenerateStub<SimpleDBProvider<Recipe, string>>();
             simpleDB.Stub(sdb => sdb.Get()).Return(recipesInDb);
 
-            var provider = new AmazonSimpleDbRecipeProvider(simpleDB, MockRepository.GenerateStub<ICacheProvider>());
+            var provider = new AmazonSimpleDbRecipeProvider(simpleDB, MockRepository.GenerateStub<ICache>());
 
             // Act
-            var result = provider.Search(r=>r.Name == "Some Name");
+            var result = provider.Find(r=>r.Name == "Some Name");
 
             // Assert
             Assert.That(result.Single().Name, Is.EqualTo("Some Name"));
@@ -91,7 +92,7 @@ namespace Domus.Test.Providers
             var recipe = Builder<Recipe>.CreateNew().Build();
             var simpleDB = MockRepository.GenerateStub<SimpleDBProvider<Recipe, string>>();
 
-            var provider = new AmazonSimpleDbRecipeProvider(simpleDB, MockRepository.GenerateStub<ICacheProvider>());
+            var provider = new AmazonSimpleDbRecipeProvider(simpleDB, MockRepository.GenerateStub<ICache>());
 
             // Act
             provider.Save(recipe);
@@ -107,7 +108,7 @@ namespace Domus.Test.Providers
             var recipeId = Guid.NewGuid().ToString();
             var simpleDB = MockRepository.GenerateStub<SimpleDBProvider<Recipe, string>>();
 
-            var provider = new AmazonSimpleDbRecipeProvider(simpleDB, MockRepository.GenerateStub<ICacheProvider>());
+            var provider = new AmazonSimpleDbRecipeProvider(simpleDB, MockRepository.GenerateStub<ICache>());
 
             // Act
             provider.Delete(recipeId);

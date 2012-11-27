@@ -1,25 +1,28 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Directus.SimpleDb.Providers;
 using Domus.Entities;
 
-namespace Domus.Providers
+namespace Domus.Providers.Repositories
 {
-    public class AmazonSimpleDbCategoryProvider : IDataProvider<Category, string>
+    /// <summary>
+    /// Recipe data provider that uses the Amazon SimpleDb
+    /// </summary>
+    public class AmazonSimpleDbRecipeProvider:IRepository<Recipe,string>
     {
-        private readonly SimpleDBProvider<Category, string> _provider;
-        private readonly ICacheProvider _cache;
+        internal SimpleDBProvider<Recipe, string> _provider;
+        private readonly ICache _cache;
         public static readonly TimeSpan CacheDuration = new TimeSpan(0, 4, 0, 0);
 
-        private const string categoryCachKey = "DomusCategories";
+        private const string recipeCachKey = "DomuRecipes";
 
         /// <summary>
         /// Constructor that consumes the underlying simpledb provider
         /// </summary>
         /// <param name="simpleDbProvider"></param>
-        /// <param name="cache"> </param>
-        internal AmazonSimpleDbCategoryProvider(SimpleDBProvider<Category, string> simpleDbProvider,ICacheProvider cache)
+        /// <param name="cache">Cache provider</param>
+        internal AmazonSimpleDbRecipeProvider(SimpleDBProvider<Recipe, string> simpleDbProvider,ICache cache)
         {
             _provider = simpleDbProvider;
             _cache = cache;
@@ -30,9 +33,9 @@ namespace Domus.Providers
         /// </summary>
         /// <param name="accessKey">Access key</param>
         /// <param name="secretKey">Secret Key</param>
-        /// <param name="cache"> </param>
-        public AmazonSimpleDbCategoryProvider(string accessKey, string secretKey,ICacheProvider cache)
-            : this(new SimpleDBProvider<Category, string>(accessKey, secretKey),cache)
+        /// <param name="cache">Cache provider</param>
+        public AmazonSimpleDbRecipeProvider(string accessKey, string secretKey,ICache cache)
+            : this(new SimpleDBProvider<Recipe, string>(accessKey, secretKey),cache)
         {
            
         }
@@ -42,11 +45,11 @@ namespace Domus.Providers
         /// </summary>
         /// <param name="identifier">Identifier to get the item for</param>
         /// <returns></returns>
-        public Category Get(string identifier)
+        public Recipe Get( string identifier )
         {
-            var cateogoriesInCached = _cache.Get<IEnumerable<Category>>(categoryCachKey);
-            return cateogoriesInCached != null ?
-                cateogoriesInCached.FirstOrDefault(r => r.CategoryId == identifier) :
+            var recipesFromCache = _cache.Get<IEnumerable<Recipe>>(recipeCachKey);
+            return recipesFromCache != null ? 
+                recipesFromCache.FirstOrDefault(r => r.RecipeId == identifier) : 
                 _provider.Get(identifier);
         }
 
@@ -54,18 +57,18 @@ namespace Domus.Providers
         /// Obtains all of the items
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<Category> Get()
+        public IEnumerable<Recipe> Get()
         {
 
-            var cateogoriesInCached = _cache.Get<IEnumerable<Category>>(categoryCachKey);
-            var categories = (cateogoriesInCached ?? _provider.Get()).ToArray();
+            var recipesFromCache = _cache.Get<IEnumerable<Recipe>>(recipeCachKey);
+            var recipes = (recipesFromCache ?? _provider.Get()).ToArray();
 
-            if (cateogoriesInCached == null)
+            if(recipesFromCache == null)
             {
-                _cache.Put(categories, categoryCachKey, CacheDuration);
+                _cache.Put(recipes,recipeCachKey,CacheDuration);
             }
 
-            return categories;
+            return recipes;
         }
 
         /// <summary>
@@ -73,7 +76,7 @@ namespace Domus.Providers
         /// </summary>
         /// <param name="filterCriteria"></param>
         /// <returns></returns>
-        public IEnumerable<Category> Search(Func<Category, bool> filterCriteria)
+        public IEnumerable<Recipe> Find( Func<Recipe, bool> filterCriteria )
         {
             return Get().Where(filterCriteria);
         }
@@ -82,20 +85,20 @@ namespace Domus.Providers
         /// Saves a particular item
         /// </summary>
         /// <param name="item"></param>
-        public void Save(Category item)
+        public void Save( Recipe item )
         {
-            _provider.Save(new[] { item });
-            _cache.Remove(categoryCachKey);
+            _provider.Save(new[]{item});
+            _cache.Remove(recipeCachKey);
         }
 
         /// <summary>
         /// Deletes a given item
         /// </summary>
         /// <param name="identifier"></param>
-        public void Delete(string identifier)
+        public void Delete( string identifier )
         {
-            _provider.Delete(new[] { identifier });
-            _cache.Remove(categoryCachKey);
+            _provider.Delete(new[]{identifier});
+            _cache.Remove(recipeCachKey);
         }
 
         /// <summary>
@@ -103,7 +106,7 @@ namespace Domus.Providers
         /// </summary>
         public void Refresh()
         {
-            _cache.Remove(categoryCachKey);
+            _cache.Remove(recipeCachKey);
         }
     }
 }

@@ -22,7 +22,7 @@ namespace Domus.Web.UI.Controllers
         /// <summary>
         /// Provider used for user data
         /// </summary>
-        private readonly IDataProvider<User, string> _userProvider;
+        private readonly IRepository<User, string> _userProvider;
 
         private readonly ICommand<Request, ApplicationDetailsResponse> _applicationDetailsCommand;
         private readonly IFeatureUsageNotifier _featureUsageNotifier;
@@ -33,7 +33,7 @@ namespace Domus.Web.UI.Controllers
         /// <param name="userProvider">Provider for obtaining users</param>
         /// <param name="applicationDetailsCommand">Details of the application</param>
         /// <param name="featureUsageNotifier"></param>
-        public HomeController(IDataProvider<User,string> userProvider,
+        public HomeController(IRepository<User,string> userProvider,
             ICommand<Request, ApplicationDetailsResponse> applicationDetailsCommand,
             IFeatureUsageNotifier featureUsageNotifier)
         {

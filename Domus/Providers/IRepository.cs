@@ -8,7 +8,7 @@ namespace Domus.Providers
     /// </summary>
     /// <typeparam name="T">Type of item being provisioned</typeparam>
     /// <typeparam name="I">Identifier for the item</typeparam>
-    public interface IDataProvider<T, I>
+    public interface IRepository<T, in I>
     {
         /// <summary>
         /// Obtains a single item
@@ -28,7 +28,7 @@ namespace Domus.Providers
         /// </summary>
         /// <param name="filterCriteria"></param>
         /// <returns></returns>
-        IEnumerable<T> Search(Func<T, bool> filterCriteria);
+        IEnumerable<T> Find(Func<T, bool> filterCriteria);
 
         /// <summary>
         /// Saves a particular item

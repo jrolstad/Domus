@@ -1,15 +1,15 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Directus.SimpleDb.Providers;
 using Domus.Entities;
 
-namespace Domus.Providers
+namespace Domus.Providers.Repositories
 {
     /// <summary>
     /// Persistence provider for users
     /// </summary>
-    public class AmazonSimpleDbUserProvider:IDataProvider<User,string>
+    public class AmazonSimpleDbUserProvider:IRepository<User,string>
     {
         private readonly SimpleDBProvider<User, string> _provider;
 
@@ -57,7 +57,7 @@ namespace Domus.Providers
         /// </summary>
         /// <param name="filterCriteria"></param>
         /// <returns></returns>
-        public IEnumerable<User> Search( Func<User, bool> filterCriteria )
+        public IEnumerable<User> Find( Func<User, bool> filterCriteria )
         {
             return Get().Where(filterCriteria);
         }

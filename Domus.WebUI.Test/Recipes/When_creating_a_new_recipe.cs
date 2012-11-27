@@ -23,16 +23,16 @@ namespace Domus.WebUI.Test.Recipes
         {
             
             // Set up dependencies for controller
-            var recipeProvider = MockRepository.GenerateStrictMock<IDataProvider<Recipe,string>>();
-            var categoryProvider = MockRepository.GenerateStub<IDataProvider<Category,string>>();
+            var recipeProvider = MockRepository.GenerateStrictMock<IRepository<Recipe,string>>();
+            var categoryProvider = MockRepository.GenerateStub<IRepository<Category,string>>();
 
             var controller = new RecipeController(recipeProvider,
                                                   categoryProvider,
                                                   new AutoMapperMapper<Recipe, RecipeViewModel>(),
                                                   new AutoMapperMapper<RecipeViewModel, Recipe>(),
                                                   new AutoMapperMapper<Category, CategoryViewModel>(),
-                                                  MockRepository.GenerateStub<TempImageProvider>(),
-                                                  MockRepository.GenerateStub<AmazonS3FileProvider>(),
+                                                  MockRepository.GenerateStub<IImageProvider>(),
+                                                  MockRepository.GenerateStub<IFileProvider>(),
                                                   MockRepository.GenerateStub<IFeatureUsageNotifier>()
                 );
 

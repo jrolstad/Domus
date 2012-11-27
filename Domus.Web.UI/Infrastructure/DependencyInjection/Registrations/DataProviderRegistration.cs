@@ -1,6 +1,10 @@
 ﻿using System.Configuration;
 using Domus.Entities;
 using Domus.Providers;
+using Domus.Providers.Cacheing;
+using Notifiers;
+using Domus.Providers.FileProviders;
+using Domus.Providers.Repositories;
 using Ninject.Modules;
 
 namespace Domus.Web.UI.Infrastructure.DependencyInjection.Registrations
@@ -9,32 +13,35 @@ namespace Domus.Web.UI.Infrastructure.DependencyInjection.Registrations
     {
         public override void Load()
         {
-            Bind<ICacheProvider>().To<MemcacheCache>().InSingletonScope();
+            Bind<ICache>().To<MemcacheCache>().InSingletonScope();
 
             var accessKey = ConfigurationManager.AppSettings["AWS_ACCESS_KEY"];
             var secretKey = ConfigurationManager.AppSettings["AWS_SECRET_KEY"];
 
-            Bind<IDataProvider<Recipe, string>>().To<AmazonSimpleDbRecipeProvider>()
+            Bind<IRepository<Recipe, string>>().To<AmazonSimpleDbRecipeProvider>()
                 .InSingletonScope()
                 .WithConstructorArgument("accessKey", accessKey)
                 .WithConstructorArgument("secretKey", secretKey);
 
-            Bind<IDataProvider<User, string>>().To<AmazonSimpleDbUserProvider>()
+            Bind<IRepository<User, string>>().To<AmazonSimpleDbUserProvider>()
                 .InSingletonScope()
                 .WithConstructorArgument("accessKey", accessKey)
                 .WithConstructorArgument("secretKey", secretKey);
 
-            Bind<IDataProvider<Category, string>>().To<AmazonSimpleDbCategoryProvider>()
+            Bind<IRepository<Category, string>>().To<AmazonSimpleDbCategoryProvider>()
               .InSingletonScope()
               .WithConstructorArgument("accessKey", accessKey)
               .WithConstructorArgument("secretKey", secretKey);
 
-            Bind<AmazonS3FileProvider>()
+            Bind<IFileProvider>()
                 .ToMethod(p => new AmazonS3FileProvider(accessKey, secretKey))
               .InSingletonScope();
 
+            Bind<IImageProvider>()
+                .To<TempImageProvider>();
+
             Bind<IFeatureUsageNotifier>()
-                  .To<FeatureUsageNotifier>()
+                  .To<AmazonSimpleDbFeatureUsageNotifier>()
                   .InSingletonScope()
                   .WithConstructorArgument("accessKey", accessKey)
                   .WithConstructorArgument("secretKey", secretKey);

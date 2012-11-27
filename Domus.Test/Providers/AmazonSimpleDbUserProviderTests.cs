@@ -3,6 +3,7 @@ using System.Linq;
 using Directus.SimpleDb.Providers;
 using Domus.Entities;
 using Domus.Providers;
+using Domus.Providers.Repositories;
 using FizzWare.NBuilder;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -64,7 +65,7 @@ namespace Domus.Test.Providers
             var provider = new AmazonSimpleDbUserProvider(simpleDB);
 
             // Act
-            var result = provider.Search(r=>r.Email == "Some Name");
+            var result = provider.Find(r=>r.Email == "Some Name");
 
             // Assert
             Assert.That(result.Single().Email, Is.EqualTo("Some Name"));

@@ -18,7 +18,7 @@ namespace Domus.WebUI.Test.Recipes
         private RedirectToRouteResult _viewResult;
         private IList<Category> _categoriesFromProvider;
         private SelectedRecipeViewModel _viewModelToSave;
-        private IDataProvider<Recipe, string> _recipeProvider;
+        private IRepository<Recipe, string> _recipeProvider;
 
         [TestFixtureSetUp]
         public void BeforeAll()
@@ -29,10 +29,10 @@ namespace Domus.WebUI.Test.Recipes
 
             this._viewModelToSave = new SelectedRecipeViewModel {Recipe = recipeToSave};
 
-            _recipeProvider = MockRepository.GenerateStub<IDataProvider<Recipe, string>>();
+            _recipeProvider = MockRepository.GenerateStub<IRepository<Recipe, string>>();
 
             this._categoriesFromProvider = Builder<Category>.CreateListOfSize(20).Build();
-            var categoryProvider = MockRepository.GenerateStub<IDataProvider<Category,string>>();
+            var categoryProvider = MockRepository.GenerateStub<IRepository<Category,string>>();
             categoryProvider.Stub(p => p.Get()).Return(this._categoriesFromProvider);
 
             
@@ -41,8 +41,8 @@ namespace Domus.WebUI.Test.Recipes
                                                   new AutoMapperMapper<Recipe, RecipeViewModel>(),
                                                   new AutoMapperMapper<RecipeViewModel, Recipe>(),
                                                   new AutoMapperMapper<Category, CategoryViewModel>(),
-                                                  MockRepository.GenerateStub<TempImageProvider>(),
-                                                  MockRepository.GenerateStub<AmazonS3FileProvider>(),
+                                                  MockRepository.GenerateStub<IImageProvider>(),
+                                                  MockRepository.GenerateStub<IFileProvider>(),
                                                   MockRepository.GenerateStub<IFeatureUsageNotifier>()
                 );
 

@@ -77,16 +77,18 @@
     <Compile Include="Entities\Recipe.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Providers\AmazonS3FileProvider.cs" />
-    <Compile Include="Providers\AmazonSimpleDbCategoryProvider.cs" />
-    <Compile Include="Providers\AmazonSimpleDbRecipeProvider.cs" />
-    <Compile Include="Providers\AmazonSimpleDbUserProvider.cs" />
-    <Compile Include="Providers\FeatureUsageNotifier.cs" />
-    <Compile Include="Providers\ICacheProvider.cs" />
-    <Compile Include="Providers\IDataProvider.cs" />
+    <Compile Include="Providers\Cacheing\MemcacheCache.cs" />
+    <Compile Include="Providers\Repositories\AmazonSimpleDbCategoryProvider.cs" />
+    <Compile Include="Providers\Repositories\AmazonSimpleDbRecipeProvider.cs" />
+    <Compile Include="Providers\Repositories\AmazonSimpleDbUserProvider.cs" />
+    <Compile Include="Providers\Notifiers\AmazonSimpleDbFeatureUsageNotifier.cs" />
+    <Compile Include="Providers\FileProviders\AmazonS3FileProvider.cs" />
+    <Compile Include="Providers\FileProviders\TempImageProvider.cs" />
+    <Compile Include="Providers\ICache.cs" />
+    <Compile Include="Providers\IRepository.cs" />
     <Compile Include="Providers\IFeatureUsageNotifier.cs" />
-    <Compile Include="Providers\MemcacheCache.cs" />
-    <Compile Include="Providers\TempImageProvider.cs" />
+    <Compile Include="Providers\IFileProvider.cs" />
+    <Compile Include="Providers\IImageProvider.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

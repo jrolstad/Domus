@@ -25,38 +25,38 @@ namespace Domus.Web.UI.Controllers
         /// </summary>
         private static readonly ILog Logger = LogManager.GetLogger(typeof (RecipeController));
 
-        private readonly IDataProvider<Recipe, string> _recipeDataProvider;
-        private readonly IDataProvider<Category, string> _categoryDataProvider;
+        private readonly IRepository<Recipe, string> _recipeRepository;
+        private readonly IRepository<Category, string> _categoryRepository;
         private readonly IMapper<Recipe, RecipeViewModel> _recipeMapper;
         private readonly IMapper<RecipeViewModel, Recipe> _recipeViewModelMapper;
         private readonly IMapper<Category, CategoryViewModel> _categoryMapper;
-        private readonly TempImageProvider _tempImageProvider;
-        private readonly AmazonS3FileProvider _amazonS3FileProvider;
+        private readonly IImageProvider _tempImageProvider;
+        private readonly IFileProvider _amazonS3FileProvider;
         private readonly IFeatureUsageNotifier _featureUsageNotifier;
 
         /// <summary>
         /// Constructor with all dependencies
         /// </summary>
-        /// <param name="recipeDataProvider">Provider for recipe data</param>
-        /// <param name="categoryDataProvider">Provder for categories</param>
+        /// <param name="recipeRepository">Provider for recipe data</param>
+        /// <param name="categoryRepository">Provder for categories</param>
         /// <param name="recipeMapper">Adapter for converting from the recipe domain model to view model</param>
         /// <param name="recipeViewModelMapper">Adapter for converting from the recipe view model to domain model</param>
         /// <param name="categoryMapper">Adapter for converting from the category domain model to view model</param>
         /// <param name="tempImageProvider">Provider for persisting temporary images to disk</param>
         /// <param name="amazonS3FileProvider">Provider for persisting files to Amazon S3 </param>
         /// <param name="featureUsageNotifier"></param>
-        public RecipeController(IDataProvider<Recipe,string> recipeDataProvider,
-                                IDataProvider<Category,string> categoryDataProvider,
+        public RecipeController(IRepository<Recipe,string> recipeRepository,
+                                IRepository<Category,string> categoryRepository,
                                 IMapper<Recipe,RecipeViewModel> recipeMapper,
                                 IMapper<RecipeViewModel,Recipe> recipeViewModelMapper,
                                 IMapper<Category,CategoryViewModel> categoryMapper,
-                                TempImageProvider tempImageProvider,
-                                AmazonS3FileProvider amazonS3FileProvider,
+                                IImageProvider tempImageProvider,
+                                IFileProvider amazonS3FileProvider,
                                 IFeatureUsageNotifier featureUsageNotifier
             )
         {
-            _recipeDataProvider = recipeDataProvider;
-            _categoryDataProvider = categoryDataProvider;
+            _recipeRepository = recipeRepository;
+            _categoryRepository = categoryRepository;
             _recipeMapper = recipeMapper;
             _recipeViewModelMapper = recipeViewModelMapper;
             _categoryMapper = categoryMapper;
@@ -78,7 +78,7 @@ namespace Domus.Web.UI.Controllers
             }
 
             // Categories
-            var categories = _categoryDataProvider.Get();
+            var categories = _categoryRepository.Get();
             var categoryViewModels = _categoryMapper.Map(categories).OrderBy(c=>c.Description).ToArray();
 
             // Recipes
@@ -148,7 +148,7 @@ namespace Domus.Web.UI.Controllers
             if (!ModelState.IsValid)
             {
                 // Categories
-                var categories = _categoryDataProvider.Get();
+                var categories = _categoryRepository.Get();
                 var categoryViewModels = _categoryMapper.Map(categories).OrderBy(c => c.Description).ToArray();
 
                 selectedRecipe.Categories = categoryViewModels;
@@ -160,13 +160,13 @@ namespace Domus.Web.UI.Controllers
 
             var recipeToSave = _recipeViewModelMapper.Map(selectedRecipe.Recipe);
 
-            var existingRecipe = _recipeDataProvider.Get(selectedRecipe.Recipe.RecipeId);
+            var existingRecipe = _recipeRepository.Get(selectedRecipe.Recipe.RecipeId);
             if(existingRecipe != null && existingRecipe.Category != recipeToSave.Category)
             {
                 recipeToSave.PreviousCategory = existingRecipe.Category;
             }
 
-            _recipeDataProvider.Save(recipeToSave);
+            _recipeRepository.Save(recipeToSave);
 
             return RedirectToAction("Detail",new{recipeId = recipeToSave.RecipeId});
         }
@@ -191,8 +191,8 @@ namespace Domus.Web.UI.Controllers
         {
             _featureUsageNotifier.Notify(Feature.RecipeRefresh);
 
-            _recipeDataProvider.Refresh();
-            _categoryDataProvider.Refresh();
+            _recipeRepository.Refresh();
+            _categoryRepository.Refresh();
 
             return RedirectToAction("Index");
         }
@@ -204,7 +204,7 @@ namespace Domus.Web.UI.Controllers
         internal SelectedRecipeViewModel GetNewRecipeViewModel(string recipeId)
         {
             // Categories
-            var categories = _categoryDataProvider.Get();
+            var categories = _categoryRepository.Get();
             var categoryViewModels = _categoryMapper.Map(categories).OrderBy(c => c.Description).ToArray();
 
             // Create a new recipe
@@ -225,11 +225,11 @@ namespace Domus.Web.UI.Controllers
         internal SelectedRecipeViewModel GetSelectedRecipeViewModel(string recipeId)
         {
             // Categories
-            var categories = _categoryDataProvider.Get();
+            var categories = _categoryRepository.Get();
             var categoryViewModels = _categoryMapper.Map(categories).OrderBy(c=>c.Description).ToArray();
 
             // Obtain the given recipe
-            var recipe = _recipeDataProvider.Get(recipeId);
+            var recipe = _recipeRepository.Get(recipeId);
             var recipeModel = recipe != null ?_recipeMapper.Map(recipe) : new RecipeViewModel {RecipeId = recipeId};
 
             return new SelectedRecipeViewModel
@@ -250,15 +250,15 @@ namespace Domus.Web.UI.Controllers
 
             // If there was no criteria, then get all
             if (nullSafeCriteria.IsEmpty())
-                return _recipeDataProvider.Get();
+                return _recipeRepository.Get();
 
             // See if there were any properties specified
             var parsedSearch = nullSafeCriteria.Split('=');
             if (parsedSearch[0].SafeTrim() == "category" && parsedSearch.Length>=2)
-                return _recipeDataProvider.Search(recipe => string.Equals(recipe.Category,parsedSearch[1],StringComparison.InvariantCultureIgnoreCase));
+                return _recipeRepository.Find(recipe => string.Equals(recipe.Category,parsedSearch[1],StringComparison.InvariantCultureIgnoreCase));
             
             // Perform the search
-            return _recipeDataProvider.Search(recipe => 
+            return _recipeRepository.Find(recipe => 
                    recipe.Category.SafeToLower().SafeContains(nullSafeCriteria)
                 || recipe.Name.SafeToLower().SafeContains(nullSafeCriteria)
                 || recipe.Ingredients.SafeToLower().SafeContains(nullSafeCriteria)
@@ -349,9 +349,9 @@ namespace Domus.Web.UI.Controllers
             var recipeImageUrl = _amazonS3FileProvider.Save(recipeImageFilePath, "DomusRecipeImages");
 
             // Place the image onto the recipe
-            var recipe = _recipeDataProvider.Get(viewModel.RecipeId);
+            var recipe = _recipeRepository.Get(viewModel.RecipeId);
             recipe.ImageUrl = recipeImageUrl;
-            _recipeDataProvider.Save(recipe);
+            _recipeRepository.Save(recipe);
 
             // Delete temporary files
             _tempImageProvider.Delete(recipeImageFileName);

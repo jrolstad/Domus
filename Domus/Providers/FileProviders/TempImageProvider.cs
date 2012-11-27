@@ -1,13 +1,12 @@
-﻿using System;
 using System.IO;
 using System.Web.Helpers;
 
-namespace Domus.Providers
+namespace Domus.Providers.FileProviders
 {
     /// <summary>
     /// Provider for persisting temporary images
     /// </summary>
-    public class TempImageProvider
+    public class TempImageProvider : IImageProvider
     {
         /// <summary>
         /// Saves an image to the temp directory with a given name

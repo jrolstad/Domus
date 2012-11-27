@@ -1,14 +1,14 @@
-﻿using System.IO;
+using System.IO;
 using Amazon.S3;
 using Amazon.S3.Model;
 using Rolstad.Extensions;
 
-namespace Domus.Providers
+namespace Domus.Providers.FileProviders
 {
     /// <summary>
     /// File Provider that uses Amazon S3 for file persistence
     /// </summary>
-    public class AmazonS3FileProvider
+    public class AmazonS3FileProvider : IFileProvider
     {
         internal readonly AmazonS3 _s3Client;
 
@@ -53,7 +53,7 @@ namespace Domus.Providers
 
             _s3Client.PutObject(request);
 
-            return "http://s3.amazonaws.com/{1}/{0}".StringFormat(Path.GetFileName(filePath),bucketName);
+            return string.Format("http://s3.amazonaws.com/{1}/{0}",Path.GetFileName(filePath),bucketName);
         }
 
         /// <summary>

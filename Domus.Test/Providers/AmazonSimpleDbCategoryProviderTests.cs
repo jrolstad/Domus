@@ -3,6 +3,7 @@ using System.Linq;
 using Directus.SimpleDb.Providers;
 using Domus.Entities;
 using Domus.Providers;
+using Domus.Providers.Repositories;
 using FizzWare.NBuilder;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -22,7 +23,7 @@ namespace Domus.Test.Providers
             var simpleDB = MockRepository.GenerateStub<SimpleDBProvider<Category,string>>();
             simpleDB.Stub(sdb => sdb.Get(CategoryId)).Return(CategoryInDb);
 
-            var provider = new AmazonSimpleDbCategoryProvider(simpleDB, MockRepository.GenerateStub<ICacheProvider>());
+            var provider = new AmazonSimpleDbCategoryProvider(simpleDB, MockRepository.GenerateStub<ICache>());
 
             // Act
             var result = provider.Get(CategoryId);
@@ -40,7 +41,7 @@ namespace Domus.Test.Providers
             var simpleDB = MockRepository.GenerateStub<SimpleDBProvider<Category, string>>();
             simpleDB.Stub(sdb => sdb.Get()).Return(CategorysInDb);
 
-            var provider = new AmazonSimpleDbCategoryProvider(simpleDB, MockRepository.GenerateStub<ICacheProvider>());
+            var provider = new AmazonSimpleDbCategoryProvider(simpleDB, MockRepository.GenerateStub<ICache>());
 
             // Act
             var result = provider.Get();
@@ -60,10 +61,10 @@ namespace Domus.Test.Providers
             var simpleDB = MockRepository.GenerateStub<SimpleDBProvider<Category, string>>();
             simpleDB.Stub(sdb => sdb.Get()).Return(CategorysInDb);
 
-            var provider = new AmazonSimpleDbCategoryProvider(simpleDB, MockRepository.GenerateStub<ICacheProvider>());
+            var provider = new AmazonSimpleDbCategoryProvider(simpleDB, MockRepository.GenerateStub<ICache>());
 
             // Act
-            var result = provider.Search(r=>r.Description == "Some Name");
+            var result = provider.Find(r=>r.Description == "Some Name");
 
             // Assert
             Assert.That(result.Single().Description, Is.EqualTo("Some Name"));
@@ -77,7 +78,7 @@ namespace Domus.Test.Providers
             var Category = Builder<Category>.CreateNew().Build();
             var simpleDB = MockRepository.GenerateStub<SimpleDBProvider<Category, string>>();
 
-            var provider = new AmazonSimpleDbCategoryProvider(simpleDB, MockRepository.GenerateStub<ICacheProvider>());
+            var provider = new AmazonSimpleDbCategoryProvider(simpleDB, MockRepository.GenerateStub<ICache>());
 
             // Act
             provider.Save(Category);
@@ -93,7 +94,7 @@ namespace Domus.Test.Providers
             var CategoryId = Guid.NewGuid().ToString();
             var simpleDB = MockRepository.GenerateStub<SimpleDBProvider<Category, string>>();
 
-            var provider = new AmazonSimpleDbCategoryProvider(simpleDB, MockRepository.GenerateStub<ICacheProvider>());
+            var provider = new AmazonSimpleDbCategoryProvider(simpleDB, MockRepository.GenerateStub<ICache>());
 
             // Act
             provider.Delete(CategoryId);

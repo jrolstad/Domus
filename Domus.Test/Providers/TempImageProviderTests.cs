@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using Domus.Providers;
+using Domus.Providers.FileProviders;
 using NUnit.Framework;
 
 namespace Domus.Test.Providers

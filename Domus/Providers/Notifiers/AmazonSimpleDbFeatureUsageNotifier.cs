@@ -1,23 +1,25 @@
-﻿using System;
+using System;
 using System.Security.Principal;
 using System.Threading.Tasks;
 using Directus.SimpleDb.Providers;
+using Domus;
 using Domus.Entities;
+using Domus.Providers;
 
-namespace Domus.Providers
+namespace Notifiers
 {
-    public class FeatureUsageNotifier : IFeatureUsageNotifier
+    public class AmazonSimpleDbFeatureUsageNotifier : IFeatureUsageNotifier
     {
         private readonly SimpleDBProvider<FeatureUsage, string> _simpleDbProvider;
         private readonly IPrincipal _currentUser;
 
-        internal FeatureUsageNotifier(SimpleDBProvider<FeatureUsage, string> simpleDbProvider, IPrincipal currentUser)
+        internal AmazonSimpleDbFeatureUsageNotifier(SimpleDBProvider<FeatureUsage, string> simpleDbProvider, IPrincipal currentUser)
         {
             _simpleDbProvider = simpleDbProvider;
             _currentUser = currentUser;
         }
 
-        public FeatureUsageNotifier(string accessKey, string secretKey, IPrincipal currentUser)
+        public AmazonSimpleDbFeatureUsageNotifier(string accessKey, string secretKey, IPrincipal currentUser)
             : this(new SimpleDBProvider<FeatureUsage, string>(accessKey, secretKey),currentUser)
         {
            
