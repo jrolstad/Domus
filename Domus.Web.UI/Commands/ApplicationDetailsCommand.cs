@@ -18,7 +18,7 @@ namespace Domus.Web.UI.Commands
             _keepAliveHandler = keepAliveHandler;
         }
 
-        public ApplicationDetailsResponse Execute(Request request)
+        public ApplicationDetailsResponse Execute(Request userRequest)
         {
             var url = GetBaseUrl();
             var accessKey = ConfigurationManager.AppSettings["AWS_ACCESS_KEY"];

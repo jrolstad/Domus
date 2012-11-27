@@ -7,6 +7,8 @@ using Domus.Commands;
 using Domus.Entities;
 using Domus.Providers;
 using Domus.Web.UI.Commands;
+using Domus.Web.UI.Commands.Requests;
+using Domus.Web.UI.Commands.Responses;
 using Domus.Web.UI.Models.Home;
 using Rolstad.MVC.Errors;
 
@@ -19,33 +21,22 @@ namespace Domus.Web.UI.Controllers
     [HandleErrorAndLog]
     public class HomeController : Controller
     {
-        /// <summary>
-        /// Provider used for user data
-        /// </summary>
-        private readonly IRepository<User, string> _userProvider;
-
+        private readonly ICommand<AuthenticateUserRequest, AuthenticateUserResponse> _authenticateUserCommand;
         private readonly ICommand<Request, ApplicationDetailsResponse> _applicationDetailsCommand;
+        private readonly ICommand<SignOutUserRequest, SignOutUserResponse> _logOffCommand;
         private readonly IFeatureUsageNotifier _featureUsageNotifier;
 
-        /// <summary>
-        /// Constructor with dependencies
-        /// </summary>
-        /// <param name="userProvider">Provider for obtaining users</param>
-        /// <param name="applicationDetailsCommand">Details of the application</param>
-        /// <param name="featureUsageNotifier"></param>
-        public HomeController(IRepository<User,string> userProvider,
+        public HomeController(ICommand<AuthenticateUserRequest,AuthenticateUserResponse> authenticateUserCommand,
             ICommand<Request, ApplicationDetailsResponse> applicationDetailsCommand,
+            ICommand<SignOutUserRequest,SignOutUserResponse> logOffCommand,
             IFeatureUsageNotifier featureUsageNotifier)
         {
-            _userProvider = userProvider;
+            _authenticateUserCommand = authenticateUserCommand;
             _applicationDetailsCommand = applicationDetailsCommand;
+            _logOffCommand = logOffCommand;
             _featureUsageNotifier = featureUsageNotifier;
         }
 
-        /// <summary>
-        /// Main home page
-        /// </summary>
-        /// <returns></returns>
         public ViewResult Index()
         {
             _featureUsageNotifier.Notify(Feature.HomeIndex);
@@ -53,13 +44,10 @@ namespace Domus.Web.UI.Controllers
             return View();
         }
 
-        /// <summary>
-        /// Page to Log In / Authenticate
-        /// </summary>
-        /// <returns></returns>
         public ViewResult LogOn()
         {
             _featureUsageNotifier.Notify(Feature.HomeLogon);
+
             var viewModel = new LogOnViewModel();
 
             return View(viewModel);
@@ -69,27 +57,22 @@ namespace Domus.Web.UI.Controllers
         {
             _featureUsageNotifier.Notify(Feature.HomeLogOff);
 
-            FormsAuthentication.SignOut();
+            _logOffCommand.Execute(new SignOutUserRequest());
 
             return RedirectToAction("Index", "Recipe");
         }
 
-        /// <summary>
-        /// Given user credentials, authenticates them (very simple implementation)
-        /// </summary>
-        /// <param name="viewModel">View Model with authentication data</param>
-        /// <returns></returns>
         public ActionResult Authenticate(LogOnViewModel viewModel)
         {
             _featureUsageNotifier.Notify(Feature.HomeAuthenticate);
 
-            // Try and get the related user
-            var user = _userProvider.Get(viewModel.EmailAddress);
+            // Authenticate the user
+            var request = new AuthenticateUserRequest {UserName = viewModel.EmailAddress, Password = viewModel.Password};
+            var result = _authenticateUserCommand.Execute(request);
 
-            // If the user is found and password matches, let them in
-            if (user != null && string.Equals(user.Password,viewModel.Password,StringComparison.CurrentCultureIgnoreCase))
+            // If the user is authenticated, let 'em in
+            if (result.IsAuthenticated)
             {
-                FormsAuthentication.SetAuthCookie(viewModel.EmailAddress,true);
                 return RedirectToAction("Index", "Recipe");
             }
             

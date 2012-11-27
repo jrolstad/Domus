@@ -110,6 +110,12 @@
   <ItemGroup>
     <Compile Include="App_Start\NinjectMVC3.cs" />
     <Compile Include="Commands\ApplicationDetailsCommand.cs" />
+    <Compile Include="Commands\AuthenticateUserCommand.cs" />
+    <Compile Include="Commands\Requests\AuthenticateUserRequest.cs" />
+    <Compile Include="Commands\Responses\AuthenticateUserResponse.cs" />
+    <Compile Include="Commands\SignOutUserCommand.cs" />
+    <Compile Include="Commands\Requests\SignOutUserRequest.cs" />
+    <Compile Include="Commands\Responses\SignOutUserResponse.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RecipeController.cs" />
     <Compile Include="Global.asax.cs">

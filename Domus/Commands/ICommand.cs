@@ -2,6 +2,6 @@
 {
     public interface ICommand<in TRequest, out TResponse>
     {
-        TResponse Execute(TRequest request);
+        TResponse Execute(TRequest userRequest);
     }
 }
