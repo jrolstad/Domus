@@ -1,20 +1,27 @@
 ﻿using Domus.Web.UI.Infrastructure.DependencyInjection.Registrations;
 using Ninject;
-using Rolstad.DependencyInjection;
+using Ninject.Modules;
 
 namespace Domus.Web.UI.Infrastructure.DependencyInjection
 {
     public static class Bootstrapper
     {
+        private static IKernel _kernel;
          public static void Configure(IKernel kernel)
          {
-             IoC.SetKernel(kernel);
-             IoC.Configure(new IContainerRegistration[]
-                               {
-                                   new AdapterRegistration(), 
-                                   new DataProviderRegistration(), 
-                               }
-                 );
+             var modulesToLoad = new NinjectModule[]
+                 {
+                     new AdapterRegistration(),
+                     new DataProviderRegistration(),
+                 };
+             kernel.Load(modulesToLoad);
+
+             _kernel = kernel;
          }
+
+        public static IKernel GetKernel()
+        {
+            return _kernel;
+        }
     }
 }

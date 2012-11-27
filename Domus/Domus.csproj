@@ -82,7 +82,6 @@
     <Compile Include="Providers\IDataProvider.cs" />
     <Compile Include="Providers\IFeatureUsageNotifier.cs" />
     <Compile Include="Providers\MemcacheCache.cs" />
-    <Compile Include="Providers\StaticCategoryDataProvider.cs" />
     <Compile Include="Providers\TempImageProvider.cs" />
   </ItemGroup>
   <ItemGroup />

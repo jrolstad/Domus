@@ -1,6 +1,7 @@
 ﻿using System.Web.Mvc;
 using System.Web.Routing;
-using Rolstad.DependencyInjection;
+using Domus.Web.UI.Infrastructure.DependencyInjection;
+using Ninject;
 using Rolstad.MVC.Errors;
 using log4net.Config;
 
@@ -13,7 +14,6 @@ namespace Domus.Web.UI
     {
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
-          
 
             filters.Add(new HandleErrorAttribute());
             filters.Add(new HandleErrorAndLogAttribute());
@@ -41,7 +41,7 @@ namespace Domus.Web.UI
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
 			 
-            var handlers = IoC.Get<KeepAliveHandler>();
+            var handlers = Bootstrapper.GetKernel().Get<KeepAliveHandler>();
         }
     }
 }

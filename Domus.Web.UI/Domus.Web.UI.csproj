@@ -74,9 +74,6 @@
     <Reference Include="Ninject.Web.Mvc">
       <HintPath>..\packages\Ninject.MVC3.2.2.2.0\lib\net40-Full\Ninject.Web.Mvc.dll</HintPath>
     </Reference>
-    <Reference Include="Rolstad.DependencyInjection">
-      <HintPath>..\packages\Rolstad.DependencyInjection.1.0.1\lib\net40\Rolstad.DependencyInjection.dll</HintPath>
-    </Reference>
     <Reference Include="Rolstad.Extensions">
       <HintPath>..\packages\Rolstad.Extensions.1.0.1\lib\net40\Rolstad.Extensions.dll</HintPath>
     </Reference>
@@ -145,7 +142,6 @@
     <Content Include="Content\rating_star.png" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Release Notes - Microsoft.Web.Helpers.txt" />
     <Content Include="Scripts\jquery.Jcrop.min.js" />
     <Content Include="Scripts\RecipeIndex.js" />
     <Content Include="Scripts\RecipeDetails.js" />
