@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Mvc;
-using System.Web.Security;
+﻿using System.Web.Mvc;
 using Domus.Commands;
 using Domus.Entities;
 using Domus.Providers;
-using Domus.Web.UI.Commands;
 using Domus.Web.UI.Commands.Requests;
 using Domus.Web.UI.Commands.Responses;
 using Domus.Web.UI.Models.Home;
