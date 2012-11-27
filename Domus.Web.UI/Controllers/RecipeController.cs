@@ -88,26 +88,13 @@ namespace Domus.Web.UI.Controllers
         {
             if (!ModelState.IsValid)
             {
-                // Categories
-                var categories = _categoryRepository.Get();
-                var categoryViewModels = _categoryMapper.Map(categories).OrderBy(c => c.Description).ToArray();
-
-                selectedRecipe.Categories = categoryViewModels;
-
+                AddCategoriesToSelectedRecipeViewModel(selectedRecipe);
                 return View("Edit", selectedRecipe);
             }
 
             _featureUsageNotifier.Notify(Feature.RecipeSave, notes: string.Format("{0}|{1}", selectedRecipe.Recipe.Name, selectedRecipe.Recipe.RecipeId));
 
-            var recipeToSave = _recipeViewModelMapper.Map(selectedRecipe.Recipe);
-
-            var existingRecipe = _recipeRepository.Get(selectedRecipe.Recipe.RecipeId);
-            if (existingRecipe != null && existingRecipe.Category != recipeToSave.Category)
-            {
-                recipeToSave.PreviousCategory = existingRecipe.Category;
-            }
-
-            _recipeRepository.Save(recipeToSave);
+            var recipeToSave = SaveRecipe(selectedRecipe);
 
             return RedirectToAction("Detail", new { recipeId = recipeToSave.RecipeId });
         }
@@ -124,8 +111,7 @@ namespace Domus.Web.UI.Controllers
         {
             _featureUsageNotifier.Notify(Feature.RecipeRefresh);
 
-            _recipeRepository.Refresh();
-            _categoryRepository.Refresh();
+            RefreshRecipeData();
 
             return RedirectToAction("Index");
         }
@@ -143,36 +129,12 @@ namespace Domus.Web.UI.Controllers
             if (image == null)
                 return RedirectToAction("Detail", new { recipeId = recipeViewModel.RecipeId });
 
-            // Resize the image to a manageable size
-            if (image.Width > 750)
-                image.Resize(750, 750);
-
-            // Save a tempory version
-            var filename = Path.GetFileName(image.FileName);
-            var tempFileName = "{0}_temp{1}".StringFormat(recipeViewModel.RecipeId, Path.GetExtension(filename));
-            var tempFilePath = _tempImageProvider.Save(image, tempFileName);
-
-            // Persit to S3
-            recipeViewModel.ImageUrl = _amazonS3FileProvider.Save(tempFilePath, "DomusRecipeImages");
-
-            // Update the view model for cropping
-            recipeViewModel.Width = image.Width;
-            recipeViewModel.Height = image.Height;
-            recipeViewModel.Top = image.Height * 0.1;
-            recipeViewModel.Left = image.Width * 0.9;
-            recipeViewModel.Right = image.Width * 0.9;
-            recipeViewModel.Bottom = image.Height * 0.9;
+            SaveTemporaryImage(recipeViewModel, image);
 
             // Once saved, send so we can crop the image
             return View("ImageCrop", recipeViewModel);
         }
 
-        /// <summary>
-        /// Given a recipe, facilitate editing the related image
-        /// </summary>
-        /// <param name="recipeId"></param>
-        /// <param name="name"> </param>
-        /// <returns></returns>
         [Authorize]
         public ActionResult ImageEdit(string recipeId, string name)
         {
@@ -185,13 +147,15 @@ namespace Domus.Web.UI.Controllers
             return View(recipeImageViewModel);
         }
 
-        /// <summary>
-        /// Saves a cropped image to the given recipe
-        /// </summary>
-        /// <param name="viewModel">View model</param>
-        /// <returns></returns>
         [Authorize]
         public ActionResult SaveCrop(RecipeImageViewModel viewModel)
+        {
+            SaveCroppedImageToRecipe(viewModel);
+
+            return RedirectToAction("Detail", new { recipeId = viewModel.RecipeId });
+        }
+
+        private void SaveCroppedImageToRecipe(RecipeImageViewModel viewModel)
         {
             // Get the temp image
             var tempFileName = Path.GetFileName(viewModel.ImageUrl);
@@ -214,8 +178,28 @@ namespace Domus.Web.UI.Controllers
             // Delete temporary files
             _tempImageProvider.Delete(recipeImageFileName);
             _tempImageProvider.Delete(tempFileName);
+        }
 
-            return RedirectToAction("Detail", new { recipeId = viewModel.RecipeId });
+        private Recipe SaveRecipe(SelectedRecipeViewModel selectedRecipe)
+        {
+            var recipeToSave = _recipeViewModelMapper.Map(selectedRecipe.Recipe);
+
+            var existingRecipe = _recipeRepository.Get(selectedRecipe.Recipe.RecipeId);
+            if (existingRecipe != null && existingRecipe.Category != recipeToSave.Category)
+            {
+                recipeToSave.PreviousCategory = existingRecipe.Category;
+            }
+
+            _recipeRepository.Save(recipeToSave);
+            return recipeToSave;
+        }
+
+        private void AddCategoriesToSelectedRecipeViewModel(SelectedRecipeViewModel selectedRecipe)
+        {
+            var categories = _categoryRepository.Get();
+            var categoryViewModels = _categoryMapper.Map(categories).OrderBy(c => c.Description).ToArray();
+
+            selectedRecipe.Categories = categoryViewModels;
         }
 
         private RecipeIndexViewModel SearchRecipes(string SearchText)
@@ -317,6 +301,35 @@ namespace Domus.Web.UI.Controllers
             // Resize it
             if (image.Width > imageSize)
                 image.Resize(imageSize, imageSize);
+        }
+
+        private void RefreshRecipeData()
+        {
+            _recipeRepository.Refresh();
+            _categoryRepository.Refresh();
+        }
+
+        private void SaveTemporaryImage(RecipeImageViewModel recipeViewModel, WebImage image)
+        {
+            // Resize the image to a manageable size
+            if (image.Width > 750)
+                image.Resize(750, 750);
+
+            // Save a tempory version
+            var filename = Path.GetFileName(image.FileName);
+            var tempFileName = "{0}_temp{1}".StringFormat(recipeViewModel.RecipeId, Path.GetExtension(filename));
+            var tempFilePath = _tempImageProvider.Save(image, tempFileName);
+
+            // Persit to S3
+            recipeViewModel.ImageUrl = _amazonS3FileProvider.Save(tempFilePath, "DomusRecipeImages");
+
+            // Update the view model for cropping
+            recipeViewModel.Width = image.Width;
+            recipeViewModel.Height = image.Height;
+            recipeViewModel.Top = image.Height * 0.1;
+            recipeViewModel.Left = image.Width * 0.9;
+            recipeViewModel.Right = image.Width * 0.9;
+            recipeViewModel.Bottom = image.Height * 0.9;
         }
     }
 }
