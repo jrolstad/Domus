@@ -11,7 +11,7 @@ namespace Domus.Web.UI.Infrastructure.DependencyInjection
          {
              var modulesToLoad = new NinjectModule[]
                  {
-                     new AdapterRegistration(),
+                     new MapperRegistration(),
                      new DataProviderRegistration(),
                      new AuthenticationRegistration(), 
                      new CommandRegistration(), 

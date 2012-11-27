@@ -10,6 +10,11 @@ namespace Domus.Web.UI.Infrastructure.DependencyInjection.Registrations
         public override void Load()
         {
             Bind<ICommand<Request, ApplicationDetailsResponse>>().To<ApplicationDetailsCommand>();
+
+            Bind<IKeepAliveHandler>()
+                .To<KeepAliveHandler>()
+                .InSingletonScope()
+                .OnDeactivation(context => context.Dispose());
         }
     }
 }

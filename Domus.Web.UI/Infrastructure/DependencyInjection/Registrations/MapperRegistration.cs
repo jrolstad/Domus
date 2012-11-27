@@ -5,16 +5,12 @@ using Ninject.Modules;
 
 namespace Domus.Web.UI.Infrastructure.DependencyInjection.Registrations
 {
-    public class AdapterRegistration:NinjectModule
+    public class MapperRegistration:NinjectModule
     {
         public override void Load()
         {
-            Bind<IKeepAliveHandler>()
-                .To<KeepAliveHandler>()
-                .InSingletonScope()
-                .OnDeactivation(context => context.Dispose());
 
-           Bind<IMapper<Recipe, RecipeViewModel>>()
+            Bind<IMapper<Recipe, RecipeViewModel>>()
                 .To<AutoMapperMapper<Recipe, RecipeViewModel>>()
                 .InSingletonScope();
 
