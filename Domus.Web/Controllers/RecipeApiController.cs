@@ -1,14 +1,23 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using Domus.Web.Models.Api;
+using FizzWare.NBuilder;
 
 namespace Domus.Web.Controllers
 {
     public class RecipeApiController : ApiController
     {
-        private List<RecipeApiModel> _recipeData;
- 
+        private IList<RecipeApiModel> _recipeData;
+
+        public RecipeApiController()
+        {
+            _recipeData = Builder<RecipeApiModel>
+                .CreateListOfSize(20)
+                .Build();
+        }
+
         public IEnumerable<RecipeApiModel> Get()
         {
             return _recipeData;
@@ -44,7 +53,7 @@ namespace Domus.Web.Controllers
 
             if (_recipeData.Any(r => r.RecipeId == id))
             {
-                var existing = _recipeData.First(r => id);
+                var existing = _recipeData.First(r => r.RecipeId == id);
                 _recipeData.Remove(existing);
 
                 _recipeData.Add(value);
@@ -55,7 +64,7 @@ namespace Domus.Web.Controllers
         {
             if (_recipeData.Any(r => r.RecipeId == id))
             {
-                var existing = _recipeData.First(r => id);
+                var existing = _recipeData.First(r => r.RecipeId == id);
                 _recipeData.Remove(existing);
             }
         }
