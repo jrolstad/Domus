@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domus", "Domus\Domus.csproj", "{155D3E29-9884-4947-BCCC-F75E1AB15270}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domus.Web.UI", "Domus.Web.UI\Domus.Web.UI.csproj", "{391C4194-BCA4-4D69-87B1-7C7511866547}"
@@ -14,6 +14,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domus.Test", "Domus.Test\Domus.Test.csproj", "{973966C3-3FAF-4058-983A-860B406AB542}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domus.WebUI.Test", "Domus.WebUI.Test\Domus.WebUI.Test.csproj", "{38E04309-B64A-4CE1-B3E1-95959BD141A8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domus.Web", "Domus.Web\Domus.Web.csproj", "{D86FB479-1A4E-419E-B609-02A63A0C1CF6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Legacy", "Legacy", "{C817555D-48E8-47EB-95F5-C591D47DEA66}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,8 +41,18 @@ Global
 		{38E04309-B64A-4CE1-B3E1-95959BD141A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{38E04309-B64A-4CE1-B3E1-95959BD141A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{38E04309-B64A-4CE1-B3E1-95959BD141A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D86FB479-1A4E-419E-B609-02A63A0C1CF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D86FB479-1A4E-419E-B609-02A63A0C1CF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D86FB479-1A4E-419E-B609-02A63A0C1CF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D86FB479-1A4E-419E-B609-02A63A0C1CF6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{155D3E29-9884-4947-BCCC-F75E1AB15270} = {C817555D-48E8-47EB-95F5-C591D47DEA66}
+		{973966C3-3FAF-4058-983A-860B406AB542} = {C817555D-48E8-47EB-95F5-C591D47DEA66}
+		{391C4194-BCA4-4D69-87B1-7C7511866547} = {C817555D-48E8-47EB-95F5-C591D47DEA66}
+		{38E04309-B64A-4CE1-B3E1-95959BD141A8} = {C817555D-48E8-47EB-95F5-C591D47DEA66}
 	EndGlobalSection
 EndGlobal
