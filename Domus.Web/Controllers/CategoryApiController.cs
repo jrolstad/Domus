@@ -39,7 +39,7 @@ namespace Domus.Web.Controllers
                     new CategoryApiModel{Decription = "Soups"}, 
                     new CategoryApiModel{Decription = "Turkey"}, 
                     new CategoryApiModel{Decription = "Vegetable Dishes"}, 
-                    new CategoryApiModel{Decription = "Yeast Breads"}"},
+                    new CategoryApiModel{Decription = "Yeast Breads"}
                 };
         }
 

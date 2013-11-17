@@ -6,9 +6,9 @@ using System.Web.Mvc;
 
 namespace Domus.Web.Controllers
 {
-    public class HomeController : Controller
+    public class RecipeController : Controller
     {
-        public ActionResult Index()
+        public ViewResult Index()
         {
             return View();
         }
