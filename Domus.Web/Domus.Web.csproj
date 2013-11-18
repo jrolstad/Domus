@@ -135,6 +135,7 @@
     </Compile>
     <Compile Include="Models\Api\CategoryApiModel.cs" />
     <Compile Include="Models\Api\RecipeApiModel.cs" />
+    <Compile Include="Models\RecipeIndexViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -247,6 +248,7 @@
     <Content Include="Views\Recipe\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Recipe\View1.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

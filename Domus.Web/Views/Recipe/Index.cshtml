@@ -1,4 +1,6 @@
-﻿<div class="navbar navbar-default navbar-static-top" role="navigation">
+﻿@model Domus.Web.Models.RecipeIndexViewModel
+
+<div class="navbar navbar-default navbar-static-top" role="navigation">
     <div class="container">
         <div class="navbar-header">
             <a class="navbar-brand" href="#">Rolstad Recipes</a>
@@ -9,15 +11,27 @@
                 <li><a href="#about">About</a></li>
             </ul>
         </div>
+        
     </div>
 </div>
 <div class="container">
     <div class="row">
         <div class="col-md-2">
             <div class="list-group">
-                <a href="#"class="list-group-item">Beef</a>
-                <a href="#" class="list-group-item">Chicken</a>
+                @foreach (var category in Model.Categories)
+                {
+                    <a href="#"class="list-group-item">@category.Decription</a>
+                }
             </div>
+            <a class="btn btn-primary btn-lg" role="button">Create Recipe</a>
+        </div>
+        <div class="col-md-10">
+        <div class="input-group">   
+            <input type="text" class="form-control" placeholder="Search text here">
+            <span class="input-group-btn">
+                <button class="btn btn-default glyphicon glyphicon-search" type="button"/>
+            </span>
+        </div>
         </div>
     </div>
 </div>
