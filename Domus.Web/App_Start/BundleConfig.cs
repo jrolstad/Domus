@@ -41,6 +41,8 @@ namespace Domus.Web
 
             bundles.Add(new StyleBundle("~/Content/bootstrap").Include("~/Content/bootstrap.css","~/Content/bootstrap-theme.css"));
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include("~/Scripts/bootstrap.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/knockoutjs").Include("~/Scripts/knockout-3.0.0.js"));
         }
     }
 }
