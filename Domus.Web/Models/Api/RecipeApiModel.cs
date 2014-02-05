@@ -6,7 +6,7 @@
 
         public string Name { get; set; }
 
-        public string Servings { get; set; }
+        public int Servings { get; set; }
 
         public decimal? Rating { get; set; }
 

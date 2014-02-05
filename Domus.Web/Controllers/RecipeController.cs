@@ -82,7 +82,8 @@ namespace Domus.Web.Controllers
                 Rating = toMap.Rating,
                 RecipeId = toMap.RecipeId,
                 Servings = toMap.Servings,
-                Source = toMap.Source
+                Source = toMap.Source,
+                RecipeTitle = toMap.Name
             };
         }
 
@@ -91,6 +92,7 @@ namespace Domus.Web.Controllers
             return new RecipeSearchResult
             {
                 Name = toMap.Name,
+           
                 RecipeId = toMap.RecipeId,
                 Rating = toMap.Rating
             };
@@ -98,7 +100,18 @@ namespace Domus.Web.Controllers
 
         public ViewResult RecipeDetail(string recipeid)
         {
-            throw new NotImplementedException();
+            var recipe = _recipeApiController.Get(recipeid);
+            var recipeViewModel = Map(recipe);
+
+            return View("Detail", recipeViewModel);
+        }
+
+        public ViewResult EditRecipe(string recipeid)
+        {
+            var recipe = _recipeApiController.Get(recipeid);
+            var recipeViewModel = Map(recipe);
+
+            return View("Edit", recipeViewModel);
         }
     }
 }

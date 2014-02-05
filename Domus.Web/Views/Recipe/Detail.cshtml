@@ -1,0 +1,38 @@
+﻿@model Domus.Web.Models.RecipeViewModel
+
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    
+    <div class="page-header">
+        <h2>
+            @Model.RecipeTitle
+            <small>
+                <a href="@Url.Action("EditRecipe",new{recipeId=@Model.RecipeId})" class="glyphicon glyphicon-pencil"></a>
+            </small>
+        </h2>
+        
+    </div>
+
+    <p><span class="label label-default">Servings</span> @Html.Encode(@Model.Servings) Rating(@Html.Encode(@Model.Rating))</p>
+    
+    <div class="panel panel-default">
+        <div class="panel-heading">Ingredients</div>
+        <div class="panel-body">
+            @Html.Encode(@Model.Ingredients)
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">Directions</div>
+        <div class="panel-body">
+            @Html.Encode(@Model.Directions)
+        </div>
+    </div>
+    
+    <p><span class="label label-default">Source</span> @Html.Encode(@Model.Source)</p>
+
+</div>
