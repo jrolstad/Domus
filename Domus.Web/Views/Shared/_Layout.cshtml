@@ -7,12 +7,25 @@
     @Styles.Render("~/Content/bootstrap")
     @Scripts.Render("~/bundles/modernizr")
 </head>
-<body>
-    @RenderBody()
+    <body>
+        <div class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Rolstad Recipes</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="#">Recipes</a></li>
+                </ul>
+            </div>
+        
+        </div>
+    </div>
+        @RenderBody()
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @Scripts.Render("~/bundles/knockoutjs")
-    @RenderSection("scripts", required: false)
-</body>
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+        @Scripts.Render("~/bundles/knockoutjs")
+        @RenderSection("scripts", required: false)
+    </body>
 </html>

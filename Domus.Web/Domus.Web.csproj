@@ -136,6 +136,7 @@
     </Compile>
     <Compile Include="Models\Api\CategoryApiModel.cs" />
     <Compile Include="Models\Api\RecipeApiModel.cs" />
+    <Compile Include="Models\RecipeViewModel.cs" />
     <Compile Include="Models\RecipeIndexViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -207,7 +208,6 @@
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Scripts\Domus\ViewModels\RecipeIndexViewModel.js" />
     <Content Include="Scripts\jquery-1.9.1.js" />
     <Content Include="Scripts\jquery-1.9.1.min.js" />
     <Content Include="Scripts\jquery-1.9.1.min.map" />
@@ -250,9 +250,11 @@
     <Content Include="Views\Recipe\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Shared\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Scripts\Domus\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">

@@ -1,29 +1,19 @@
 ﻿@model Domus.Web.Models.RecipeIndexViewModel
 <div id="recipeIndexView">
-    <div class="navbar navbar-default navbar-static-top" role="navigation">
-        <div class="container">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="#">Rolstad Recipes</a>
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li class="active"><a href="#">Recipes</a></li>
-                    <li><a href="#about">About</a></li>
-                </ul>
-            </div>
-        
-        </div>
-    </div>
+    
     <div class="container">
         <div class="row">
             <div class="col-md-2">
+                <div>
+                    <a  href="@Url.Action("CreateNewRecipe")" class="btn btn-primary btn-block" role="button">Create Recipe</a>
+                </div>
                 <div class="list-group">
                     @foreach (var category in Model.Categories)
                     {
-                        <a href="#"class="list-group-item">@category.Decription</a>
+                        <a href="@Url.Action("Index",new{category=@category.Decription})"class="list-group-item">@category.Decription</a>
                     }
                 </div>
-                <a class="btn btn-primary btn-lg" role="button" data-bind="click: addNewRecipe">Create Recipe</a>
+               
             </div>
             <div class="col-md-10">
                 <div class="input-group">   
@@ -32,21 +22,7 @@
                         <button class="btn btn-default glyphicon glyphicon-search" type="button" data-bind="click: executeSearch"/>
                     </span>
                 </div>
-                <div>
-                    <ul data-bind="foreach: searchResults">
-                        <li>
-                            <a href="#" data-bind="text: Name"/>
-                        </li>
-                    </ul>
-                </div>
             </div>
         </div>
-    </div>
+    
 </div>
-<script type="text/javascript">
-    $(function() {
-        var viewModel = new RecipeIndexViewModel();
-
-        ko.applyBindings(viewModel);
-    });
-</script>

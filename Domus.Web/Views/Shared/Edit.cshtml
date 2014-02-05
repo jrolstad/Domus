@@ -1,0 +1,47 @@
+﻿@model Domus.Web.Models.RecipeViewModel
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@Model.RecipeTitle</h2>
+
+<form role="form" action="@Url.Action("SaveRecipe")">
+    <div class="form-group">
+        <input type="hidden"id="RecipeId" name="RecipeId" value="@Model.RecipeId"/>
+    </div>
+    <div class="form-group">
+        <label for="Name">Name</label>
+        <input type="text" class="form-control" id="Name" name="Name">
+    </div>
+    <div class="form-group">
+        <label for="Name">Servings</label>
+        <input type="number" class="form-control" id="Servings" name="Servings">
+    </div>
+    <div class="form-group">
+        <label for="Rating">Rating</label>
+        <input type="number" class="form-control" id="Rating" name="Rating">
+    </div>
+    <div class="form-group">
+        <label for="Name">Category</label>
+        <input type="text" class="form-control" id="Category" name="Category">
+    </div>
+    <div class="form-group">
+        <label for="Name">Ingredients</label>
+        <input type="text" class="form-control" id="Ingredients" name="Ingredients">
+    </div>
+    <div class="form-group">
+        <label for="Name">Directions</label>
+        <input type="text" class="form-control" id="Directions" name="Directions">
+    </div>
+    <div class="form-group">
+        <label for="Name">Source</label>
+        <input type="text" class="form-control" id="Source" name="Source">
+    </div>
+
+    <button type="submit" class="btn btn-default">Submit</button>
+</form>
+
+
+
