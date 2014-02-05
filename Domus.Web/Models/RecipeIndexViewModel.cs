@@ -5,7 +5,8 @@ namespace Domus.Web.Models
 {
     public class RecipeIndexViewModel
     {
-        public List<CategoryApiModel> Categories { get; set; } 
+        public List<CategoryApiModel> Categories { get; set; }
 
+        public List<RecipeSearchResult> SearchResults { get; set; }
     }
 }

@@ -136,6 +136,8 @@
     </Compile>
     <Compile Include="Models\Api\CategoryApiModel.cs" />
     <Compile Include="Models\Api\RecipeApiModel.cs" />
+    <Compile Include="Models\Api\RecipeSearchRequest.cs" />
+    <Compile Include="Models\RecipeSearchResult.cs" />
     <Compile Include="Models\RecipeViewModel.cs" />
     <Compile Include="Models\RecipeIndexViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

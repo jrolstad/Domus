@@ -16,13 +16,26 @@
                
             </div>
             <div class="col-md-10">
-                <div class="input-group">   
-                    <input type="text" class="form-control" placeholder="Search text here" data-bind="searchText">
-                    <span class="input-group-btn">
-                        <button class="btn btn-default glyphicon glyphicon-search" type="button" data-bind="click: executeSearch"/>
-                    </span>
+                <form role="form" action="@Url.Action("Index")">
+                    <div class="input-group form-group">   
+                        <input type="text" class="form-control" id="SearchTerms" name="SearchTerms" placeholder="Search text here"/>
+                        <span class="input-group-btn">
+                            <button class="btn btn-default glyphicon glyphicon-search" type="submit"/>
+                        </span>
+                    </div>
+                </form>
+                <div id="searchResults">
+                     <ul class="list-unstyled">
+                    @foreach (var recipe in Model.SearchResults)
+                    {
+                        <li>
+                            <p><a href="@Url.Action("RecipeDetail",new{recipeId=recipe.RecipeId})">@recipe.Name</a></p>
+                        </li>
+                    }
+                </ul>
                 </div>
             </div>
         </div>
-    
+    </div>
+
 </div>

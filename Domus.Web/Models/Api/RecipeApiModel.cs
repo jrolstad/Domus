@@ -8,7 +8,7 @@
 
         public string Servings { get; set; }
 
-        public int? Rating { get; set; }
+        public decimal? Rating { get; set; }
 
         public string Category { get; set; }
 

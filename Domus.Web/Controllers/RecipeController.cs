@@ -1,17 +1,26 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using Domus.Web.Models;
+using Domus.Web.Models.Api;
 
 namespace Domus.Web.Controllers
 {
     public class RecipeController : Controller
     {
         private CategoryApiController _categoryApiController = new CategoryApiController();
+        private RecipeApiController _recipeApiController = new RecipeApiController();
+        private RecipeSearchApiController _recipeSearchApiController = new RecipeSearchApiController();
 
         public ViewResult Index(string category, string searchTerms)
         {
             var viewModel = BuildIndexPage();
+
+            var searchRequest = new RecipeSearchRequest {Category = category, SearchTerms = searchTerms};
+            var searchResults = _recipeSearchApiController.Get(searchRequest);
+            var searchResultModels = searchResults.Select(MapSearchResult).ToList();
+            viewModel.SearchResults = searchResultModels;
 
             return View(viewModel);
         }
@@ -39,7 +48,57 @@ namespace Domus.Web.Controllers
 
         public ActionResult SaveRecipe(RecipeViewModel recipe)
         {
+            var apiModel = Map(recipe);
+            _recipeApiController.Post(apiModel);
+
            return RedirectToAction("Index");
+        }
+
+        private static RecipeApiModel Map(RecipeViewModel toMap)
+        {
+            return new RecipeApiModel
+            {
+                Category = toMap.Category,
+                Directions = toMap.Directions,
+                ImageUrl = toMap.ImageUrl,
+                Ingredients = toMap.Ingredients,
+                Name = toMap.Name,
+                Rating = toMap.Rating,
+                RecipeId = toMap.RecipeId,
+                Servings = toMap.Servings,
+                Source = toMap.Source
+            };
+        }
+
+        private static RecipeViewModel Map(RecipeApiModel toMap)
+        {
+            return new RecipeViewModel
+            {
+                Category = toMap.Category,
+                Directions = toMap.Directions,
+                ImageUrl = toMap.ImageUrl,
+                Ingredients = toMap.Ingredients,
+                Name = toMap.Name,
+                Rating = toMap.Rating,
+                RecipeId = toMap.RecipeId,
+                Servings = toMap.Servings,
+                Source = toMap.Source
+            };
+        }
+
+        private static RecipeSearchResult MapSearchResult(RecipeApiModel toMap)
+        {
+            return new RecipeSearchResult
+            {
+                Name = toMap.Name,
+                RecipeId = toMap.RecipeId,
+                Rating = toMap.Rating
+            };
+        }
+
+        public ViewResult RecipeDetail(string recipeid)
+        {
+            throw new NotImplementedException();
         }
     }
 }
