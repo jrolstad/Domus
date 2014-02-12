@@ -25,13 +25,13 @@ namespace Domus.Web.Controllers
             if (!string.IsNullOrWhiteSpace(request.Category))
                 return _apiController
                     .Get()
-                    .Where(r => r.Category == request.Category);
+                    .Where(r => string.Equals(r.Category,request.Category,StringComparison.InvariantCultureIgnoreCase));
             
             if(!string.IsNullOrWhiteSpace(request.SearchTerms))
                 return _apiController
                     .Get()
                     .Where(r => r.Name != null)
-                    .Where(r => r.Name.Contains(request.SearchTerms));
+                    .Where(r => r.Name.ToLower().Contains(request.SearchTerms.ToLower()));
 
             return new List<RecipeApiModel>();
         }

@@ -9,13 +9,14 @@ namespace Domus.Web.Controllers
 {
     public class RecipeApiController : ApiController
     {
-        private IList<RecipeApiModel> _recipeData;
+        private static IList<RecipeApiModel> _recipeData;
 
         public RecipeApiController()
         {
-            _recipeData = Builder<RecipeApiModel>
-                .CreateListOfSize(20)
-                .Build();
+            if(_recipeData == null)
+                _recipeData = Builder<RecipeApiModel>
+                    .CreateListOfSize(20)
+                    .Build();
         }
 
         public IEnumerable<RecipeApiModel> Get()

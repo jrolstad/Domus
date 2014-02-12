@@ -32,10 +32,10 @@
         </div>
         <div class="form-group">
             <label for="Name">Category</label>
-            <select class="form-control" id="Category" name="Category" value="@Model.Category">
+            <select class="form-control" id="Category" name="Category">
              @foreach (var category in Model.AvailableCategories)
              {
-                 <option>@category</option>
+                 <option selected="@(category == Model.Category)">@category</option>
              }
             </select>
         </div>
