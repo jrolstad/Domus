@@ -17,8 +17,12 @@
         
     </div>
 
-    <p><span class="label label-default">Servings</span> @Html.Encode(@Model.Servings) Rating(@Html.Encode(@Model.Rating))</p>
-    
+    <p>
+        <span class="label label-default">Servings</span><span> @Html.Encode(@Model.Servings)</span> &nbsp;&nbsp;
+        <span class="rateit" data-rateit-value="@Html.Encode(@Model.Rating)" data-rateit-ispreset="true" data-rateit-readonly="true"></span>
+    </p>
+   
+
     <div class="panel panel-default">
         <div class="panel-heading">Ingredients</div>
         <div class="panel-body">

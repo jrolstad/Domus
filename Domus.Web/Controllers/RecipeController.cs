@@ -109,7 +109,10 @@ namespace Domus.Web.Controllers
         public ViewResult EditRecipe(string recipeid)
         {
             var recipe = _recipeApiController.Get(recipeid);
+            var categories = _categoryApiController.Get();
+
             var recipeViewModel = Map(recipe);
+            recipeViewModel.AvailableCategories = categories.Select(c => c.Decription).ToList();
 
             return View("Edit", recipeViewModel);
         }

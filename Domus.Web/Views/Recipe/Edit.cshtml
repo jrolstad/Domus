@@ -25,20 +25,27 @@
             <input type="number" class="form-control" id="Servings" name="Servings" value="@Model.Servings">
         </div>
         <div class="form-group">
+            
             <label for="Rating">Rating</label>
-            <input type="number" class="form-control" id="Rating" name="Rating" value="@Model.Rating">
+            <input type="range" min="0" max="5" value="@Model.Rating" step="0.5" id="Rating" name="Rating">
+            <div class="rateit" data-rateit-backingfld="#Rating" data-rateit-resetable="false"></div>
         </div>
         <div class="form-group">
             <label for="Name">Category</label>
-            <input type="text" class="form-control" id="Category" name="Category" value="@Model.Category">
+            <select class="form-control" id="Category" name="Category" value="@Model.Category">
+             @foreach (var category in Model.AvailableCategories)
+             {
+                 <option>@category</option>
+             }
+            </select>
         </div>
         <div class="form-group">
             <label for="Name">Ingredients</label>
-            <input type="text" class="form-control" id="Ingredients" name="Ingredients" value="@Model.Ingredients">
+            <textarea  class="form-control" id="Ingredients" name="Ingredients" rows="5">@Model.Ingredients</textarea>
         </div>
         <div class="form-group">
             <label for="Name">Directions</label>
-            <input type="text" class="form-control" id="Directions" name="Directions" value="@Model.Directions">
+            <textarea  class="form-control" id="Directions" name="Directions" rows="5">@Model.Directions</textarea>
         </div>
         <div class="form-group">
             <label for="Name">Source</label>

@@ -43,6 +43,10 @@ namespace Domus.Web
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include("~/Scripts/bootstrap.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/knockoutjs").Include("~/Scripts/knockout-3.0.0.js"));
+
+            bundles.Add(new StyleBundle("~/Content/rateit").Include("~/Content/rateit.css"));
+            bundles.Add(new ScriptBundle("~/bundles/rateit").Include("~/Scripts/jquery.rateit.js"));
+            
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace Domus.Web.Models
+﻿using System.Collections.Generic;
+
+namespace Domus.Web.Models
 {
     public class RecipeViewModel
     {
@@ -11,6 +13,8 @@
         public decimal? Rating { get; set; }
 
         public string Category { get; set; }
+
+        public ICollection<string> AvailableCategories { get; set; }
 
         public string Ingredients { get; set; }
 

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/bootstrap")
+    @Styles.Render("~/Content/rateit")
     @Scripts.Render("~/bundles/modernizr")
 </head>
     <body>
@@ -26,6 +27,7 @@
         @Scripts.Render("~/bundles/jquery")
         @Scripts.Render("~/bundles/bootstrap")
         @Scripts.Render("~/bundles/knockoutjs")
+        @Scripts.Render("~/bundles/rateit")
         @RenderSection("scripts", required: false)
     </body>
 </html>
