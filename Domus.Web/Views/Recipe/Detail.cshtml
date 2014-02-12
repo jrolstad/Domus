@@ -7,21 +7,31 @@
 
 <div class="container">
     
-    <div class="page-header">
-        <h2>
-            @Model.RecipeTitle
-            <small>
-                <a href="@Url.Action("EditRecipe",new{recipeId=@Model.RecipeId})" class="glyphicon glyphicon-pencil"></a>
-            </small>
-        </h2>
-        
+
+    <div class="page-header row">
+        <div class="col-md-8">
+            <h2>
+                @Model.RecipeTitle
+                <small>
+                    <a href="@Url.Action("EditRecipe",new{recipeId=@Model.RecipeId})" class="glyphicon glyphicon-pencil"></a>
+                </small>
+            </h2>
+        </div>
+        <div class="col-md-4 text-right">
+            @if (!string.IsNullOrWhiteSpace(Model.ImageUrl))
+             {
+                  <img src="@Model.ImageUrl" alt="Food Picture" class="img-thumbnail">
+             }
+           
+        </div>
     </div>
 
     <p>
         <span class="label label-default">Servings</span><span> @Html.Encode(@Model.Servings)</span> &nbsp;&nbsp;
         <span class="rateit" data-rateit-value="@Html.Encode(@Model.Rating)" data-rateit-ispreset="true" data-rateit-readonly="true"></span>
     </p>
-   
+
+
 
     <div class="panel panel-default">
         <div class="panel-heading">Ingredients</div>

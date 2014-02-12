@@ -16,6 +16,8 @@ namespace Domus.Web.Controllers
             if(_recipeData == null)
                 _recipeData = Builder<RecipeApiModel>
                     .CreateListOfSize(20)
+                    .All()
+                    .Do(r=>r.ImageUrl = null)
                     .Build();
         }
 
