@@ -37,10 +37,14 @@ namespace Domus.Web.Controllers
 
         public ViewResult CreateNewRecipe()
         {
+            var categories = _categoryApiController.Get();
+            var availableCategories = categories.Select(c => c.Decription).ToList();
             var viewModel = new RecipeViewModel
             {
                 RecipeId = Guid.NewGuid().ToString(),
-                RecipeTitle = "New Recipe"
+                RecipeTitle = "New Recipe",
+                Rating = 0,
+                AvailableCategories = availableCategories
             };
 
             return View("Edit", viewModel);
@@ -109,9 +113,9 @@ namespace Domus.Web.Controllers
         public ViewResult EditRecipe(string recipeid)
         {
             var recipe = _recipeApiController.Get(recipeid);
-            var categories = _categoryApiController.Get();
-
             var recipeViewModel = Map(recipe);
+
+            var categories = _categoryApiController.Get();
             recipeViewModel.AvailableCategories = categories.Select(c => c.Decription).ToList();
 
             return View("Edit", recipeViewModel);
