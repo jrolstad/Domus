@@ -48,7 +48,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DomusContext.cs" />
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="models\Category.cs" />
+    <Compile Include="models\IAuditableModel.cs" />
     <Compile Include="models\Recipe.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

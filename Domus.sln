@@ -9,14 +9,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{4E476E
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domus", "Domus\Domus.csproj", "{155D3E29-9884-4947-BCCC-F75E1AB15270}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domus.Web.UI", "Domus.Web.UI\Domus.Web.UI.csproj", "{391C4194-BCA4-4D69-87B1-7C7511866547}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domus.Test", "Domus.Test\Domus.Test.csproj", "{973966C3-3FAF-4058-983A-860B406AB542}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domus.WebUI.Test", "Domus.WebUI.Test\Domus.WebUI.Test.csproj", "{38E04309-B64A-4CE1-B3E1-95959BD141A8}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "legacy", "legacy", "{894D5492-F121-43B9-A6D2-3EEE3F814C39}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "domus.mvc", "domus.mvc\domus.mvc.csproj", "{3014FCD9-7EE8-400E-87C0-56007CAC5BAF}"
@@ -29,22 +21,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{155D3E29-9884-4947-BCCC-F75E1AB15270}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{155D3E29-9884-4947-BCCC-F75E1AB15270}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{155D3E29-9884-4947-BCCC-F75E1AB15270}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{155D3E29-9884-4947-BCCC-F75E1AB15270}.Release|Any CPU.Build.0 = Release|Any CPU
-		{391C4194-BCA4-4D69-87B1-7C7511866547}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{391C4194-BCA4-4D69-87B1-7C7511866547}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{391C4194-BCA4-4D69-87B1-7C7511866547}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{391C4194-BCA4-4D69-87B1-7C7511866547}.Release|Any CPU.Build.0 = Release|Any CPU
-		{973966C3-3FAF-4058-983A-860B406AB542}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{973966C3-3FAF-4058-983A-860B406AB542}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{973966C3-3FAF-4058-983A-860B406AB542}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{973966C3-3FAF-4058-983A-860B406AB542}.Release|Any CPU.Build.0 = Release|Any CPU
-		{38E04309-B64A-4CE1-B3E1-95959BD141A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{38E04309-B64A-4CE1-B3E1-95959BD141A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{38E04309-B64A-4CE1-B3E1-95959BD141A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{38E04309-B64A-4CE1-B3E1-95959BD141A8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3014FCD9-7EE8-400E-87C0-56007CAC5BAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3014FCD9-7EE8-400E-87C0-56007CAC5BAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3014FCD9-7EE8-400E-87C0-56007CAC5BAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -56,11 +32,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{155D3E29-9884-4947-BCCC-F75E1AB15270} = {894D5492-F121-43B9-A6D2-3EEE3F814C39}
-		{391C4194-BCA4-4D69-87B1-7C7511866547} = {894D5492-F121-43B9-A6D2-3EEE3F814C39}
-		{973966C3-3FAF-4058-983A-860B406AB542} = {894D5492-F121-43B9-A6D2-3EEE3F814C39}
-		{38E04309-B64A-4CE1-B3E1-95959BD141A8} = {894D5492-F121-43B9-A6D2-3EEE3F814C39}
 	EndGlobalSection
 EndGlobal
