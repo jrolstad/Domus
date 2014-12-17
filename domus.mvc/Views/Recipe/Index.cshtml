@@ -1,13 +1,30 @@
 ﻿@model domus.mvc.Models.Recipes.RecipeSearchResultViewModel
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Recipe Search";
 }
+<hr/>
+<div class="row">
+    <div class="col-md-2 col-md-2">
+        <div class="list-group">
+            @foreach (var category in Model.Categories)
+            {
+                <a href="@category.SearchUrl" class="list-group-item">@category.Name</a>
+            }
+        </div>
+    </div>
+    <div class="col-md-10 col-md-10">
+        <p>@string.Format("{0} recipes found", Model.Recipes.Count)</p>
 
-<div class="list-group">
-    @foreach (var category in Model.Categories)
-    {
-        <a href="@category.SearchUrl" class="list-group-item">@category.Name</a>
-    }
+        <ul class="list-unstyled">
+            @foreach (var recipe in Model.Recipes)
+            {
+                <li>
+                    <h3>
+                        <a href="@recipe.DetailUrl">@recipe.Name</a>
+                    </h3>
+                </li>
+            }
+        </ul>
+    </div>
 </div>
-
