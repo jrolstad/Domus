@@ -1,0 +1,13 @@
+﻿@model domus.mvc.Models.Recipes.RecipeSearchResultViewModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="list-group">
+    @foreach (var category in Model.Categories)
+    {
+        <a href="@category.SearchUrl" class="list-group-item">@category.Name</a>
+    }
+</div>
+
