@@ -71,7 +71,12 @@ namespace domus.mvc.Controllers
 
         private RecipeSearchViewModel MapRecipeSearchResult(Recipe recipe)
         {
-            return new RecipeSearchViewModel{Name = recipe.Name,DetailUrl = Url.Action("Detail",new{recipeId=recipe.Id})};
+            return new RecipeSearchViewModel
+            {
+                Name = recipe.Name,
+                DetailUrl = Url.Action("Detail",new{recipeId=recipe.Id}),
+                Rating = recipe.Rating
+            };
         }
 
         private CategoryViewModel MapCategory(Category category)
