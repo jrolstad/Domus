@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Enyim.Caching;
 using Enyim.Caching.Memcached;
 
@@ -53,5 +54,34 @@ namespace Domus.Providers.Cacheing
             _cache.Remove(key);
         }
 
+    }
+
+    public class InMemoryCache:ICache
+    {
+        private Dictionary<string,object> _items = new Dictionary<string, object>();
+         
+        public T Get<T>(string key)
+        {
+            if (!_items.ContainsKey(key))
+                return default(T);
+
+            return (T) _items[key];
+        }
+
+        public bool Put<T>(T value, string key, TimeSpan expiration)
+        {
+            if(!_items.ContainsKey(key))
+                _items.Add(key,value);
+
+            _items[key] = value;
+
+            return true;
+        }
+
+        public void Remove(string key)
+        {
+            if (_items.ContainsKey(key))
+                _items.Remove(key);
+        }
     }
 }

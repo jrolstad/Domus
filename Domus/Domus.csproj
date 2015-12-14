@@ -83,12 +83,10 @@
     <Compile Include="Providers\Repositories\AmazonSimpleDbUserProvider.cs" />
     <Compile Include="Providers\Notifiers\AmazonSimpleDbFeatureUsageNotifier.cs" />
     <Compile Include="Providers\FileProviders\AmazonS3FileProvider.cs" />
-    <Compile Include="Providers\FileProviders\TempImageProvider.cs" />
     <Compile Include="Providers\ICache.cs" />
     <Compile Include="Providers\IRepository.cs" />
     <Compile Include="Providers\IFeatureUsageNotifier.cs" />
     <Compile Include="Providers\IFileProvider.cs" />
-    <Compile Include="Providers\IImageProvider.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

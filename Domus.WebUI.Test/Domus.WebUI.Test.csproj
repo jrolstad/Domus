@@ -85,10 +85,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Domus.Web.UI\Domus.Web.UI.csproj">
-      <Project>{391C4194-BCA4-4D69-87B1-7C7511866547}</Project>
-      <Name>Domus.Web.UI</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Domus\Domus.csproj">
       <Project>{155D3E29-9884-4947-BCCC-F75E1AB15270}</Project>
       <Name>Domus</Name>
