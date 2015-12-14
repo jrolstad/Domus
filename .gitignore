@@ -3,3 +3,8 @@ _ReSharper.*
 obj/
 bin/
 *.user
+packages/*
+*.suo
+.vs/*
+*.mdf
+*.ldf
